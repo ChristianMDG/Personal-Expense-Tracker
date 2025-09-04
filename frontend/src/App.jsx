@@ -1,40 +1,34 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import Layout from './components/Layout';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
-import Expenses from './pages/Expenses';
-import ExpenseForm from './pages/ExpenseForm';
-import Incomes from './pages/Incomes';
-import IncomeForm from './pages/IncomeForm';
-import Categories from './pages/Categories';
-import Profile from './pages/Profile';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
-function App() {
+const Layout = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="expenses" element={<Expenses />} />
-            <Route path="expenses/new" element={<ExpenseForm />} />
-            <Route path="expenses/:id/edit" element={<ExpenseForm />} />
-            <Route path="incomes" element={<Incomes />} />
-            <Route path="incomes/new" element={<IncomeForm />} />
-            <Route path="incomes/:id/edit" element={<IncomeForm />} />
-            <Route path="categories" element={<Categories />} />
-            <Route path="profile" element={<Profile />} />
-          </Route>
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <div className='min-h-screen flex flex-row'>
+      <sidebar className=''>
+        <nav className='bg-blue-700 text-white flex h-full flex-col p-4 pt-4 w-70 justify-items-stretch justify-center items-center'>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/expenses">Expenses</Link>
+          <Link to="/incomes">Incomes</Link>
+          <Link to="/categories">Categories</Link>
+          <Link to="/profile">Profile</Link>
+          {user && (
+            <button onClick={handleLogout}>Logout</button>
+          )}
+        </nav>
+      </sidebar>
+      <main className='bg-amber-400 min-h-screen p-4 w-full'>
+        <Outlet />
+      </main>
+    </div>
   );
-}
+};
 
-export default App;
+export default Layout;
