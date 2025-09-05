@@ -28,7 +28,6 @@ export const userController ={
       }catch{error}{
         console.error('Error to get profile:',error);
         res.status(500).json({error: 'Internal server error'})
-        
       }
     }
   }
