@@ -13,7 +13,6 @@ export default function App() {
         <Route path="categories" element={<h1>Categories Page</h1>} />
         <Route path="profile" element={<h1>Profile Page</h1>} />
       </Route>
-      <Route path="/login" element={<h1>Login Page</h1>} />
     </Routes>
   );
 }
