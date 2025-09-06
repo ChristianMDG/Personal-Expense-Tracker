@@ -50,10 +50,10 @@ const incomeController = {
       res.status(500).json({ error: 'Internal server error' });
     }
   },
-//créer un revenu
-  createIncome : async (req, res) => {
+  //créer un revenu
+  createIncome: async (req, res) => {
     try {
-      const { amount, date,source,description} = req.body;
+      const { amount, date, source, description } = req.body;
       const userId = req.user.id;
 
       if (!amount || !date) {
@@ -68,7 +68,7 @@ const incomeController = {
           userId
         }
       });
-      
+
       res.status(201).json(newIncome);
     } catch (error) {
       console.error('Create income error:', error);
@@ -76,7 +76,40 @@ const incomeController = {
     }
   },
 
-  
+  //mettre à jour un revenu
+  updateIncome: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { amount, date, source, description } = req.body;
+      const userId = req.user.id;
+
+      const existingIncome = await prisma.income.findFirst({
+        where: { id, userId }
+      });
+
+      if (!existingIncome) {
+        return res.status(404).json({ error: 'Income not found' });
+      }
+
+      const updateData = {};
+      if (amount) updateData.amount = parseFloat(amount);
+      if (date) updateData.date = new Date(date);
+      if (source !== undefined) updateData.source = source;
+      if (description !== undefined) updateData.description = description;
+
+      const updatedIncome = await prisma.income.update({
+        where: { id },
+        data: updateData
+      });
+
+      res.status(200).json(updatedIncome);
+    } catch (error) {
+      console.error('Update income error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+
+
 };
 
 module.exports = incomeController;
