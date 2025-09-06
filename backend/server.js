@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
-// Import routes
+
 const authRoutes = require('./routes/auth');
 const expenseRoutes = require('./routes/expenses');
 const incomeRoutes = require('./routes/incomes');
@@ -15,18 +15,17 @@ const userRoutes = require('./routes/user');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Middleware
-// server.js
-const cors = require('cors');
+
 app.use(cors({
-  origin: 'http://localhost:3001', // frontend
+  origin: 'http://localhost:3001',
   credentials: true
 }));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware pour logger les données multipart
+
 app.use((req, res, next) => {
   if (req.headers['content-type'] && req.headers['content-type'].startsWith('multipart/form-data')) {
     console.log('Multipart form data received');
@@ -34,10 +33,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve uploaded files statically
+
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// API Routes
+
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/incomes', incomeRoutes);
@@ -46,7 +45,7 @@ app.use('/api/summary', summaryRoutes);
 app.use('/api/receipts', receiptRoutes);
 app.use('/api/user', userRoutes);
 
-// Health check endpoint
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({ 
     message: 'Server is running', 
@@ -55,7 +54,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Error handling middleware
+
 app.use((error, req, res, next) => {
   console.error('Error:', error);
   
@@ -70,10 +69,11 @@ app.use((error, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// 404 handler
+
 app.use('*', (req, res) => {
   res.status(404).json({ error: 'Endpoint not found' });
 });
+
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
