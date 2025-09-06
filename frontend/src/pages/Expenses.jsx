@@ -9,7 +9,7 @@ export default function Expenses() {
     const fetchExpenses = async () => {
       try {
         const res = await expensesAPI.getAll();
-        console.log(res.data); // <--- vérifie ce qui arrive
+        console.log(res.data); 
         setExpenses(res.data);
       } catch (err) {
         console.error('Failed to fetch data', err.response || err.message);
