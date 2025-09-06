@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 
 const incomesRoute = require('./routes/incomes')
+const expenseRoutes = require('./routes/expenses');
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -20,6 +22,36 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/incomes',incomesRoute)
+app.use('/api/expenses', expenseRoutes);
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ 
+    message: 'Server is running', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Error handling middleware
+app.use((error, req, res, next) => {
+  console.error('Error:', error);
+  
+  if (error.code === 'LIMIT_FILE_SIZE') {
+    return res.status(400).json({ error: 'File too large. Maximum size is 5MB.' });
+  }
+  
+  if (error.message === 'Only JPG, PNG, and PDF files are allowed') {
+    return res.status(400).json({ error: error.message });
+  }
+  
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({ error: 'Endpoint not found' });
+});
 
 
 app.listen(PORT, () => {

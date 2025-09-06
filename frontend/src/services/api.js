@@ -8,6 +8,7 @@ const api = axios.create({
   timeout: 10000,
 });
 
+
 // Expenses API
 export const expensesAPI = {
   getAll: (params) => api.get('/expenses', { params }),
@@ -51,6 +52,13 @@ export const incomesAPI = {
   delete: (id) => api.delete(`/incomes/${id}`)
 };
 
+// Categories API
+export const categoriesAPI = {
+  getAll: () => api.get('/categories'),
+  create: (data) => api.post('/categories', data),
+  update: (id, data) => api.put(`/categories/${id}`, data),
+  delete: (id) => api.delete(`/categories/${id}`)
+};
 
 
 
