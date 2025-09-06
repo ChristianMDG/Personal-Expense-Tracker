@@ -1,34 +1,19 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+// App.jsx
+import { Routes, Route } from 'react-router-dom';
+import Layout from './Layout';
+import Expenses from './pages/Expenses';
 
-const Layout = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
+export default function App() {
   return (
-    <div className='min-h-screen flex flex-row'>
-      <sidebar className=''>
-        <nav className='bg-blue-700 text-white flex h-full flex-col p-4 pt-4 w-70 justify-items-stretch justify-center items-center'>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/expenses">Expenses</Link>
-          <Link to="/incomes">Incomes</Link>
-          <Link to="/categories">Categories</Link>
-          <Link to="/profile">Profile</Link>
-          {user && (
-            <button onClick={handleLogout}>Logout</button>
-          )}
-        </nav>
-      </sidebar>
-      <main className='bg-amber-400 min-h-screen p-4 w-full'>
-        <Outlet />
-      </main>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="dashboard" element={<h1>Dashboard Page</h1>} />
+        <Route path="expenses" element={<Expenses />} />
+        <Route path="incomes" element={<h1>Incomes Page</h1>} />
+        <Route path="categories" element={<h1>Categories Page</h1>} />
+        <Route path="profile" element={<h1>Profile Page</h1>} />
+      </Route>
+      <Route path="/login" element={<h1>Login Page</h1>} />
+    </Routes>
   );
-};
-
-export default Layout;
+}
