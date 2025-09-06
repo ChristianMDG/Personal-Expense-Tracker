@@ -1,6 +1,6 @@
 // App.jsx
 import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
+import Layout from "./components/Sidebar";
 import Expenses from "./pages/Expenses";
 import Incomes from "./pages/Incomes";
 import IncomeForm from './pages/IncomeForm';
