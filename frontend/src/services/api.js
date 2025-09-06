@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/api';
-
+const API_BASE_URL = '/api';
 
 // Create axios instance with default config
 const api = axios.create({
@@ -9,18 +8,6 @@ const api = axios.create({
   timeout: 10000,
 });
 
-// Response interceptor to handle errors
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Token expired or invalid
-      localStorage.removeItem('token');
-      window.location.href = '/login';
-    }
-    return Promise.reject(error);
-  }
-);
 
 // Expenses API
 export const expensesAPI = {
@@ -56,8 +43,6 @@ export const expensesAPI = {
   delete: (id) => api.delete(`/expenses/${id}`)
 };
 
-
-
 // Incomes API
 export const incomesAPI = {
   getAll: (params) => api.get('/incomes', { params }),
@@ -67,6 +52,13 @@ export const incomesAPI = {
   delete: (id) => api.delete(`/incomes/${id}`)
 };
 
+// Categories API
+export const categoriesAPI = {
+  getAll: () => api.get('/categories'),
+  create: (data) => api.post('/categories', data),
+  update: (id, data) => api.put(`/categories/${id}`, data),
+  delete: (id) => api.delete(`/categories/${id}`)
+};
 
 
 
