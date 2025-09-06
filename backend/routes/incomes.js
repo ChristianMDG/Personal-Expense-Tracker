@@ -18,3 +18,6 @@ router.put('/:id',incomeController.updateIncome)
 //route pour effacer un income
 
 router.delete('/:id',incomeController.deleteIncome)
+
+
+module.exports = router 
