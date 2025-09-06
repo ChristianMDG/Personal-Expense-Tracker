@@ -22,7 +22,7 @@ const Layout = () => {
           {user && <button onClick={handleLogout}>Logout</button>}
         </nav>
       </aside>
-      <main className="bg-amber-400 min-h-screen p-4 w-full">
+      <main className="bg-white min-h-screen p-4 w-full">
         <Outlet />
       </main>
     </div>

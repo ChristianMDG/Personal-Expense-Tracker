@@ -10,7 +10,7 @@ const cors = require('cors');
 require('dotenv').config(); 
 
 
-const frontendURL = process.env.FRONTEND_URL || 'http://localhost:3002';
+const frontendURL = process.env.FRONTEND_URL || 'http://localhost:3001';
 
 app.use(cors({
   origin: frontendURL,
