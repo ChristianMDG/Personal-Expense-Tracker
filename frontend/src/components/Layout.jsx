@@ -13,7 +13,7 @@ const Layout = () => {
   return (
     <div className="min-h-screen flex flex-row">
       <aside>
-        <nav className="bg-blue-700 text-white flex h-full flex-col p-4 w-70 justify-items-stretch justify-center items-center">
+        <nav className="bg-[var(--primary-color)] text-white flex h-full flex-col p-4 w-70 justify-items-stretch justify-center items-center">
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/expenses">Expenses</Link>
           <Link to="/incomes">Incomes</Link>
