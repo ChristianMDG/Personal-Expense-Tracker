@@ -1,86 +1,124 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import ExpenseForm from "./ExpenseForm";
+import ExpenseItem from "./ExpenseItem";
 
 export default function Expenses() {
-  const [showForm, setShowForm] = useState(false);
   const [expenses, setExpenses] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [editingExpense, setEditingExpense] = useState(null);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    fetch("/api/expenses")
-      .then((res) => res.json())
-      .then((data) => setExpenses(data))
-      .catch((err) => console.error(err));
-
-    fetch("/api/categories")
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((err) => console.error(err));
+    async function fetchCategories() {
+      try {
+        const res = await axios.get("/api/categories");
+        setCategories(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchCategories();
   }, []);
 
-  if (showForm) {
-    return (
-      <ExpenseForm
-        categories={categories}
-        onBack={() => setShowForm(false)}
-        onAdd={(newExpense) => setExpenses((prev) => [...prev, newExpense])}
-      />
-    );
-  }
+  useEffect(() => {
+    async function fetchExpenses() {
+      try {
+        const res = await axios.get("/api/expenses");
+        setExpenses(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchExpenses();
+  }, []);
+
+  const handleAddOrUpdate = (expense) => {
+    if (editingExpense) {
+      setExpenses((prev) =>
+        prev.map((e) => (e.id === expense.id ? expense : e))
+      );
+    } else {
+      setExpenses((prev) => [expense, ...prev]);
+    }
+    setEditingExpense(null);
+    setShowForm(false);
+  };
+
+  const handleEdit = (expense) => {
+    setEditingExpense(expense);
+    setShowForm(true);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/expenses/${id}`);
+      setExpenses((prev) => prev.filter((e) => e.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleBack = () => {
+    setEditingExpense(null);
+    setShowForm(false);
+  };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-2 text-gray-800">Expenses</h1>
-      <p className="mb-4 text-gray-600">
-        Monitor and organize your expenses with ease
-      </p>
+    <div className="p-6 rounded">
+      {!showForm ? (
+        <>
+          <div className="flex justify-between">
+            <h1 className="text-3xl font-bold text-[var(--text-color)]">Expenses</h1>
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-white px-4 py-2 rounded mb-4"
+          >
+            Add Expense
+          </button>
+          </div>
 
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={() => setShowForm(true)}
-          className="bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-white px-4 py-2 rounded-lg shadow transition-colors"
-        >
-          Add Expense
-        </button>
-      </div>
-
-      <table className="w-full border-collapse bg-white rounded-lg overflow-hidden shadow-md">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="p-2 text-left">Date</th>
-            <th className="p-2 text-left">Amount</th>
-            <th className="p-2 text-left">Category</th>
-            <th className="p-2 text-left">Description</th>
-            <th className="p-2 text-left">Type</th>
-            <th className="p-2 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {expenses.length === 0 ? (
-            <tr>
-              <td colSpan={6} className="text-center p-4 text-gray-500">
-                No expenses found.
-              </td>
-            </tr>
-          ) : (
-            expenses.map((exp) => (
-              <tr key={exp.id} className="hover:bg-gray-50 transition-colors">
-                <td className="p-2">{exp.date}</td>
-                <td className="p-2">{exp.amount}</td>
-                <td className="p-2">{exp.categoryName}</td>
-                <td className="p-2">{exp.description}</td>
-                <td className="p-2">{exp.type}</td>
-                <td className="p-2 space-x-2">
-                  <button className="text-blue-500 hover:underline">Edit</button>
-                  <button className="text-red-500 hover:underline">Delete</button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-
-
+          <div className="overflow-x-auto">
+            <table className="min-w-full shadow-md rounded-lg bg-white">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-4 text-left">Date</th>
+                  <th className="px-4 py-4 text-left">Amount</th>
+                  <th className="px-4 py-4 text-left">Category</th>
+                  <th className="px-4 py-4 text-left">Description</th>
+                  <th className="px-4 py-4 text-left">Type</th>
+                  <th className="px-4 py-4 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {expenses.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" className="text-center py-4">
+                      No expenses found.
+                    </td>
+                  </tr>
+                ) : (
+                  expenses.map((exp) => (
+                    <ExpenseItem
+                      key={exp.id}
+                      expense={exp}
+                      onEdit={handleEdit}
+                      onDelete={handleDelete}
+                    />
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+        <ExpenseForm
+          categories={categories}
+          initialData={editingExpense}
+          onAdd={handleAddOrUpdate}
+          onBack={handleBack}
+        />
+      )}
     </div>
   );
 }

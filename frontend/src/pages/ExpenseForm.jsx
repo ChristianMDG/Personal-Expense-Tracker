@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function ExpenseForm({ categories, onBack, onAdd }) {
+export default function ExpenseForm({ onBack, onAdd, initialData }) {
+  const categories = [
+    { id: 1, name: "Food" },
+    { id: 2, name: "Transport" },
+    { id: 3, name: "Entertainment" },
+    { id: 4, name: "Shopping" },
+    { id: 5, name: "Bills" },
+  ];
+
   const [form, setForm] = useState({
+    id: null,
     date: "",
     amount: "",
     category: "",
     description: "",
     type: "",
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setForm(initialData);
+    }
+  }, [initialData]);
 
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -16,23 +31,27 @@ export default function ExpenseForm({ categories, onBack, onAdd }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("/api/expenses", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        onAdd(data);
-        onBack();
-      })
-      .catch((err) => console.error(err));
+    const newExpense = {
+      ...form,
+      id: form.id || Math.floor(Math.random() * 1000),
+      category:
+        categories.find((c) => c.id === parseInt(form.category))?.name ||
+        form.category,
+    };
+
+    onAdd(newExpense);
+    onBack();
   };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4 text-gray-800">Add New Expense</h2>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <h2 className="text-xl font-bold mb-4 text-gray-800">
+        {initialData ? "Edit Expense" : "Add New Expense"}
+      </h2>
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
         <div>
           <label className="block text-sm font-medium text-gray-700">Date</label>
           <input
@@ -83,7 +102,9 @@ export default function ExpenseForm({ categories, onBack, onAdd }) {
         </div>
 
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Description</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Description
+          </label>
           <input
             type="text"
             value={form.description}
@@ -97,7 +118,7 @@ export default function ExpenseForm({ categories, onBack, onAdd }) {
             type="submit"
             className="bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-white px-4 py-2 rounded-lg shadow transition-colors"
           >
-            Save
+            {initialData ? "Save Changes" : "Save"}
           </button>
           <button
             type="button"
