@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { expensesAPI, categoriesAPI } from '../services/api';
@@ -57,30 +56,6 @@ const Expenses = () => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
-  const calculateTotal = () => {
-    return expenses.reduce((total, expense) => total + expense.amount, 0);
-  };
-
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(amount);
-  };
-
-  const getCategoryColor = (categoryName) => {
-    const colors = {
-      'Food': 'bg-red-100 text-red-800',
-      'Transportation': 'bg-blue-100 text-blue-800',
-      'Entertainment': 'bg-purple-100 text-purple-800',
-      'Utilities': 'bg-yellow-100 text-yellow-800',
-      'Rent': 'bg-indigo-100 text-indigo-800',
-      'Healthcare': 'bg-green-100 text-green-800',
-      'Other': 'bg-gray-100 text-gray-800'
-    };
-    return colors[categoryName] || 'bg-gray-100 text-gray-800';
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -90,39 +65,59 @@ const Expenses = () => {
   }
 
   return (
-   <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h1>Expenses</h1>
-        <Link to="/expenses/new" className="btn btn-primary">
+    <div className='min-h-screen bg-[var(--bg-color)] py-8 px-4 sm:px-6 lg:px-8'>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-3xl font-bold text-[var(--text-color)]">Expenses</h1>
+          <p className='text-[var(--text-color)] mt-2'>Monitor and organize your expenses with ease</p>
+        </div>
+        <Link
+          to="/expenses/new"
+          className=" flex bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-white px-7
+          py-3 rounded-lg shadow transition"
+        >
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
           Add New Expense
         </Link>
       </div>
 
       {/* Filters */}
-      <div style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '5px' }}>
-        <h3>Filters</h3>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+      <div className="mb-6 p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
+        <h3 className="text-lg font-semibold mb-4">Filters</h3>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Start Date */}
           <div>
-            <label>Start Date: </label>
+            <label className="block text-sm font-medium text-gray-700">Start Date</label>
             <input
               type="date"
               value={filters.start}
               onChange={(e) => handleFilterChange('start', e.target.value)}
+              className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
+          {/* End Date */}
           <div>
-            <label>End Date: </label>
+            <label className="block text-sm font-medium text-gray-700">End Date</label>
             <input
               type="date"
               value={filters.end}
               onChange={(e) => handleFilterChange('end', e.target.value)}
+              className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
+          {/* Category */}
           <div>
-            <label>Category: </label>
+            <label className="block text-sm font-medium text-gray-700">Category</label>
             <select
               value={filters.category}
               onChange={(e) => handleFilterChange('category', e.target.value)}
+              className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Categories</option>
               {categories.map(category => (
@@ -132,56 +127,68 @@ const Expenses = () => {
               ))}
             </select>
           </div>
+
+          {/* Type */}
           <div>
-            <label>Type: </label>
+            <label className="block text-sm font-medium text-gray-700">Type</label>
             <select
               value={filters.type}
               onChange={(e) => handleFilterChange('type', e.target.value)}
+              className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Types</option>
               <option value="one-time">One-time</option>
               <option value="recurring">Recurring</option>
             </select>
           </div>
-          <button onClick={() => setFilters({ start: '', end: '', category: '', type: '' })}>
+        </div>
+
+        {/* Clear button */}
+        <div className="mt-4">
+          <button
+            onClick={() => setFilters({ start: '', end: '', category: '', type: '' })}
+            className="px-4 py-2 mt-2 border border-gray-300 rounded-md text-[var(--secondary-color)] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
             Clear Filters
           </button>
         </div>
       </div>
 
       {/* Expenses List */}
-      <div style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
+        <table className="w-full border-collapse">
           <thead>
-            <tr style={{ backgroundColor: '#f5f5f5' }}>
-              <th style={{ padding: '10px', textAlign: 'left' }}>Date</th>
-              <th style={{ padding: '10px', textAlign: 'left' }}>Amount</th>
-              <th style={{ padding: '10px', textAlign: 'left' }}>Category</th>
-              <th style={{ padding: '10px', textAlign: 'left' }}>Description</th>
-              <th style={{ padding: '10px', textAlign: 'left' }}>Type</th>
-              <th style={{ padding: '10px', textAlign: 'left' }}>Actions</th>
+            <tr className="bg-gray-100 text-gray-700">
+              <th className="px-4 py-2 text-left">Date</th>
+              <th className="px-4 py-2 text-left">Amount</th>
+              <th className="px-4 py-2 text-left">Category</th>
+              <th className="px-4 py-2 text-left">Description</th>
+              <th className="px-4 py-2 text-left">Type</th>
+              <th className="px-4 py-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {expenses.map(expense => (
-              <tr key={expense.id} style={{ borderBottom: '1px solid #ddd' }}>
-                <td style={{ padding: '10px' }}>
-                  {expense.type === 'one-time' 
+              <tr key={expense.id} className="border-t hover:bg-gray-50">
+                <td className="px-4 py-2">
+                  {expense.type === 'one-time'
                     ? new Date(expense.date).toLocaleDateString()
-                    : 'Recurring'
-                  }
+                    : 'Recurring'}
                 </td>
-                <td style={{ padding: '10px' }}>${expense.amount}</td>
-                <td style={{ padding: '10px' }}>{expense.category.name}</td>
-                <td style={{ padding: '10px' }}>{expense.description || '-'}</td>
-                <td style={{ padding: '10px' }}>{expense.type}</td>
-                <td style={{ padding: '10px' }}>
-                  <Link to={`/expenses/${expense.id}/edit`} style={{ marginRight: '10px' }}>
+                <td className="px-4 py-2">${expense.amount}</td>
+                <td className="px-4 py-2">{expense.category.name}</td>
+                <td className="px-4 py-2">{expense.description || '-'}</td>
+                <td className="px-4 py-2">{expense.type}</td>
+                <td className="px-4 py-2">
+                  <Link
+                    to={`/expenses/${expense.id}/edit`}
+                    className="text-blue-600 hover:underline mr-3"
+                  >
                     Edit
                   </Link>
-                  <button 
+                  <button
                     onClick={() => handleDelete(expense.id)}
-                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}
+                    className="text-red-600 hover:underline"
                   >
                     Delete
                   </button>
@@ -190,14 +197,18 @@ const Expenses = () => {
             ))}
           </tbody>
         </table>
+
         {expenses.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
-            No expenses found. <Link to="/expenses/new">Add your first expense</Link>
+          <div className="text-center p-6 text-gray-500">
+            <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            No expenses found.{' '}
           </div>
         )}
       </div>
     </div>
-  )
+  );
 };
 
 export default Expenses;
