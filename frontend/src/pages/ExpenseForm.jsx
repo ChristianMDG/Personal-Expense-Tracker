@@ -31,6 +31,17 @@ export default function ExpenseForm({ onBack, onAdd, initialData }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (
+      !form.date ||
+      !form.amount ||
+      !form.category ||
+      !form.type ||
+      !form.description
+    ) {
+      alert("Please make sure all fields are filled before saving.");
+      return;
+    }
+
     const newExpense = {
       ...form,
       id: form.id || Math.floor(Math.random() * 1000),
@@ -43,8 +54,9 @@ export default function ExpenseForm({ onBack, onAdd, initialData }) {
     onBack();
   };
 
+
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
+    <div className="p-6 bg-white rounded-lg">
       <h2 className="text-xl font-bold mb-4 text-gray-800">
         {initialData ? "Edit Expense" : "Add New Expense"}
       </h2>

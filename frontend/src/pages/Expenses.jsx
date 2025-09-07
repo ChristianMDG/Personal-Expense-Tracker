@@ -32,6 +32,7 @@ export default function Expenses() {
     }
     fetchExpenses();
   }, []);
+  
 
   const handleAddOrUpdate = (expense) => {
     if (editingExpense) {
@@ -65,7 +66,7 @@ export default function Expenses() {
   };
 
   return (
-    <div className="p-6 rounded">
+    <div className="lg:px-10 mx-10 p-6 shadow-lg rounded">
       {!showForm ? (
         <>
           <div className="flex justify-between">
