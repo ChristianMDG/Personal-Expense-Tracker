@@ -8,10 +8,9 @@ const expenseController = {
 
       let whereClause = { userId };
 
-      // Date filter
+
       if (start && end) {
         whereClause.OR = [
-          // One-time expenses with date in range
           {
             type: 'one-time',
             date: {
@@ -19,7 +18,6 @@ const expenseController = {
               lte: new Date(end)
             }
           },
-          // Recurring expenses active during the period
           {
             type: 'recurring',
             OR: [
@@ -40,12 +38,10 @@ const expenseController = {
         ];
       }
 
-      // Category filter
       if (category) {
         whereClause.categoryId = category;
       }
 
-      // Type filter
       if (type) {
         whereClause.type = type;
       }
@@ -100,7 +96,6 @@ const expenseController = {
 
       const userId = req.user.id;
       
-      // Pour multipart/form-data, les champs sont dans req.body
       const { amount, date, categoryId, description, type, startDate, endDate } = req.body;
       const receipt = req.file ? req.file.filename : null;
 
@@ -108,7 +103,6 @@ const expenseController = {
         amount, date, categoryId, description, type, startDate, endDate, receipt
       });
 
-      // Validation des champs requis
       if (!amount || !categoryId) {
         console.log('Validation failed: Amount and category are required');
         console.log('Received amount:', amount);
@@ -117,7 +111,6 @@ const expenseController = {
       }
         
 
-      // Validation des requirements spécifiques au type
       if (type === 'one-time' && !date) {
         console.log('Validation failed: Date is required for one-time expenses');
         return res.status(400).json({ error: 'Date is required for one-time expenses' });
@@ -128,7 +121,6 @@ const expenseController = {
         return res.status(400).json({ error: 'Start date is required for recurring expenses' });
       }
 
-      // Vérifie si la catégorie appartient à l'utilisateur
       const category = await prisma.category.findFirst({
         where: { id: categoryId, userId }
       });
@@ -147,7 +139,7 @@ const expenseController = {
         receipt
       };
 
-      // Gestion des dates selon le type
+
       if (type === 'one-time') {
         expenseData.date = new Date(date);
         expenseData.startDate = null;
@@ -184,7 +176,6 @@ const expenseController = {
       const { amount, date, categoryId, description, type, startDate, endDate } = req.body;
       const receipt = req.file ? req.file.filename : undefined;
 
-      // Check if expense exists and belongs to user
       const existingExpense = await prisma.expense.findFirst({
         where: { id, userId }
       });
@@ -193,7 +184,6 @@ const expenseController = {
         return res.status(404).json({ error: 'Expense not found' });
       }
 
-      // Check if category belongs to user if provided
       if (categoryId) {
         const category = await prisma.category.findFirst({
           where: { id: categoryId, userId }
@@ -211,7 +201,6 @@ const expenseController = {
       if (type) updateData.type = type;
       if (receipt) updateData.receipt = receipt;
 
-      // Handle dates based on type
       if (type === 'one-time') {
         updateData.date = date ? new Date(date) : null;
         updateData.startDate = null;
@@ -244,7 +233,6 @@ const expenseController = {
       const { id } = req.params;
       const userId = req.user.id;
 
-      // Check if expense exists and belongs to user
       const expense = await prisma.expense.findFirst({
         where: { id, userId }
       });
