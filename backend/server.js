@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 
 
+const authRoute = require('./routes/auth')
 const incomesRoute = require('./routes/incomes')
 const expenseRoutes = require('./routes/expenses');
 
@@ -23,6 +24,9 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// API routes
+app.use('/api/auth/', authRoute)
 app.use('/api/incomes',incomesRoute)
 app.use('/api/expenses', expenseRoutes);
 
