@@ -4,9 +4,13 @@ import Layout from "./components/Sidebar";
 import Expenses from "./pages/Expenses";
 import Incomes from "./pages/Incomes";
 import IncomeForm from './pages/IncomeForm';
+import Login from "./pages/Login";
+import Signup from "./pages/Singup";
 export default function App() {
   return (
     <Routes>
+      <Route path="/login" element={<Login />}/>
+      <Route path="/signup" element={<Signup />} />
       <Route path="/" element={<Layout />}>
         <Route path="dashboard" element={<h1>Dashboard Page</h1>} />
         <Route path="expenses" element={<Expenses />} />
