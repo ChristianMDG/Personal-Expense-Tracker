@@ -124,7 +124,7 @@ const Login = () => {
                   disabled={loading}
                 />
                 <button
-                  type="button"
+                  type="button"ù
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2"
                   disabled={loading}
@@ -191,8 +191,8 @@ const Login = () => {
             </button>
           </div>
 
-          <div className="mt-8 text-center">
-            <p style={{ color: 'var(--text-color)' }}>
+          <div className="mt-6 text-center">
+            <p className='text-xs' style={{ color: 'var(--text-color)' }}>
               Don't have an account?{' '}
               <Link to="/signup" style={{ color: 'var(--primary-color)', fontWeight: '500' }}>
                 Signup
@@ -201,8 +201,8 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="mt-8 text-center">
-          <p style={{ color: 'var(--secondary-color)', fontSize: '0.875rem' }}>
+        <div className="mt-6 text-center">
+          <p style={{ color: 'var(--secondary-color)', fontSize: '500' }}>
             © 2025 Planifieo. All rights reserved.
           </p>
         </div>
