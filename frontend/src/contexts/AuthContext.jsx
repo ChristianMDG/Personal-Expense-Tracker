@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const AuthContext = createContext();
 
-// Hook personnalisé pour accéder au contexte
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -17,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
-  // Configure axios par défaut avec le token
+  // Configure axios defaults
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -28,7 +27,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  // Vérifie l'authentification au démarrage
+  // Check if user is logged in on app start
   useEffect(() => {
     const checkAuth = async () => {
       if (token) {
@@ -42,6 +41,7 @@ export const AuthProvider = ({ children }) => {
       }
       setLoading(false);
     };
+
     checkAuth();
   }, [token]);
 
@@ -54,9 +54,9 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (error) {
       console.error('Login error:', error);
-      return {
-        success: false,
-        error: error.response?.data?.error || 'Login failed'
+      return { 
+        success: false, 
+        error: error.response?.data?.error || 'Login failed' 
       };
     }
   };
@@ -70,9 +70,9 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
     } catch (error) {
       console.error('Signup error:', error);
-      return {
-        success: false,
-        error: error.response?.data?.error || 'Signup failed'
+      return { 
+        success: false, 
+        error: error.response?.data?.error || 'Signup failed' 
       };
     }
   };
@@ -82,7 +82,14 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const value = { user, token, login, signup, logout, loading };
+  const value = {
+    user,
+    token,
+    login,
+    signup,
+    logout,
+    loading
+  };
 
   return (
     <AuthContext.Provider value={value}>

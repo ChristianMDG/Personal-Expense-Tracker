@@ -1,43 +1,267 @@
-import React from 'react'
+
+import { useState, useEffect } from 'react';
+import { summaryAPI } from '../services/api';
+import { 
+  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
+  Tooltip, Legend, ResponsiveContainer, AreaChart, Area, LineChart, Line 
+} from 'recharts';
 
 const Dashboard = () => {
+  const [summary, setSummary] = useState(null);
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [timeRange, setTimeRange] = useState('monthly');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [timeRange]);
+
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      
+      let startDate, endDate;
+      const today = new Date();
+      
+      if (timeRange === 'monthly') {
+        startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+        endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      } else if (timeRange === 'quarterly') {
+        startDate = new Date(today.getFullYear(), today.getMonth() - 3, 1);
+        endDate = today;
+      } else { // yearly
+        startDate = new Date(today.getFullYear(), 0, 1);
+        endDate = today;
+      }
+
+      const [summaryResponse, monthlyResponse] = await Promise.all([
+        summaryAPI.getMonthly(),
+        summaryAPI.getCustom({
+          start: startDate.toISOString().split('T')[0],
+          end: endDate.toISOString().split('T')[0]
+        })
+      ]);
+      
+      setSummary(summaryResponse.data);
+      processMonthlyData(monthlyResponse.data);
+    } catch (error) {
+      setError('Failed to fetch dashboard data');
+      console.error('Dashboard error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const processMonthlyData = (data) => {
+    // Simuler des données mensuelles pour la démonstration
+    const months = [];
+    const currentDate = new Date();
+    
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+      const monthName = date.toLocaleString('default', { month: 'short' });
+      const year = date.getFullYear();
+      
+      months.push({
+        name: `${monthName} ${year}`,
+        income: Math.floor(Math.random() * 5000) + 2000,
+        expenses: Math.floor(Math.random() * 4000) + 1000,
+        savings: Math.floor(Math.random() * 2000) + 500
+      });
+    }
+    
+    setMonthlyData(months);
+  };
+
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FF6B6B'];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading dashboard data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) return (
+    <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-800">
+      {error}
+    </div>
+  );
+
+  if (!summary) return (
+    <div className="text-center py-12">
+      <p className="text-gray-600">No data available</p>
+    </div>
+  );
+
+  const { totalIncome, totalExpenses, balance, expensesByCategory } = summary;
+
+  const categoryData = Object.entries(expensesByCategory || {}).map(([name, value], index) => ({
+    name,
+    value,
+    color: COLORS[index % COLORS.length]
+  }));
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
+  };
+
+  const getBalanceColor = (balance) => {
+    return balance >= 0 ? 'text-green-600' : 'text-red-600';
+  };
+
+  const getBalanceIcon = (balance) => {
+    return balance >= 0 ? '📈' : '📉';
+  };
+
   return (
-    <div className=''>Dashboard</div>
-  )
-}
+    <div className="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Financial Dashboard</h1>
+              <p className="text-gray-600 mt-2">Overview of your financial health</p>
+            </div>
+            
+            <div className="flex space-x-2">
+              {['monthly', 'quarterly', 'yearly'].map((range) => (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    timeRange === range
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  {range.charAt(0).toUpperCase() + range.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
 
-export default Dashboar
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-green-100 rounded-lg">
+                <span className="text-2xl">💰</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Total Income</p>
+                <p className="text-2xl font-bold text-green-600">
+                  {formatCurrency(totalIncome)}
+                </p>
+              </div>
+            </div>
+          </div>
 
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-red-100 rounded-lg">
+                <span className="text-2xl">💸</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Total Expenses</p>
+                <p className="text-2xl font-bold text-red-600">
+                  {formatCurrency(totalExpenses)}
+                </p>
+              </div>
+            </div>
+          </div>
 
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-blue-100 rounded-lg">
+                <span className="text-2xl">{getBalanceIcon(balance)}</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Balance</p>
+                <p className={`text-2xl font-bold ${getBalanceColor(balance)}`}>
+                  {formatCurrency(balance)}
+                </p>
+              </div>
+            </div>
+          </div>
 
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center">
+              <div className="p-3 bg-purple-100 rounded-lg">
+                <span className="text-2xl">🎯</span>
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Savings Rate</p>
+                <p className="text-2xl font-bold text-purple-600">
+                  {totalIncome > 0 ? `${((balance / totalIncome) * 100).toFixed(1)}%` : '0%'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        {/* Charts Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Expenses by Category */}
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Expenses by Category</h3>
+            {categoryData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    fill="#8884d8"
+                    dataKey="value"
+                    label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                  >
+                    {categoryData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => [formatCurrency(value), 'Amount']} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                No expense data available
+              </div>
+            )}
+          </div>
 
+          {/* Income vs Expenses Trend */}
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Income vs Expenses Trend</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip formatter={(value) => [formatCurrency(value), '']} />
+                <Legend />
+                <Bar dataKey="income" fill="#00C49F" name="Income" />
+                <Bar dataKey="expenses" fill="#FF8042" name="Expenses" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  );
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-d
+export default Dashboard;
