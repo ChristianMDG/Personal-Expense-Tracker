@@ -26,7 +26,7 @@ const categoryController = {
         return res.status(400).json({ error: 'Category name is required' });
       }
 
-      // Check if category already exists for this user
+      
       const existingCategory = await prisma.category.findFirst({
         where: { name, userId }
       });
@@ -59,7 +59,7 @@ const categoryController = {
         return res.status(400).json({ error: 'Category name is required' });
       }
 
-      // Check if category exists and belongs to user
+   
       const existingCategory = await prisma.category.findFirst({
         where: { id, userId }
       });
@@ -68,7 +68,6 @@ const categoryController = {
         return res.status(404).json({ error: 'Category not found' });
       }
 
-      // Check if new name already exists for this user
       const duplicateCategory = await prisma.category.findFirst({
         where: { name, userId, NOT: { id } }
       });
@@ -94,7 +93,7 @@ const categoryController = {
       const { id } = req.params;
       const userId = req.user.id;
 
-      // Check if category exists and belongs to user
+     
       const category = await prisma.category.findFirst({
         where: { id, userId }
       });
@@ -103,7 +102,7 @@ const categoryController = {
         return res.status(404).json({ error: 'Category not found' });
       }
 
-      // Check if category is in use
+    
       const expensesWithCategory = await prisma.expense.findFirst({
         where: { categoryId: id }
       });

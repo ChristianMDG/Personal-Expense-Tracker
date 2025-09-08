@@ -1,12 +1,11 @@
 const prisma = require('../config/database');
 
-// Helper function to calculate monthly summary
 const calculateMonthlySummary = async (userId, month) => {
   const date = month ? new Date(month) : new Date();
   const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
   const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-  // Get all incomes for the month
+
   const incomes = await prisma.income.findMany({
     where: {
       userId,

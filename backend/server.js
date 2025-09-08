@@ -23,7 +23,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware pour logger les données multipart
+// Middleware to log multipart/form-data requests
 app.use((req, res, next) => {
   if (req.headers['content-type'] && req.headers['content-type'].startsWith('multipart/form-data')) {
     console.log('Multipart form data received');
@@ -31,10 +31,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve uploaded files statically
+// Serve static files (for receipts)
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// API Routes
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/incomes', incomeRoutes);
@@ -43,16 +43,7 @@ app.use('/api/summary', summaryRoutes);
 app.use('/api/receipts', receiptRoutes);
 app.use('/api/user', userRoutes);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ 
-    message: 'Server is running', 
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
-  });
-});
-
-// Error handling middleware
+// Global error handler
 app.use((error, req, res, next) => {
   console.error('Error:', error);
   
@@ -71,9 +62,7 @@ app.use((error, req, res, next) => {
 app.use('*', (req, res) => {
   res.status(404).json({ error: 'Endpoint not found' });
 });
-
+// Start server
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on port ${PORT}`);
-  console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+  console.log(`Server is running on port ${PORT}`);
 });
