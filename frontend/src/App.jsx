@@ -1,21 +1,40 @@
-// App.jsx
-import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Sidebar";
-import Expenses from "./pages/Expenses";
-import Incomes from "./pages/Incomes";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './components/Layout';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
+import Expenses from './pages/Expenses';
+import ExpenseForm from './pages/ExpenseForm';
+import Incomes from './pages/Incomes';
 import IncomeForm from './pages/IncomeForm';
-export default function App() {
+import Categories from './pages/Categories';
+import Profile from './pages/Profile';
+
+function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="dashboard" element={<h1>Dashboard Page</h1>} />
-        <Route path="expenses" element={<Expenses />} />
-        <Route path="incomes" element={<h1>{<Incomes />}</h1>} />
-        <Route path="incomes/new" element={<IncomeForm />} />
-        <Route path="incomes/:id/edit" element={<IncomeForm />} />
-        <Route path="categories" element={<h1>Categories Page</h1>} />
-        <Route path="profile" element={<h1>Profile Page</h1>} />
-      </Route>
-    </Routes>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+            <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="expenses" element={<Expenses />} />
+            <Route path="expenses/new" element={<ExpenseForm />} />
+            <Route path="expenses/:id/edit" element={<ExpenseForm />} />
+            <Route path="incomes" element={<Incomes />} />
+            <Route path="incomes/new" element={<IncomeForm />} />
+            <Route path="incomes/:id/edit" element={<IncomeForm />} />
+            <Route path="categories" element={<Categories />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
+
+export default App;

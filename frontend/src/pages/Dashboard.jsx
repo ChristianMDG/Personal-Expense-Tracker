@@ -2,42 +2,8 @@ import React from 'react'
 
 const Dashboard = () => {
   return (
-    <div className=''>Dashboard</div>
+    <div>Dashboard</div>
   )
 }
 
-export default Dashboar
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-d
+export default Dashboard
