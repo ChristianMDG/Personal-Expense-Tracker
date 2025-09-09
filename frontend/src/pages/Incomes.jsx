@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { incomesAPI } from "../services/api";
+import { incomesAPI } from "../services";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Incomes = () => {

@@ -74,7 +74,7 @@ const Login = () => {
     <div className="min-h-screen flex flex-row-reverse">
      
       <div className="w-full md:w-1/2 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md anime">
         <div className="rounded-2xl shadow-xl p-8 bg-[var(--bg-color)] ">
           <div className="text-center mb-8">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 bg-[var(--primary-color)] ">
@@ -210,16 +210,16 @@ const Login = () => {
       </div>
 
       {/* Right Panel - Welcome Message */}
-      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] items-center justify-center p-12 relative overflow-hidden">
-        <div className="relative z-10 text-white text-center max-w-lg">
-          <h1 className="text-5xl font-bold mb-6">Welcome to Planifieo</h1>
+      <div className="hidden md:flex md:w-1/2 bg-gradient-to-bl from-[var(--primary-color)] to-[var(--secondary-color)] items-center justify-center p-12 relative overflow-hidden ">
+        <div className="relative z-10 text-white text-center max-w-lg anime">
+          <h1 className="text-5xl font-bold mb-6 ">Welcome to Planifieo</h1>
           <p className="text-xl mb-8 opacity-90">
             Take control of your finances. Track your expenses, create budgets, and achieve your financial goals with our all-in-one tool.
           </p>
           <div className="space-y-4 text-left">
             <div className="flex items-center">
               <div className="bg-white/20 p-2 rounded-lg mr-4">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 "  fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
@@ -246,8 +246,8 @@ const Login = () => {
         
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-white/10"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-white/10"></div>
+          <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-white/70 float"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-white/70 float"></div>
           
           {/* Animated floating elements */}
           <div className="absolute top-1/4 left-1/4 animate-float">
@@ -255,12 +255,13 @@ const Login = () => {
               <path d="M12 1V23M1 12H23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
-          <div className="absolute top-1/3 right-1/3 animate-float" style={{ animationDelay: '1s' }}>
+          
+          <div className="absolute top-1/4 right-1/4 animate-float" style={{ animationDelay: '1s' }}>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" className="text-white/30">
               <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
             </svg>
           </div>
-          <div className="absolute bottom-1/4 left-1/3 animate-float" style={{ animationDelay: '2s' }}>
+          <div className="absolute bottom-1/4 left-1/4 animate-float" style={{ animationDelay: '2s' }}>
             <svg width="35" height="35" viewBox="0 0 24 24" fill="none" className="text-white/30">
               <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
             </svg>

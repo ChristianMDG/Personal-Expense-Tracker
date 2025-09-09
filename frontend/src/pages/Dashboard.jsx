@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { summaryAPI } from "../services/api";
+import { summaryAPI } from "../services";
 import { Link } from "react-router-dom";
 import {
   PieChart,
