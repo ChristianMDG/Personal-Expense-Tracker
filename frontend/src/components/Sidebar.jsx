@@ -323,7 +323,7 @@ const Sidebar = () => {
           <motion.button
             whileHover={{
               scale: 1.02,
-              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              borderColor: "var[(--secondary-color)]"
             }}
             whileTap={{ scale: 0.98 }}
             onClick={handleLogout}
