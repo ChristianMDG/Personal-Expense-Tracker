@@ -72,22 +72,22 @@ const Dashboard = () => {
     const months = [];
     const currentDate = new Date();
 
-    for (let i = 5; i >= 0; i--) {
-      const date = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() - i,
-        1
-      );
-      const monthName = date.toLocaleString("default", { month: "short" });
-      const year = date.getFullYear();
+    // for (let i = 5; i >= 0; i--) {
+    //   const date = new Date(
+    //     currentDate.getFullYear(),
+    //     currentDate.getMonth() - i,
+    //     1
+    //   );
+    //   const monthName = date.toLocaleString("default", { month: "short" });
+    //   const year = date.getFullYear();
 
-      months.push({
-        name: `${monthName} ${year}`,
-        income: Math.floor(Math.random() * 5000) + 2000,
-        expenses: Math.floor(Math.random() * 4000) + 1000,
-        savings: Math.floor(Math.random() * 2000) + 500,
-      });
-    }
+    //   months.push({
+    //     name: `${monthName} ${year}`,
+    //     income: Math.floor(Math.random() * 5000) + 2000,
+    //     expenses: Math.floor(Math.random() * 4000) + 1000,
+    //     savings: Math.floor(Math.random() * 2000) + 500,
+    //   });
+    // }
 
     setMonthlyData(months);
   };
