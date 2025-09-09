@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { incomesAPI } from "../services/api";
+import { incomesAPI } from "../services";
 import { motion } from "framer-motion";
 
 const IncomeForm = () => {
