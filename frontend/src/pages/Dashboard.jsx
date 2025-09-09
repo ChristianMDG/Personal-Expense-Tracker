@@ -89,7 +89,7 @@ const Dashboard = () => {
     //   });
     // }
 
-    setMonthlyData(months);
+    setMonthlyData(months); 
   };
 
   const COLORS = [
@@ -202,7 +202,7 @@ const Dashboard = () => {
               </div>
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-orange-800">
-                  Budget Warning
+                  Get Safe Your Money
                 </h3>
                 <div className="mt-2 text-sm text-orange-700">
                   <p>{budgetAlert.message}</p>
