@@ -71,8 +71,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-8 px-4" style={{ backgroundColor: 'var(--bg-color)' }}>
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex flex-row-reverse">
+      {/* Left Panel - Login Form */}
+      <div className="w-full md:w-1/2 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md">
         <div className="rounded-2xl shadow-xl p-8" style={{ backgroundColor: 'var(--bg-color)' }}>
           <div className="text-center mb-8">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--primary-color)' }}>
@@ -207,9 +209,87 @@ const Login = () => {
           </p>
         </div>
       </div>
+      </div>
+
+      {/* Right Panel - Welcome Message */}
+      <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[var(--primary-color)] to-[var(--secondary-color)] items-center justify-center p-12 relative overflow-hidden">
+        <div className="relative z-10 text-white text-center max-w-lg">
+          <h1 className="text-5xl font-bold mb-6">Welcome to Planifieo</h1>
+          <p className="text-xl mb-8 opacity-90">
+            Take control of your finances. Track your expenses, create budgets, and achieve your financial goals with our all-in-one tool.
+          </p>
+          <div className="space-y-4 text-left">
+            <div className="flex items-center">
+              <div className="bg-white/20 p-2 rounded-lg mr-4">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+              <span>Real-time tracking of your expenses</span>
+            </div>
+            <div className="flex items-center">
+              <div className="bg-white/20 p-2 rounded-lg mr-4">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 14v6m-3-3h6M6 10h2a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6a2 2 0 012-2zm10-4a2 2 0 11-4 0 2 2 0 014 0zM4 6a2 2 0 100-4 2 2 0 000 4z" />
+                </svg>
+              </div>
+              <span>Custom budgets by category</span>
+            </div>
+            <div className="flex items-center">
+              <div className="bg-white/20 p-2 rounded-lg mr-4">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                </svg>
+              </div>
+              <span>Detailed reports and visualizations</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-white/10"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-white/10"></div>
+          
+          {/* Animated floating elements */}
+          <div className="absolute top-1/4 left-1/4 animate-float">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-white/30">
+              <path d="M12 1V23M1 12H23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <div className="absolute top-1/3 right-1/3 animate-float" style={{ animationDelay: '1s' }}>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" className="text-white/30">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+            </svg>
+          </div>
+          <div className="absolute bottom-1/4 left-1/3 animate-float" style={{ animationDelay: '2s' }}>
+            <svg width="35" height="35" viewBox="0 0 24 24" fill="none" className="text-white/30">
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(5deg); }
+          100% { transform: translateY(0px) rotate(0deg); }
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+          20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        .animate-shake {
+          animation: shake 0.5s ease-in-out;
+        }
+      `}</style>
     </div>
   );
 };
 
 export default Login;
-
