@@ -90,12 +90,13 @@ export const categoriesAPI = {
   delete: (id) => api.delete(`/categories/${id}`)
 };
 
-// Summary API
+//Summary API
 export const summaryAPI = {
   getMonthly: (params) => api.get('/summary/monthly', { params }),
   getCustom: (params) => api.get('/summary', { params }),
   getAlerts: () => api.get('/summary/alerts')
 };
+
 
 // User API
 export const userAPI = {

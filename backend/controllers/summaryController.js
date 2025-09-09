@@ -220,6 +220,7 @@ const summaryController = {
       res.status(500).json({ error: 'Internal server error' });
     }
   }
+
 };
 
 module.exports = summaryController;

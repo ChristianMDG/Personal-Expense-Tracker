@@ -34,5 +34,4 @@ router.post('/', authenticateToken, incomeController.createIncome);
 router.get('/:id', authenticateToken, incomeController.getIncomeById);
 router.put('/:id', authenticateToken, incomeController.updateIncome);
 router.delete('/:id', authenticateToken, incomeController.deleteIncome);
-
 module.exports = router;
