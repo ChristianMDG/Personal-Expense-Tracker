@@ -13,6 +13,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { summaryAPI } from "../services"; 
+import { use } from "react";
 
 const Dashboard = () => {
   const [summary, setSummary] = useState(null);
@@ -22,7 +23,7 @@ const Dashboard = () => {
   const [error, setError] = useState("");
 
   const COLORS = [
-    "#0088FE",
+    "var(--primary-color)",
     "#00C49F",
     "#FFBB28",
     "#FF8042",
@@ -98,7 +99,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-6 px-4">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto pa">
         {/* Header */}
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -201,7 +202,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Charts Grid */}
+      
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Expenses by Category */}
@@ -325,7 +326,7 @@ const Dashboard = () => {
                   <YAxis />
                   <Tooltip formatter={(value) => formatCurrency(value)} />
                   <Legend />
-                  <Bar dataKey="income" fill="#0088FE" name="Income" />
+                  <Bar dataKey="income" fill="#2C98A0" name="Income" />
                   <Bar dataKey="expenses" fill="#FF8042" name="Expenses" />
                 </BarChart>
               </ResponsiveContainer>
