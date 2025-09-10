@@ -37,7 +37,7 @@ const Expenses = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this expense?')) return;
-    
+
     try {
       await expensesAPI.delete(id);
       setExpenses(expenses.filter(expense => expense.id !== id));
@@ -152,14 +152,15 @@ const Expenses = () => {
         {/* Filters */}
         <div className="bg-white rounded-lg shadow p-4 mb-6">
           <h3 className="text-lg font-medium mb-3">Filters</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium mb-1">Start Date</label>
               <input
                 type="date"
                 value={filters.start}
                 onChange={(e) => handleFilterChange('start', e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
               />
             </div>
             <div>
@@ -168,15 +169,18 @@ const Expenses = () => {
                 type="date"
                 value={filters.end}
                 onChange={(e) => handleFilterChange('end', e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
               />
             </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium mb-1">Category</label>
               <select
                 value={filters.category}
                 onChange={(e) => handleFilterChange('category', e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
               >
                 <option value="">All Categories</option>
                 {categories.map(category => (
@@ -191,7 +195,7 @@ const Expenses = () => {
               <select
                 value={filters.type}
                 onChange={(e) => handleFilterChange('type', e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
               >
                 <option value="">All Types</option>
                 <option value="one-time">One-time</option>
@@ -199,13 +203,18 @@ const Expenses = () => {
               </select>
             </div>
           </div>
-          <button
-            onClick={() => setFilters({ start: '', end: '', category: '', type: '' })}
-            className="mt-3 px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50"
-          >
-            Clear Filters
-          </button>
+
+          <div className="flex justify-end">
+            <button
+              onClick={() => setFilters({ start: '', end: '', category: '', type: '' })}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+            >
+              Clear Filters
+            </button>
+          </div>
         </div>
+
+
 
         {/* Expenses Table */}
         <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -225,12 +234,12 @@ const Expenses = () => {
                 {expenses.map((expense) => (
                   <tr key={expense.id} className="border-t hover:bg-gray-50">
                     <td className="p-3">
-                      {expense.type === 'one-time' 
+                      {expense.type === 'one-time'
                         ? new Date(expense.date).toLocaleDateString()
                         : 'Recurring'
                       }
                     </td>
-                    <td className="p-3 font-semibold text-red-600">
+                    <td className="p-3 font-semibold text-black">
                       {formatCurrency(expense.amount)}
                     </td>
                     <td className="p-3">
@@ -242,11 +251,10 @@ const Expenses = () => {
                       {expense.description || 'No description'}
                     </td>
                     <td className="p-3">
-                      <span className={`px-2 py-1 rounded text-sm ${
-                        expense.type === 'recurring' 
-                          ? 'bg-purple-100 text-purple-800' 
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span className={`px-2 py-1 rounded text-sm ${expense.type === 'recurring'
+                        ? 'bg-purple-100 text-purple-800'
+                        : 'bg-gray-100 text-gray-800'
+                        }`}>
                         {expense.type}
                       </span>
                     </td>
@@ -254,15 +262,19 @@ const Expenses = () => {
                       <div className="flex space-x-2">
                         <Link
                           to={`/expenses/${expense.id}/edit`}
-                          className="text-blue-600 hover:text-blue-800"
+                          className="text-[var(--primary-color)] hover:text-blue-400"
                         >
-                          Edit
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
                         </Link>
                         <button
                           onClick={() => handleDelete(expense.id)}
-                          className="text-red-600 hover:text-red-800"
+                          className="text-[var(--secondary-color)] hover:text-blue-400"
                         >
-                          Delete
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
                         </button>
                       </div>
                     </td>

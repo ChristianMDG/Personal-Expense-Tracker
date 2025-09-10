@@ -152,7 +152,7 @@ const ExpenseForm = () => {
               ← Back
             </button>
             <h1 className="text-3xl font-bold text-gray-900">
-              {isEdit ? 'Edit Expense' : 'Add New Expense'}
+              {isEdit ? 'Edit Expense' : '💰 New Expense'}
             </h1>
           </div>
         </div>
