@@ -10,7 +10,6 @@ const Categories = () => {
   const [success, setSuccess] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState('');
-
   
   const [showModal, setShowModal] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
@@ -48,7 +47,6 @@ const Categories = () => {
       setCategories(prev => [...prev, response.data]);
       setNewCategoryName('');
       setSuccess('Category created successfully!');
-      
       setTimeout(() => setSuccess(''), 3000);
     } catch (error) {
       setError(error.response?.data?.error || 'Failed to create category');
@@ -58,7 +56,9 @@ const Categories = () => {
     }
   };
 
+  
   const handleUpdateCategory = async (id, newName) => {
+    setError('');
     if (!newName.trim()) {
       setError('Category name is required');
       return;
@@ -66,20 +66,21 @@ const Categories = () => {
 
     try {
       const response = await categoriesAPI.update(id, { name: newName.trim() });
-      setCategories(prev => prev.map(cat => 
-        cat.id === id ? response.data : cat
-      ));
+      if (!response?.data) {
+        throw new Error('No data returned from update API');
+      }
+      setCategories(prev => prev.map(cat => cat.id === id ? response.data : cat));
       setEditingId(null);
       setEditName('');
       setSuccess('Category updated successfully!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (error) {
-      setError(error.response?.data?.error || 'Failed to update category');
       console.error('Update category error:', error);
+      console.error('Error response:', error.response);
+      setError(error.response?.data?.error || 'Failed to update category');
     }
   };
 
-  
   const confirmDelete = (category) => {
     setCategoryToDelete(category);
     setShowModal(true);
@@ -136,7 +137,6 @@ const Categories = () => {
           <p className="text-gray-600 mt-2">Organize your expenses with custom categories</p>
         </div>
 
-        
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center">
@@ -159,7 +159,6 @@ const Categories = () => {
           </div>
         )}
 
-       
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Add New Category</h2>
           <form onSubmit={handleCreateCategory} className="flex flex-col sm:flex-row gap-4 items-end">
@@ -197,7 +196,6 @@ const Categories = () => {
           </form>
         </div>
 
-        
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold text-gray-900">Your Categories</h2>
@@ -274,7 +272,7 @@ const Categories = () => {
                               title="Delete category"
                             >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                               </svg>
                             </button>
                           </>
@@ -287,34 +285,34 @@ const Categories = () => {
             </div>
           )}
         </div>
-      </div>
 
-     
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.4)] backdrop-blur-sm">
-          <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Confirm Deletion</h2>
-            <p className="text-gray-700 mb-6">
-              Are you sure you want to delete the category{' '}
-              <span className="font-semibold text-red-600">{categoryToDelete?.name}</span>?
-            </p>
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={closeModal}
-                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleConfirmDelete}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
-              >
-                Delete
-              </button>
+       
+        {showModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent">
+            <div className="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Confirm Delete</h3>
+              <p className="mb-6">
+                Are you sure you want to delete the category <strong>{categoryToDelete?.name}</strong>?
+              </p>
+              <div className="flex justify-end space-x-4">
+                <button
+                  onClick={closeModal}
+                  className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleConfirmDelete}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+      </div>
     </div>
   );
 };
