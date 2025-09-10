@@ -631,16 +631,14 @@ const Profile = () => {
                   Account Created:
                 </p>
                 <p className="text-gray-800">
-                  {profile?.createdAt
-                    ? new Date(profile.createdAt).toLocaleString
-                    : "N/A"}
+                  {new Date(profile?.createdAt).toLocaleDateString()}
                 </p>
               </div>
               <div>
                 <p className="text-gray-600 font-medium mb-1">Last Updated:</p>
                 <p className="text-gray-800">
                   {profile?.updatedAt
-                    ? new Date(profile.updatedAt).toLocaleString()
+                    ? new Date(profile?.updatedAt).toLocaleString()
                     : "N/A"}
                 </p>
               </div>
