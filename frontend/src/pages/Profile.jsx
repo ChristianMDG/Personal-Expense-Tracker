@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { userAPI } from '../services/api';
+import { userAPI } from '../services';
 import { useAuth } from '../contexts/AuthContext';
 import { 
   PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
