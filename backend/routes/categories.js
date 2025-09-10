@@ -7,9 +7,9 @@ const router = express.Router();
 
 //But : Récupérer toutes les catégories
 router.get('/', authenticateToken, categoryController.getAllCategories);
-//Créer une nouvelle catégorie
+//But:Créer une nouvelle catégorie
 router.post('/', authenticateToken, categoryController.createCategory);
-//Modifier une catégorie existante, identifiée par son id
+// But:Modifier une catégorie existante, identifiée par son id
 router.put('/:id', authenticateToken, categoryController.updateCategory);
 router.delete('/:id', authenticateToken, categoryController.deleteCategory);
 //exporter le router pour l’utiliser dans un autre fichier, typiquement app.js,
