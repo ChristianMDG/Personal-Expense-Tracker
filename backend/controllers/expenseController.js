@@ -250,7 +250,7 @@ const expenseController = {
       console.error('Delete expense error:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
-  }
+  },
 };
 
 module.exports = expenseController;

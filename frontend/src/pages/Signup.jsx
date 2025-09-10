@@ -3,6 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Signup = () => {
+    // Variants pour orchestrer les animations
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.2 },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    };
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -87,137 +101,137 @@ const Signup = () => {
         <div className="min-h-screen flex flex-row-reverse">
             {/* Left Panel - Signup Form */}
             <div className="w-full md:w-1/2 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ">
-               <div className="w-full max-w-md">
-                <div className="rounded-2xl shadow-xl p-8 bg-[var(--bg-color)]">
-                    <div className="text-center mb-8">
-                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--primary-color)' }}>
-                            <span className="text-2xl text-white">💰</span>
+                <div className="w-full max-w-md">
+                    <div className="rounded-2xl shadow-xl p-8 bg-[var(--bg-color)]">
+                        <div className="text-center mb-8">
+                            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'var(--primary-color)' }}>
+                                <span className="text-2xl text-white">💰</span>
+                            </div>
+                            <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-color)' }}>Planifieo</h1>
+                            <p style={{ color: 'var(--secondary-color)' }}>Join thousands managing their expenses smarter</p>
                         </div>
-                        <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-color)' }}>Planifieo</h1>
-                        <p style={{ color: 'var(--secondary-color)' }}>Join thousands managing their expenses smarter</p>
+
+                        {error && (
+                            <div className="mb-6 p-4 border rounded-lg" style={{ borderColor: 'var(--error-color)' }}>
+                                <div className="flex items-center">
+                                    <span className="text-red-600 text-sm">{error}</span>
+                                </div>
+                            </div>
+                        )}
+
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div>
+                                <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--text-color)' }}>Email Address</label>
+                                <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors"
+                                    style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}
+                                    placeholder="Enter your email"
+                                    disabled={loading}
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: 'var(--text-color)' }}>Password</label>
+                                <div className="relative">
+                                    <input
+                                        id="password"
+                                        name="password"
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={formData.password}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors pr-12"
+                                        style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}
+                                        placeholder="Create a password"
+                                        disabled={loading}
+                                        required
+                                        minLength="8"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                                        style={{ color: 'var(--secondary-color)' }}
+                                        disabled={loading}
+                                    >
+                                        {showPassword ? 'Hide' : 'Show'}
+                                    </button>
+                                </div>
+
+                                {formData.password && (
+                                    <div className="mt-3">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-xs" style={{ color: 'var(--text-color)' }}>Password strength:</span>
+                                            <span className="text-xs font-medium" style={{ color: getPasswordStrengthColor(passwordStrength) }}>
+                                                {getPasswordStrengthText(passwordStrength)}
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-gray-200 rounded-full h-2">
+                                            <div
+                                                className="h-2 rounded-full transition-all duration-300"
+                                                style={{ width: `${(passwordStrength / 4) * 100}%`, backgroundColor: getPasswordStrengthColor(passwordStrength) }}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div>
+                                <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2" style={{ color: 'var(--text-color)' }}>Confirm Password</label>
+                                <div className="relative">
+                                    <input
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        value={formData.confirmPassword}
+                                        onChange={handleInputChange}
+                                        className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors pr-12"
+                                        style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}
+                                        placeholder="Confirm your password"
+                                        disabled={loading}
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                                        style={{ color: 'var(--secondary-color)' }}
+                                        disabled={loading}
+                                    >
+                                        {showConfirmPassword ? 'Hide' : 'Show'}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                style={{ backgroundColor: 'var(--primary-color)', color: 'white' }}
+                                className="w-full py-3 px-4 rounded-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {loading ? 'Creating account...' : 'Create Account'}
+                            </button>
+                        </form>
+
+                        <div className="mt-6 text-center">
+                            <p className="text-xs" style={{ color: 'var(--text-color)' }}>
+                                Already have an account?{' '}
+                                <Link to="/login" style={{ color: 'var(--primary-color)', fontWeight: '500' }}>Sign in</Link>
+                            </p>
+                        </div>
                     </div>
 
-                    {error && (
-                        <div className="mb-6 p-4 border rounded-lg" style={{ borderColor: 'var(--error-color)' }}>
-                            <div className="flex items-center">
-                                <span className="text-red-600 text-sm">{error}</span>
-                            </div>
-                        </div>
-                    )}
-
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: 'var(--text-color)' }}>Email Address</label>
-                            <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors"
-                                style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}
-                                placeholder="Enter your email"
-                                disabled={loading}
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: 'var(--text-color)' }}>Password</label>
-                            <div className="relative">
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type={showPassword ? 'text' : 'password'}
-                                    value={formData.password}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors pr-12"
-                                    style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}
-                                    placeholder="Create a password"
-                                    disabled={loading}
-                                    required
-                                    minLength="8"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                                    style={{ color: 'var(--secondary-color)' }}
-                                    disabled={loading}
-                                >
-                                    {showPassword ? 'Hide' : 'Show'}
-                                </button>
-                            </div>
-
-                            {formData.password && (
-                                <div className="mt-3">
-                                    <div className="flex justify-between items-center mb-1">
-                                        <span className="text-xs" style={{ color: 'var(--text-color)' }}>Password strength:</span>
-                                        <span className="text-xs font-medium" style={{ color: getPasswordStrengthColor(passwordStrength) }}>
-                                            {getPasswordStrengthText(passwordStrength)}
-                                        </span>
-                                    </div>
-                                    <div className="w-full bg-gray-200 rounded-full h-2">
-                                        <div
-                                            className="h-2 rounded-full transition-all duration-300"
-                                            style={{ width: `${(passwordStrength / 4) * 100}%`, backgroundColor: getPasswordStrengthColor(passwordStrength) }}
-                                        ></div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div>
-                            <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2" style={{ color: 'var(--text-color)' }}>Confirm Password</label>
-                            <div className="relative">
-                                <input
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    type={showConfirmPassword ? 'text' : 'password'}
-                                    value={formData.confirmPassword}
-                                    onChange={handleInputChange}
-                                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-colors pr-12"
-                                    style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}
-                                    placeholder="Confirm your password"
-                                    disabled={loading}
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                                    style={{ color: 'var(--secondary-color)' }}
-                                    disabled={loading}
-                                >
-                                    {showConfirmPassword ? 'Hide' : 'Show'}
-                                </button>
-                            </div>
-                        </div>
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            style={{ backgroundColor: 'var(--primary-color)', color: 'white' }}
-                            className="w-full py-3 px-4 rounded-lg font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {loading ? 'Creating account...' : 'Create Account'}
-                        </button>
-                    </form>
-
-                    <div className="mt-6 text-center">
-                        <p className="text-xs" style={{ color: 'var(--text-color)' }}>
-                            Already have an account?{' '}
-                            <Link to="/login" style={{ color: 'var(--primary-color)', fontWeight: '500' }}>Sign in</Link>
+                    <div className="mt-8 text-center">
+                        <p className="text-sm" style={{ color: 'var(--secondary-color)' }}>
+                            © 2024 Expense Tracker. All rights reserved.
                         </p>
                     </div>
                 </div>
-
-                <div className="mt-8 text-center">
-                    <p className="text-sm" style={{ color: 'var(--secondary-color)' }}>
-                        © 2024 Expense Tracker. All rights reserved.
-                    </p>
-                </div>
-            </div>
             </div>
 
             {/* Right Panel - Welcome Message */}
@@ -254,26 +268,26 @@ const Signup = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 {/* Background decorative elements */}
                 <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-white/10"></div>
                     <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-white/10"></div>
-                    
+
                     {/* Animated floating elements */}
                     <div className="absolute top-1/4 left-1/4 animate-float">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="text-white/30">
-                            <path d="M12 1V23M1 12H23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                            <path d="M12 1V23M1 12H23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         </svg>
                     </div>
                     <div className="absolute top-1/3 right-1/3 animate-float" style={{ animationDelay: '1s' }}>
                         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" className="text-white/30">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
                         </svg>
                     </div>
                     <div className="absolute bottom-1/4 left-1/3 animate-float" style={{ animationDelay: '2s' }}>
                         <svg width="35" height="35" viewBox="0 0 24 24" fill="none" className="text-white/30">
-                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
                         </svg>
                     </div>
                 </div>

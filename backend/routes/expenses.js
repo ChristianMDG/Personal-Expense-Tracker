@@ -1,13 +1,13 @@
 const express = require('express');
+const authenticateToken = require('../middleware/auth');
 const upload = require('../middleware/upload');
 const expenseController = require('../controllers/expenseController');
 
 const router = express.Router();
 
-router.get('/',  expenseController.getAllExpenses);
-router.post('/',  upload.single('receipt'), expenseController.createExpense);
-router.get('/:id',  expenseController.getExpenseById);
-router.put('/:id',  upload.single('receipt'), expenseController.updateExpense);
-router.delete('/:id',  expenseController.deleteExpense);
-
+router.get('/', authenticateToken, expenseController.getAllExpenses);
+router.post('/', authenticateToken, upload.single('receipt'), expenseController.createExpense);
+router.get('/:id', authenticateToken, expenseController.getExpenseById);
+router.put('/:id', authenticateToken, upload.single('receipt'), expenseController.updateExpense);
+router.delete('/:id', authenticateToken, expenseController.deleteExpense);
 module.exports = router;

@@ -49,7 +49,7 @@ const categoryController = {
       console.error('Create category error:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
-
+    
 }
 ,updateCategory: async (req, res) => {
     try {

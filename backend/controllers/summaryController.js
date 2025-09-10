@@ -206,7 +206,7 @@ const summaryController = {
       if (summary.balance < 0) {
         res.status(200).json({
           alert: true,
-          message: `You've exceeded your budget for this month by $${Math.abs(summary.balance).toFixed(2)}`,
+          message: `You've exceeded your budget for this month by ${Math.abs(summary.balance)} Ar`,
           amountOver: Math.abs(summary.balance)
         });
       } else {
@@ -220,6 +220,7 @@ const summaryController = {
       res.status(500).json({ error: 'Internal server error' });
     }
   }
+
 };
 
 module.exports = summaryController;
