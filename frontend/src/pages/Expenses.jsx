@@ -232,7 +232,7 @@ const Expenses = () => {
               </thead>
               <tbody>
                 {expenses.map((expense) => (
-                  <tr key={expense.id} className="border-t hover:bg-gray-50">
+                  <tr key={expense.id} className="hover:bg-gray-50">
                     <td className="p-3">
                       {expense.type === 'one-time'
                         ? new Date(expense.date).toLocaleDateString()
