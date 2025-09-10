@@ -11,6 +11,10 @@ const Categories = () => {
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState('');
 
+  
+  const [showModal, setShowModal] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -75,19 +79,28 @@ const Categories = () => {
     }
   };
 
-  const handleDeleteCategory = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this category?')) {
-      return;
-    }
+  
+  const confirmDelete = (category) => {
+    setCategoryToDelete(category);
+    setShowModal(true);
+  };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setCategoryToDelete(null);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
-      await categoriesAPI.delete(id);
-      setCategories(prev => prev.filter(category => category.id !== id));
+      await categoriesAPI.delete(categoryToDelete.id);
+      setCategories(prev => prev.filter(category => category.id !== categoryToDelete.id));
       setSuccess('Category deleted successfully!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (error) {
       setError(error.response?.data?.error || 'Failed to delete category');
       console.error('Delete category error:', error);
+    } finally {
+      closeModal();
     }
   };
 
@@ -117,13 +130,13 @@ const Categories = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
+        
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900">Categories Management</h1>
           <p className="text-gray-600 mt-2">Organize your expenses with custom categories</p>
         </div>
 
-        {/* Alerts */}
+        
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center">
@@ -146,7 +159,7 @@ const Categories = () => {
           </div>
         )}
 
-        {/* Add Category Card */}
+       
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Add New Category</h2>
           <form onSubmit={handleCreateCategory} className="flex flex-col sm:flex-row gap-4 items-end">
@@ -184,7 +197,7 @@ const Categories = () => {
           </form>
         </div>
 
-        {/* Categories List */}
+        
         <div className="bg-white rounded-lg shadow-lg p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-semibold text-gray-900">Your Categories</h2>
@@ -256,7 +269,7 @@ const Categories = () => {
                               </svg>
                             </button>
                             <button
-                              onClick={() => handleDeleteCategory(category.id)}
+                              onClick={() => confirmDelete(category)}
                               className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors"
                               title="Delete category"
                             >
@@ -275,6 +288,33 @@ const Categories = () => {
           )}
         </div>
       </div>
+
+     
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.4)] backdrop-blur-sm">
+          <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Confirm Deletion</h2>
+            <p className="text-gray-700 mb-6">
+              Are you sure you want to delete the category{' '}
+              <span className="font-semibold text-red-600">{categoryToDelete?.name}</span>?
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
