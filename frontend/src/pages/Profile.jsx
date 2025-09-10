@@ -54,7 +54,6 @@ const Profile = () => {
 
   const handleExportData = async () => {
     try {
-      // Simuler l'export de données
       setSuccess('Data export started. You will receive an email shortly.');
     } catch (error) {
       setError('Failed to export data');
@@ -94,7 +93,7 @@ const Profile = () => {
           <p style={{ margin: '5px 0 0 0', color: '#666' }}>Manage your account settings</p>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button
+          {/* <button
             onClick={handleExportData}
             style={{
               padding: '8px 16px',
@@ -105,8 +104,8 @@ const Profile = () => {
               cursor: 'pointer'
             }}
           >
-            Export Data
-          </button>
+            Export Data 
+          </button> */}
         </div>
       </div>
 
