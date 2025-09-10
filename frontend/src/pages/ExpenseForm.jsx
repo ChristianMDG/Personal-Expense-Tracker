@@ -6,7 +6,7 @@ const ExpenseForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
-  
+
   const [formData, setFormData] = useState({
     amount: '',
     date: '',
@@ -17,7 +17,7 @@ const ExpenseForm = () => {
     endDate: '',
     receipt: null
   });
-  
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -45,7 +45,7 @@ const ExpenseForm = () => {
       setLoading(true);
       const response = await expensesAPI.getById(id);
       const expense = response.data;
-      
+
       setFormData({
         amount: expense.amount.toString(),
         date: expense.date?.split('T')[0] || '',
@@ -65,7 +65,7 @@ const ExpenseForm = () => {
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-    
+
     if (type === 'file' && files[0]) {
       setFormData(prev => ({ ...prev, [name]: files[0] }));
     } else {
@@ -214,38 +214,51 @@ const ExpenseForm = () => {
               </select>
             </div>
 
-            {/* Type */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Type *
               </label>
-              <div className="flex gap-4">
-                <label className="flex items-center">
+              <div className="flex gap-6">
+                <label className="cursor-pointer relative">
                   <input
                     type="radio"
                     name="type"
                     value="one-time"
-                    checked={formData.type === 'one-time'}
+                    checked={formData.type === "one-time"}
                     onChange={handleChange}
-                    className="mr-2"
+                    className="hidden peer"
                     disabled={loading}
                   />
-                  One-time
+                  <div className="flex items-center gap-2 px-5 py-3 rounded-xl border border-gray-200 bg-white shadow-sm 
+                      hover:shadow-lg hover:border-[var(--primary-color)]  transition-all duration-300
+                      peer-checked:bg-gradient-to-r peer-checked:from-[var(--primary-color)] peer-checked:to-[var(--secondary-color)] 
+                      peer-checked:text-white peer-checked:shadow-xl">
+                    <span className="text-lg">🛒</span>
+                    <span className="font-medium">One-time</span>
+                  </div>
                 </label>
-                <label className="flex items-center">
+
+                <label className="cursor-pointer relative">
                   <input
                     type="radio"
                     name="type"
                     value="recurring"
-                    checked={formData.type === 'recurring'}
+                    checked={formData.type === "recurring"}
                     onChange={handleChange}
-                    className="mr-2"
+                    className="hidden peer"
                     disabled={loading}
                   />
-                  Recurring
+                  <div className="flex items-center gap-2 px-5 py-3 rounded-xl border border-gray-200 bg-white shadow-sm 
+                      hover:shadow-lg hover:border-[var(--secondary-color)] transition-all duration-300
+                      peer-checked:bg-gradient-to-r peer-checked:from-[var(--secondary-color)] peer-checked:to-[var(--primary-color)]
+                      peer-checked:text-white peer-checked:shadow-xl">
+                    <span className="text-lg">🔄</span>
+                    <span className="font-medium">Recurring</span>
+                  </div>
                 </label>
               </div>
             </div>
+
 
             {/* Date Fields */}
             {formData.type === 'one-time' && (
@@ -336,7 +349,7 @@ const ExpenseForm = () => {
               >
                 {loading ? 'Saving...' : (isEdit ? 'Update Expense' : 'Create Expense')}
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => navigate('/expenses')}
