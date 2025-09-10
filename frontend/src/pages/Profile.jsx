@@ -150,7 +150,7 @@ const Profile = () => {
 
           {/* Account Information */}
           <div className="p-6 bg-white rounded-xl shadow-lg mb-5">
-            <h3 className="mt-0 mb-5 text-gray-800 font-semibold">Account Information</h3>
+            <h3 className="mt-0 mb-9 text-gray-800 font-semibold">Account Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <InfoField label="Email" value={user?.email} />
               <InfoField label="User ID" value={user?.id} />
@@ -163,53 +163,53 @@ const Profile = () => {
 
       {activeTab === 'security' && (
         <div className="p-6 bg-white rounded-xl shadow-lg">
-          <h2 className="mt-0 mb-5 text-gray-800 font-semibold">Security Settings</h2>
+          <h1 className="mt-0 mb-8 text-gray-800 font-semibold">Security Settings</h1>
           
           <form onSubmit={handlePasswordChange} className="mb-8">
-            {/* <h4 className="mb-4 font-semibold">Change Password</h4> */}
-            <div className="grid gap-4 max-w-md">
-              <div>
-                <label className="block mb-1 font-semibold text-gray-700">
-                  Current Password
-                </label>
-                <input
-                  type="password"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  disabled={updating}
-                />
-              </div>
-              <div>
-                <label className="block mb-1 font-semibold text-gray-700">
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  disabled={updating}
-                />
-              </div>
-              <div>
-                <label className="block mb-1 font-semibold text-gray-700">
-                  Confirm New Password
-                </label>
-                <input
-                  type="password"
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  disabled={updating}
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={updating}
-                className={`
-                  py-3 px-6 rounded-lg font-semibold text-white transition-colors duration-200
-                  ${updating ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#2c98a0] hover:bg-opacity-90'}
-                `}
-              >
-                {updating ? 'Updating...' : 'Update Password'}
-              </button>
-            </div>
-          </form>
+  <div className="grid gap-4 max-w-md mx-auto">
+    <div>
+      <label className="block mb-1 font-semibold text-gray-700">
+        Current Password
+      </label>
+      <input
+        type="password"
+        className="w-full p-2 border border-gray-300 rounded-md"
+        disabled={updating}
+      />
+    </div>
+    <div>
+      <label className="block mb-1 font-semibold text-gray-700">
+        New Password
+      </label>
+      <input
+        type="password"
+        className="w-full p-2 border border-gray-300 rounded-md"
+        disabled={updating}
+      />
+    </div>
+    <div>
+      <label className="block mb-1 font-semibold text-gray-700">
+        Confirm New Password
+      </label>
+      <input
+        type="password"
+        className="w-full p-2 border border-gray-300 rounded-md"
+        disabled={updating}
+      />
+    </div>
+    <div></div>
+    <button
+      type="submit"
+      disabled={updating}
+      className={`
+        py-3 px-6 rounded-lg font-semibold text-white transition-colors duration-200
+        ${updating ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#2c98a0] hover:bg-opacity-90'}
+      `}
+    >
+      {updating ? 'Updating...' : 'Update Password'}
+    </button>
+  </div>
+</form>
 
           <div className="p-5 bg-yellow-50 rounded-lg border border-yellow-200">
             <h4 className="mt-0 mb-2 font-semibold text-yellow-800">⚠️ Danger Zone</h4>
