@@ -210,4 +210,3 @@ const IncomeForm = () => {
 };
 
 export default IncomeForm;
-
