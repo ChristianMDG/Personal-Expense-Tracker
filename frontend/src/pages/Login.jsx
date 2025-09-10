@@ -176,16 +176,16 @@ const Login = () => {
               <button
                 onClick={() => handleDemoLogin('user')}
                 disabled={loading}
-                className="flex items-center justify-center px-4 py-2 border rounded-lg text-sm font-medium hover:opacity-90 transition-colors hover:bg-[var(--secondary-color)]"
-                style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}
+                className="flex items-center justify-center px-4 py-2 border rounded-lg text-sm font-medium hover:opacity-90 transition-colors hover:bg-[var(--primary-color)] border-[var(--secondary-color)]"
+                
               >
                 Demo User
               </button>
               <button
                 onClick={() => handleDemoLogin('premium')}
                 disabled={loading}
-                className="flex items-center justify-center px-4 py-2 border rounded-lg text-sm font-medium hover:opacity-90 transition-opacity hover:bg-[var(--secondary-color)]"
-                style={{ borderColor: 'var(--secondary-color)', color: 'var(--text-color)' }}
+                className="flex items-center justify-center px-4 py-2 border rounded-lg text-sm font-medium hover:opacity-90 transition-opacity hover:bg-[var(--primary-color)] border-[var(--secondary-color)]"
+                
               >
                 Demo Premium
               </button>
@@ -274,3 +274,4 @@ const Login = () => {
 };
 
 export default Login;
+
