@@ -16,5 +16,4 @@ router.put('/:id', authenticateToken, categoryController.updateCategory);
 
 router.delete('/:id', authenticateToken, categoryController.deleteCategory);
 //exporter le router pour l’utiliser dans un autre fichier, typiquement app.js,
-
 module.exports = router;
