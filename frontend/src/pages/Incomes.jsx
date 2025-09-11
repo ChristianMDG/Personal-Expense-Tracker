@@ -245,7 +245,7 @@ const Incomes = () => {
                       {new Date(income.date).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                      {new Date(income.createdAt).toLocaleDateString()}
+                      {new Date(income.createdAt).toLocaleString()}{" "}
                     </td>
 
                     <td className="px-6 py-4 whitespace-nowrap text-[var(--secondary-color)] font-semibold">
