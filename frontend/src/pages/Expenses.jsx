@@ -150,13 +150,13 @@ const Expenses = () => {
           </div>
 
           <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className="flex items-center">
-              <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
+            <div className="items-center">
+              <div className="p-2 ml-4 mb-3 w-10 bg-purple-100 rounded-lg text-purple-600">
                 🏷️
               </div>
               <div className="ml-3">
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold">{categories.length}</p>
                 <p className="text-sm text-gray-600">Categories</p>
-                <p className="text-xl font-bold">{categories.length}</p>
               </div>
             </div>
           </div>
