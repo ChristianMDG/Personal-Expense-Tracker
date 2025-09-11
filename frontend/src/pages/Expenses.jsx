@@ -1,23 +1,26 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { expensesAPI, categoriesAPI } from '../services';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { expensesAPI, categoriesAPI } from "../services";
 import { Plus, Edit2, Trash2, FileText } from "lucide-react";
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [filters, setFilters] = useState({
-    start: '',
-    end: '',
-    category: '',
-    type: ''
+    start: "",
+    end: "",
+    category: "",
+    type: "",
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   // 🔹 Nouveau state pour confirmation suppression
-  const [deleteConfirm, setDeleteConfirm] = useState({ show: false, expense: null });
+  const [deleteConfirm, setDeleteConfirm] = useState({
+    show: false,
+    expense: null,
+  });
 
   useEffect(() => {
     fetchData();
@@ -28,12 +31,12 @@ const Expenses = () => {
       setLoading(true);
       const [expensesRes, categoriesRes] = await Promise.all([
         expensesAPI.getAll(filters),
-        categoriesAPI.getAll()
+        categoriesAPI.getAll(),
       ]);
       setExpenses(expensesRes.data);
       setCategories(categoriesRes.data);
     } catch (error) {
-      setError('Failed to load data');
+      setError("Failed to load data");
     } finally {
       setLoading(false);
     }
@@ -55,18 +58,20 @@ const Expenses = () => {
 
     try {
       await expensesAPI.delete(deleteConfirm.expense.id);
-      setExpenses(expenses.filter(exp => exp.id !== deleteConfirm.expense.id));
-      setSuccess('Expense deleted successfully');
-      setTimeout(() => setSuccess(''), 3000);
+      setExpenses(
+        expenses.filter((exp) => exp.id !== deleteConfirm.expense.id)
+      );
+      setSuccess("Expense deleted successfully");
+      setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
-      setError('Failed to delete expense');
+      setError("Failed to delete expense");
     } finally {
       closeDeleteConfirm();
     }
   };
 
   const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
   const calculateTotal = () => {
@@ -74,9 +79,9 @@ const Expenses = () => {
   };
 
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(amount);
   };
 
@@ -94,7 +99,9 @@ const Expenses = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Expense Management</h1>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Expense Management
+            </h1>
             <p className="text-gray-600 mt-2">Track and manage your expenses</p>
           </div>
           <Link
@@ -125,7 +132,9 @@ const Expenses = () => {
               <div className="p-2 bg-red-100 rounded-lg text-red-600">💰</div>
               <div className="ml-3">
                 <p className="text-sm text-gray-600">Total Expenses</p>
-                <p className="text-xl font-bold">{formatCurrency(calculateTotal())}</p>
+                <p className="text-xl font-bold">
+                  {formatCurrency(calculateTotal())}
+                </p>
               </div>
             </div>
           </div>
@@ -142,7 +151,9 @@ const Expenses = () => {
 
           <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center">
-              <div className="p-2 bg-purple-100 rounded-lg text-purple-600">🏷️</div>
+              <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
+                🏷️
+              </div>
               <div className="ml-3">
                 <p className="text-sm text-gray-600">Categories</p>
                 <p className="text-xl font-bold">{categories.length}</p>
@@ -152,11 +163,13 @@ const Expenses = () => {
 
           <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg text-green-600">🔄</div>
+              <div className="p-2 bg-green-100 rounded-lg text-green-600">
+                🔄
+              </div>
               <div className="ml-3">
                 <p className="text-sm text-gray-600">Recurring</p>
                 <p className="text-xl font-bold">
-                  {expenses.filter(e => e.type === 'recurring').length}
+                  {expenses.filter((e) => e.type === "recurring").length}
                 </p>
               </div>
             </div>
@@ -169,11 +182,13 @@ const Expenses = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Start Date</label>
+              <label className="block text-sm font-medium mb-1">
+                Start Date
+              </label>
               <input
                 type="date"
                 value={filters.start}
-                onChange={(e) => handleFilterChange('start', e.target.value)}
+                onChange={(e) => handleFilterChange("start", e.target.value)}
                 className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
               />
             </div>
@@ -182,7 +197,7 @@ const Expenses = () => {
               <input
                 type="date"
                 value={filters.end}
-                onChange={(e) => handleFilterChange('end', e.target.value)}
+                onChange={(e) => handleFilterChange("end", e.target.value)}
                 className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
               />
             </div>
@@ -193,11 +208,11 @@ const Expenses = () => {
               <label className="block text-sm font-medium mb-1">Category</label>
               <select
                 value={filters.category}
-                onChange={(e) => handleFilterChange('category', e.target.value)}
+                onChange={(e) => handleFilterChange("category", e.target.value)}
                 className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
               >
                 <option value="">All Categories</option>
-                {categories.map(category => (
+                {categories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
                   </option>
@@ -208,7 +223,7 @@ const Expenses = () => {
               <label className="block text-sm font-medium mb-1">Type</label>
               <select
                 value={filters.type}
-                onChange={(e) => handleFilterChange('type', e.target.value)}
+                onChange={(e) => handleFilterChange("type", e.target.value)}
                 className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
               >
                 <option value="">All Types</option>
@@ -220,7 +235,9 @@ const Expenses = () => {
 
           <div className="flex justify-end">
             <button
-              onClick={() => setFilters({ start: '', end: '', category: '', type: '' })}
+              onClick={() =>
+                setFilters({ start: "", end: "", category: "", type: "" })
+              }
               className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
             >
               Clear Filters
@@ -234,21 +251,36 @@ const Expenses = () => {
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="p-3 text-left text-sm font-medium text-gray-500">Date</th>
-                  <th className="p-3 text-left text-sm font-medium text-gray-500">Amount</th>
-                  <th className="p-3 text-left text-sm font-medium text-gray-500">Category</th>
-                  <th className="p-3 text-left text-sm font-medium text-gray-500">Description</th>
-                  <th className="p-3 text-left text-sm font-medium text-gray-500">Type</th>
-                  <th className="p-3 text-left text-sm font-medium text-gray-500">Actions</th>
+                  <th className="p-3 text-left text-sm font-medium text-gray-500">
+                    Date
+                  </th>
+                  <th className="p-3 text-left text-sm font-medium text-gray-500">
+                    Amount
+                  </th>
+                  <th className="p-3 text-left text-sm font-medium text-gray-500">
+                    Category
+                  </th>
+                  <th className="p-3 text-left text-sm font-medium text-gray-500">
+                    Description
+                  </th>
+                  <th className="p-3 text-left text-sm font-medium text-gray-500">
+                    Type
+                  </th>
+                  <th className="p-3 text-left text-sm font-medium text-gray-500">
+                    Created At
+                  </th>
+                  <th className="p-3 text-left text-sm font-medium text-gray-500">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {expenses.map((expense) => (
                   <tr key={expense.id} className="hover:bg-gray-50">
                     <td className="p-3">
-                      {expense.type === 'one-time'
+                      {expense.type === "one-time"
                         ? new Date(expense.date).toLocaleDateString()
-                        : 'Recurring'}
+                        : "Recurring"}
                     </td>
                     <td className="p-3 font-semibold text-[var(--secondary-color)]">
                       {formatCurrency(expense.amount)}
@@ -259,15 +291,22 @@ const Expenses = () => {
                       </span>
                     </td>
                     <td className="p-3 text-gray-500 max-w-xs truncate">
-                      {expense.description || 'No description'}
+                      {expense.description || "No description"}
                     </td>
                     <td className="p-3">
-                      <span className={`px-2 py-1 rounded text-sm ${expense.type === 'recurring'
-                        ? 'bg-purple-100 text-purple-800'
-                        : 'bg-gray-100 text-gray-800'
-                        }`}>
+                      <span
+                        className={`px-2 py-1 rounded text-sm ${
+                          expense.type === "recurring"
+                            ? "bg-purple-100 text-purple-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
                         {expense.type}
                       </span>
+                    </td>
+                    <td className="p-3 text-gray-500">
+                      {new Date(expense.createdAt).toLocaleString()}{" "}
+                      
                     </td>
                     <td className="p-3">
                       <div className="flex space-x-3">
@@ -294,8 +333,12 @@ const Expenses = () => {
           {expenses.length === 0 && (
             <div className="text-center py-8">
               <FileText className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="text-lg font-medium text-gray-900">No expenses found</h3>
-              <p className="text-gray-500 mb-4">Get started by creating your first expense</p>
+              <h3 className="text-lg font-medium text-gray-900">
+                No expenses found
+              </h3>
+              <p className="text-gray-500 mb-4">
+                Get started by creating your first expense
+              </p>
             </div>
           )}
         </div>
@@ -320,10 +363,13 @@ const Expenses = () => {
             className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              Confirm Deletion
+            </h3>
             <p className="text-gray-600 mb-6">
               Are you sure you want to delete the expense "
-              {deleteConfirm.expense?.description || "Unnamed"}"? This action cannot be undone.
+              {deleteConfirm.expense?.description || "Unnamed"}"? This action
+              cannot be undone.
             </p>
             <div className="flex justify-end space-x-3">
               <button

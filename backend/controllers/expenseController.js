@@ -8,7 +8,6 @@ const expenseController = {
 
       let whereClause = { userId };
 
-
       if (start && end) {
         whereClause.OR = [
           {
@@ -56,6 +55,7 @@ const expenseController = {
         orderBy: { date: 'desc' }
       });
 
+      // Ajouter createdAt si nécessaire (déjà inclus par défaut si présent dans le modèle)
       res.status(200).json(expenses);
     } catch (error) {
       console.error('Get expenses error:', error);
@@ -90,34 +90,19 @@ const expenseController = {
 
   createExpense: async (req, res) => {
     try {
-      console.log('Request body:', req.body);
-      console.log('Request file:', req.file);
-      console.log('User:', req.user);
-
       const userId = req.user.id;
-      
       const { amount, date, categoryId, description, type, startDate, endDate } = req.body;
       const receipt = req.file ? req.file.filename : null;
 
-      console.log('Parsed data from form:', {
-        amount, date, categoryId, description, type, startDate, endDate, receipt
-      });
-
       if (!amount || !categoryId) {
-        console.log('Validation failed: Amount and category are required');
-        console.log('Received amount:', amount);
-        console.log('Received categoryId:', categoryId);
         return res.status(400).json({ error: 'Amount and category are required' });
       }
-        
 
       if (type === 'one-time' && !date) {
-        console.log('Validation failed: Date is required for one-time expenses');
         return res.status(400).json({ error: 'Date is required for one-time expenses' });
       }
 
       if (type === 'recurring' && !startDate) {
-        console.log('Validation failed: Start date is required for recurring expenses');
         return res.status(400).json({ error: 'Start date is required for recurring expenses' });
       }
 
@@ -126,7 +111,6 @@ const expenseController = {
       });
 
       if (!category) {
-        console.log('Validation failed: Invalid category');
         return res.status(400).json({ error: 'Invalid category' });
       }
 
@@ -136,9 +120,9 @@ const expenseController = {
         description: description || null,
         type: type || 'one-time',
         userId,
-        receipt
+        receipt,
+        createdAt: new Date() // <-- Ajout de createdAt
       };
-
 
       if (type === 'one-time') {
         expenseData.date = new Date(date);
@@ -150,18 +134,13 @@ const expenseController = {
         if (endDate) expenseData.endDate = new Date(endDate);
       }
 
-      console.log('Final expense data:', expenseData);
-
       const expense = await prisma.expense.create({
         data: expenseData,
         include: {
-          category: {
-            select: { id: true, name: true }
-          }
+          category: { select: { id: true, name: true } }
         }
       });
 
-      console.log('Expense created successfully:', expense);
       res.status(201).json(expense);
     } catch (error) {
       console.error('Create expense error:', error);
@@ -215,9 +194,7 @@ const expenseController = {
         where: { id },
         data: updateData,
         include: {
-          category: {
-            select: { id: true, name: true }
-          }
+          category: { select: { id: true, name: true } }
         }
       });
 
@@ -241,9 +218,7 @@ const expenseController = {
         return res.status(404).json({ error: 'Expense not found' });
       }
 
-      await prisma.expense.delete({
-        where: { id }
-      });
+      await prisma.expense.delete({ where: { id } });
 
       res.status(204).send();
     } catch (error) {
