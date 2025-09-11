@@ -1,5 +1,5 @@
 import api from './api';
-
+// Services pour les revenus
 export const incomesAPI = {
   getAll: (params) => api.get('/incomes', { params }),
   getById: (id) => api.get(`/incomes/${id}`),

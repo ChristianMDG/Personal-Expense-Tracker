@@ -3,12 +3,13 @@ const fs = require('fs');
 const prisma = require('../config/database');
 
 const receiptController = {
+  // Récupère le reçu (fichier) associé à une dépense spécifique pour l'utilisateur connecté
   getReceipt: async (req, res) => {
     try {
       const { id } = req.params;
       const userId = req.user.id;
 
-      // Find the expense and verify ownership
+      // Trouver la dépense associée à l'ID et à l'utilisateur connecté
       const expense = await prisma.expense.findFirst({
         where: { id, userId }
       });
@@ -19,12 +20,12 @@ const receiptController = {
 
       const filePath = path.join(__dirname, '../uploads', expense.receipt);
 
-      // Check if file exists
+      // Vérifie si le fichier existe
       if (!fs.existsSync(filePath)) {
         return res.status(404).json({ error: 'Receipt file not found' });
       }
 
-      // Determine content type based on file extension
+      // Détermine le type de contenu en fonction de l'extension du fichier
       const ext = path.extname(expense.receipt).toLowerCase();
       let contentType = 'application/octet-stream';
 
@@ -36,7 +37,7 @@ const receiptController = {
         contentType = 'image/png';
       }
 
-      // Set appropriate headers and send file
+     // Envoie le fichier en réponse
       res.setHeader('Content-Type', contentType);
       res.setHeader('Content-Disposition', `inline; filename="${expense.receipt}"`);
 

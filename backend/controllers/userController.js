@@ -1,10 +1,11 @@
 const prisma = require('../config/database');
 
 const userController = {
+  // Récupère le profil de l'utilisateur connecté
   getProfile: async (req, res) => {
     try {
       const userId = req.user.id;
-
+// Récupère les informations de l'utilisateur connecté
       const user = await prisma.user.findUnique({
         where: { id: userId },
         select: {

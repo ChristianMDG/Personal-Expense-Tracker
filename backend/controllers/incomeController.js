@@ -2,6 +2,7 @@
 const prisma = require('../config/database');
 
 const incomeController = {
+  // Récupère tous les revenus de l'utilisateur connecté avec des filtres optionnels
   getAllIncomes: async (req, res) => {
     try {
       const { start, end } = req.query;
@@ -9,7 +10,8 @@ const incomeController = {
 
       let whereClause = { userId };
 
-      // Date filter
+      
+      
       if (start && end) {
         whereClause.date = {
           gte: new Date(start),
@@ -29,6 +31,7 @@ const incomeController = {
     }
   },
 
+  // Récupère un revenu spécifique par son ID pour l'utilisateur connecté
   getIncomeById: async (req, res) => {
     try {
       const { id } = req.params;
@@ -49,6 +52,8 @@ const incomeController = {
     }
   },
 
+
+  // Crée un nouveau revenu pour l'utilisateur connecté
  createIncome: async (req, res) => {
   try {
     const userId = req.user.id;
@@ -84,6 +89,7 @@ const incomeController = {
   }
 },
 
+//uptate un revenu existant pour l'utilisateur connecté
   updateIncome: async (req, res) => {
     try {
       const { id } = req.params;
@@ -103,7 +109,7 @@ const incomeController = {
       if (date) updateData.date = new Date(date);
       if (source !== undefined) updateData.source = source;
       if (description !== undefined) updateData.description = description;
-
+      
       const updatedIncome = await prisma.income.update({
         where: { id },
         data: updateData
@@ -116,6 +122,7 @@ const incomeController = {
     }
   },
 
+  //supprimer une revenu existant pour l'utilisateur connecté
   deleteIncome: async (req, res) => {
     try {
       const { id } = req.params;

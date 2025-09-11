@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-
+// Contexte d'authentification
 const AuthContext = createContext();
-
+// Hook personnalisé pour utiliser le contexte d'authentification
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -11,6 +11,8 @@ export const useAuth = () => {
   return context;
 };
 
+
+// Fournisseur de contexte d'authentification
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -26,6 +28,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
+  // Vérifier l'authentification au chargement
   useEffect(() => {
     const checkAuth = async () => {
       if (token) {
@@ -42,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
     checkAuth();
   }, [token]);
-
+// Fonction de connexion
   const login = async (email, password) => {
     try {
       const response = await axios.post('/api/auth/login', { email, password });
@@ -58,7 +61,7 @@ export const AuthProvider = ({ children }) => {
       };
     }
   };
-
+// Fonction d'inscription
   const signup = async (email, password) => {
     try {
       const response = await axios.post('/api/auth/signup', { email, password });
@@ -74,12 +77,12 @@ export const AuthProvider = ({ children }) => {
       };
     }
   };
-
+// Fonction de déconnexion
   const logout = () => {
     setToken(null);
     setUser(null);
   };
-
+// Valeurs fournies par le contexte
   const value = {
     user,
     token,
@@ -88,8 +91,9 @@ export const AuthProvider = ({ children }) => {
     logout,
     loading
   };
-
+// Rendu du fournisseur de contexte
   return (
+    // Ne rendre les enfants que lorsque le chargement est terminé
     <AuthContext.Provider value={value}>
       {!loading && children}
     </AuthContext.Provider>
