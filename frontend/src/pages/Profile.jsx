@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { userAPI } from "../services/userAPI";
 import { useAuth } from "../contexts/AuthContext";
-import {
-  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
+
 import { CreditCard, DollarSign, PieChart as PieChartIcon, Calendar } from 'lucide-react';
 
 const Profile = () => {
@@ -76,7 +73,7 @@ const Profile = () => {
     if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
       return;
     }
-    if (!window.confirm('⚠️ This will permanently delete all your data. Please type "DELETE" to confirm.')) {
+    if (!window.confirm('This will permanently delete all your data. Please type "DELETE" to confirm.')) {
       return;
     }
     setError("Account deletion is not implemented yet.");
