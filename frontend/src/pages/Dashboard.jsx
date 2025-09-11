@@ -12,7 +12,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { summaryAPI } from "../services"; 
+import { summaryAPI } from "../services";
 import { use } from "react";
 
 const Dashboard = () => {
@@ -119,7 +119,7 @@ const Dashboard = () => {
             </Link>
             <Link
               to="/expenses/new"
-              className="bg-[var(--text-color)] text-white px-4 py-2 rounded-md hover:bg-gray-700"
+              className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-700"
             >
               + Add Expense
             </Link>
@@ -202,7 +202,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-      
         {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Expenses by Category */}
