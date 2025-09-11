@@ -127,7 +127,7 @@ const Expenses = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
             <div className="flex items-center">
               <div className="p-2 bg-red-100 rounded-lg text-red-600">💰</div>
               <div className="ml-3">
@@ -139,7 +139,7 @@ const Expenses = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
             <div className="flex items-center">
               <div className="p-2 bg-blue-100 rounded-lg text-blue-600">📊</div>
               <div className="ml-3">
@@ -149,7 +149,7 @@ const Expenses = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
             <div className="flex items-center">
               <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
                 🏷️
@@ -161,7 +161,7 @@ const Expenses = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
             <div className="flex items-center">
               <div className="p-2 bg-green-100 rounded-lg text-green-600">
                 🔄
