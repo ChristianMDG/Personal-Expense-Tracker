@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { expensesAPI, categoriesAPI } from "../services";
-import { Plus, Edit2, Trash2, FileText } from "lucide-react";
+import { Plus, Edit2, Trash2, FileText, DollarSign, BarChart3, Tag, Repeat } from "lucide-react";
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
@@ -16,7 +16,7 @@ const Expenses = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // 🔹 Nouveau state pour confirmation suppression
+  
   const [deleteConfirm, setDeleteConfirm] = useState({
     show: false,
     expense: null,
@@ -42,17 +42,16 @@ const Expenses = () => {
     }
   };
 
-  // 🔹 Ouvre la popup
+
   const openDeleteConfirm = (expense) => {
     setDeleteConfirm({ show: true, expense });
   };
 
-  // 🔹 Ferme la popup
+
   const closeDeleteConfirm = () => {
     setDeleteConfirm({ show: false, expense: null });
   };
 
-  // 🔹 Supprimer la dépense après confirmation
   const handleDelete = async () => {
     if (!deleteConfirm.expense) return;
 
@@ -78,17 +77,17 @@ const Expenses = () => {
     return expenses.reduce((total, expense) => total + expense.amount, 0);
   };
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat("fr-MG", {
       style: "currency",
-      currency: "USD",
+      currency: "MGA",
     }).format(amount);
-  };
+
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--primary-color)]"></div>
       </div>
     );
   }
@@ -97,7 +96,7 @@ const Expenses = () => {
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+        <div className="animate-fadeIn flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
               Expense Management
@@ -106,7 +105,7 @@ const Expenses = () => {
           </div>
           <Link
             to="/expenses/new"
-            className=" gap-3 mt-4 sm:mt-0 inline-flex items-center px-6 py-3 text-white rounded-md bg-[var(--primary-color)] hover:bg-[var(--secondary-color)]"
+            className="transition-all duration-300 gap-3 mt-4 sm:mt-0 inline-flex items-center px-6 py-3 text-white rounded-md bg-[var(--primary-color)] hover:bg-[var(--secondary-color)]"
           >
             <Plus className="w-4 h-4" />
             Add New Expense
@@ -115,28 +114,31 @@ const Expenses = () => {
 
         {/* Alerts */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-red-800">
+          <div className="animate-shake bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-red-800">
             {error}
           </div>
         )}
         {success && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 text-green-800">
+          <div className="animate-fadeIn bg-green-50 border border-green-200 rounded-lg p-4 mb-6 text-green-800">
             {success}
           </div>
         )}
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 animate-fadeIn">
+          <div 
+            className=" bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
                 rounded-2xl p-6 w-65 
-                transform transition duration-300 ease-in-out
-                hover:scale-100 hover:shadow-xl 
-                active:scale-100 cursor-pointer">
+                transform transition-all duration-300 ease-in-out
+                hover:scale-105 hover:shadow-xl 
+                active:scale-100 cursor-pointer"
+            style={{ animationDelay: "0s" }}
+          >
             <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center w-14 h-14 
+              <div className="transition-all duration-300 flex items-center justify-center w-14 h-14 
                     bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
-                    rounded-full text-white text-3xl shadow-md">
-                💰
+                    rounded-full text-white text-3xl shadow-md hover:scale-110">
+                <DollarSign className="w-6 h-6" />
               </div>
 
               <div>
@@ -148,16 +150,20 @@ const Expenses = () => {
             </div>
           </div>
 
-
-          <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+          <div 
+            className=" bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
                 rounded-2xl p-6 w-65 
-                transform transition duration-300 ease-in-out
-                hover:scale-100 hover:shadow-xl 
-                active:scale-100 cursor-pointer">
+                transform transition-all duration-300 ease-in-out
+                hover:scale-105 hover:shadow-xl 
+                active:scale-100 cursor-pointer"
+            style={{ animationDelay: "0.1s" }}
+          >
             <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-14 h-14 
+              <div className="transition-all duration-300 flex items-center justify-center w-14 h-14 
                     bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
-                    rounded-full text-white text-3xl shadow-md">📊</div>
+                    rounded-full text-white text-3xl shadow-md hover:scale-110">
+                <BarChart3 className="w-6 h-6" />
+              </div>
               <div className="ml-3">
                 <p className="text-xl text-[var(--secondary-color)] font-bold">{expenses.length}</p>
                 <p className="text-sm text-gray-600">Total Records</p>
@@ -165,16 +171,19 @@ const Expenses = () => {
             </div>
           </div>
 
-          <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+          <div 
+            className=" bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
                 rounded-2xl p-6 w-65 
-                transform transition duration-300 ease-in-out
-                hover:scale-100 hover:shadow-xl 
-                active:scale-100 cursor-pointer">
+                transform transition-all duration-300 ease-in-out
+                hover:scale-105 hover:shadow-xl 
+                active:scale-100 cursor-pointer"
+            style={{ animationDelay: "0.2s" }}
+          >
             <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-14 h-14 
+              <div className="transition-all duration-300 flex items-center justify-center w-14 h-14 
                     bg-gradient-to-tr from-[var(--secondary-color)] to-[var(--accent-color)] 
-                    rounded-full text-white text-3xl shadow-md">
-                🏷️
+                    rounded-full text-white text-3xl shadow-md hover:scale-110">
+                <Tag className="w-6 h-6" />
               </div>
               <div className="ml-3">
                 <p className="text-xl text-[var(--secondary-color)] font-bold">{categories.length}</p>
@@ -183,16 +192,19 @@ const Expenses = () => {
             </div>
           </div>
 
-          <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+          <div 
+            className=" bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
                 rounded-2xl p-6 w-65 
-                transform transition duration-300 ease-in-out
-                hover:scale-100 hover:shadow-xl 
-                active:scale-100 cursor-pointer">
+                transform transition-all duration-300 ease-in-out
+                hover:scale-105 hover:shadow-xl 
+                active:scale-100 cursor-pointer"
+            style={{ animationDelay: "0.3s" }}
+          >
             <div className="flex items-center gap-2">
-              <div className="flex items-center justify-center w-14 h-14 
+              <div className="transition-all duration-300 flex items-center justify-center w-14 h-14 
                     bg-gradient-to-tr from-[var(--secondary-color)] to-[var(--accent-color)] 
-                    rounded-full text-white text-3xl shadow-md">
-                🔄
+                    rounded-full text-white text-3xl shadow-md hover:scale-110">
+                <Repeat className="w-6 h-6" />
               </div>
               <div className="ml-3">
                 <p className="text-xl text-[var(--secondary-color)] font-bold">
@@ -205,7 +217,7 @@ const Expenses = () => {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow p-4 mb-6">
+        <div className="animate-fadeIn bg-white rounded-lg shadow p-4 mb-6">
           <h3 className="text-lg font-medium mb-3">Filters</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -217,7 +229,7 @@ const Expenses = () => {
                 type="date"
                 value={filters.start}
                 onChange={(e) => handleFilterChange("start", e.target.value)}
-                className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
+                className="transition-all duration-200 w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
               />
             </div>
             <div>
@@ -226,7 +238,7 @@ const Expenses = () => {
                 type="date"
                 value={filters.end}
                 onChange={(e) => handleFilterChange("end", e.target.value)}
-                className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
+                className="transition-all duration-200 w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
               />
             </div>
           </div>
@@ -237,7 +249,7 @@ const Expenses = () => {
               <select
                 value={filters.category}
                 onChange={(e) => handleFilterChange("category", e.target.value)}
-                className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
+                className="transition-all duration-200 w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
               >
                 <option value="">All Categories</option>
                 {categories.map((category) => (
@@ -252,7 +264,7 @@ const Expenses = () => {
               <select
                 value={filters.type}
                 onChange={(e) => handleFilterChange("type", e.target.value)}
-                className="w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-0 focus:border-gray-300"
+                className="transition-all duration-200 w-full h-12 px-3 border border-gray-300 rounded bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
               >
                 <option value="">All Types</option>
                 <option value="one-time">One-time</option>
@@ -266,7 +278,7 @@ const Expenses = () => {
               onClick={() =>
                 setFilters({ start: "", end: "", category: "", type: "" })
               }
-              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              className="transition-all duration-200 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
             >
               Clear Filters
             </button>
@@ -274,7 +286,7 @@ const Expenses = () => {
         </div>
 
         {/* Expenses Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="animate-fadeIn bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
@@ -303,8 +315,12 @@ const Expenses = () => {
                 </tr>
               </thead>
               <tbody>
-                {expenses.map((expense) => (
-                  <tr key={expense.id} className="hover:bg-gray-50">
+                {expenses.map((expense, index) => (
+                  <tr 
+                    key={expense.id} 
+                    className="transition-all duration-200 hover:bg-gray-50"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
                     <td className="p-3">
                       {expense.type === "one-time"
                         ? new Date(expense.date).toLocaleDateString()
@@ -314,7 +330,7 @@ const Expenses = () => {
                       {formatCurrency(expense.amount)}
                     </td>
                     <td className="p-3">
-                      <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">
+                      <span className="transition-all duration-200 bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm hover:bg-gray-200">
                         {expense.category.name}
                       </span>
                     </td>
@@ -323,9 +339,9 @@ const Expenses = () => {
                     </td>
                     <td className="p-3">
                       <span
-                        className={`px-2 py-1 rounded text-sm ${expense.type === "recurring"
-                          ? "bg-purple-100 text-purple-800"
-                          : "bg-gray-100 text-gray-800"
+                        className={`transition-all duration-200 px-2 py-1 rounded text-sm ${expense.type === "recurring"
+                          ? "bg-purple-100 text-purple-800 hover:bg-purple-200"
+                          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                           }`}
                       >
                         {expense.type}
@@ -333,19 +349,18 @@ const Expenses = () => {
                     </td>
                     <td className="p-3 text-gray-500">
                       {new Date(expense.createdAt).toLocaleString()}{" "}
-
                     </td>
                     <td className="p-3">
                       <div className="flex space-x-3">
                         <Link
                           to={`/expenses/${expense.id}/edit`}
-                          className="text-[var(--primary-color)] hover:text-blue-400"
+                          className="transition-all duration-200 text-[var(--primary-color)] hover:text-blue-400 hover:scale-110"
                         >
                           <Edit2 className="w-4 h-4" />
                         </Link>
                         <button
                           onClick={() => openDeleteConfirm(expense)}
-                          className="text-[var(--secondary-color)] hover:text-blue-400"
+                          className="transition-all duration-200 text-[var(--secondary-color)] hover:text-blue-400 hover:scale-110"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -358,7 +373,7 @@ const Expenses = () => {
           </div>
 
           {expenses.length === 0 && (
-            <div className="text-center py-8">
+            <div className="animate-fadeIn text-center py-8">
               <FileText className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="text-lg font-medium text-gray-900">
                 No expenses found
@@ -372,7 +387,7 @@ const Expenses = () => {
 
         {/* Pagination */}
         {expenses.length > 0 && (
-          <div className="mt-4 flex justify-between items-center">
+          <div className="animate-fadeIn mt-4 flex justify-between items-center">
             <p className="text-sm text-gray-700">
               Showing {expenses.length} results
             </p>
@@ -383,14 +398,14 @@ const Expenses = () => {
       {/* 🔹 Modale de confirmation suppression */}
       {deleteConfirm.show && (
         <div
-          className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50"
+          className="animate-fadeIn fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50"
           onClick={closeDeleteConfirm}
         >
           <div
-            className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
+            className="animate-scaleIn bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
+            <h3 className="text-lg font-medium text-gray-90 mb-4">
               Confirm Deletion
             </h3>
             <p className="text-gray-600 mb-6">
@@ -401,13 +416,13 @@ const Expenses = () => {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={closeDeleteConfirm}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)]"
+                className="transition-all duration-200 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="px-4 py-2 bg-[var(--secondary-color)] text-white rounded-md hover:bg-[var(--primary-color)] focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="transition-all duration-200 px-4 py-2 bg-[var(--secondary-color)] text-white rounded-md hover:bg-[var(--primary-color)] focus:outline-none focus:ring-2 focus:ring-red-500"
               >
                 Delete
               </button>
