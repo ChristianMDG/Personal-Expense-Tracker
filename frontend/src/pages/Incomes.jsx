@@ -155,15 +155,13 @@ const Incomes = () => {
                 active:scale-100 cursor-pointer">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-green-100 rounded-lg">
-                <FileText className="flex items-center justify-center w-5 h-5 
-                    bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
-                    rounded-full text-white text-3xl shadow-md" />
+                <FileText className="w-6 h-6 text-[var(--secondary-color)]" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">
                   Total Records
                 </p>
-                <p className="text-2xl font-bold text-[var(--primary-color)]">
+                <p className="text-2xl font-bold text-gray-900">
                   {incomes.length}
                 </p>
               </div>
@@ -171,7 +169,11 @@ const Incomes = () => {
           </div>
 
           {/* Average Monthly */}
-          <div className="transition-all duration-300 bg-white rounded-lg shadow p-6 hover:shadow-lg">
+          <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+                rounded-2xl p-6 w-75 
+                transform transition duration-300 ease-in-out
+                hover:scale-100 hover:shadow-xl 
+                active:scale-100 cursor-pointer">
             <div className="flex items-center">
               <div className="p-3 bg-purple-100 rounded-lg">
                 <FileText className="w-6 h-6 text-purple-600" />
