@@ -1,359 +1,3 @@
-// import { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-// import { incomesAPI } from "../services";
-// import {
-//   Plus,
-//   Edit,
-//   Trash2,
-//   CheckCircle2,
-//   XCircle,
-//   FileText,
-//   DollarSign,
-// } from "lucide-react";
-
-// const Incomes = () => {
-//   const [incomes, setIncomes] = useState([]);
-//   const [filters, setFilters] = useState({ start: "", end: "" });
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState("");
-//   const [success, setSuccess] = useState("");
-//   const [deleteConfirm, setDeleteConfirm] = useState({
-//     show: false,
-//     incomeId: null,
-//     incomeSource: "",
-//   });
-
-//   useEffect(() => {
-//     fetchIncomes();
-//   }, [filters]);
-
-//   const fetchIncomes = async () => {
-//     try {
-//       setLoading(true);
-//       const response = await incomesAPI.getAll(filters);
-//       setIncomes(response.data);
-//     } catch (err) {
-//       setError("Failed to fetch incomes");
-//       console.error("Incomes error:", err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const confirmDelete = (id, source) => {
-//     setDeleteConfirm({ show: true, incomeId: id, incomeSource: source });
-//   };
-
-//   const closeDeleteConfirm = () => {
-//     setDeleteConfirm({ show: false, incomeId: null, incomeSource: "" });
-//   };
-
-//   const handleDelete = async () => {
-//     try {
-//       await incomesAPI.delete(deleteConfirm.incomeId);
-//       setIncomes(
-//         incomes.filter((income) => income.id !== deleteConfirm.incomeId)
-//       );
-//       setSuccess("Income deleted successfully");
-//       setTimeout(() => setSuccess(""), 3000);
-//       closeDeleteConfirm();
-//     } catch (err) {
-//       setError(err.response?.data?.error || "Failed to delete income");
-//       closeDeleteConfirm();
-//     }
-//   };
-
-//   const handleFilterChange = (key, value) => {
-//     setFilters((prev) => ({ ...prev, [key]: value }));
-//   };
-
-//   const calculateTotal = () =>
-//     incomes.reduce((total, income) => total + income.amount, 0);
-
-//   const formatCurrency = (amount) =>
-//     new Intl.NumberFormat("fr-MG", {
-//       style: "currency",
-//       currency: "MGA",
-//     }).format(amount);
-
-//   if (loading) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center">
-//         <div className="rounded-full h-12 w-12 border-b-2 border-[var(--primary-color)] animate-spin" />
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-full bg-[var(--bg-color)] py-8 px-4 sm:px-6 lg:px-8">
-//       <div className="max-w-7xl mx-auto ">
-//         {/* Header */}
-//         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
-//           <div>
-//             <h1 className="text-3xl font-bold text-[var(--text-color)]">
-//               Income Management
-//             </h1>
-//             <p className="text-[var(--text-color)] mt-2">
-//               Track and manage your income sources
-//             </p>
-//           </div>
-//           <div>
-//             <Link
-//               to="/incomes/new"
-//               className="mt-4 sm:mt-0 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)] transition-colors"
-//             >
-//               <Plus className="w-5 h-5 mr-2" />
-//               Add New Income
-//             </Link>
-//           </div>
-//         </div>
-
-//         {error && (
-//           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-//             <div className="flex items-center">
-//               <XCircle className="w-5 h-5 text-red-600 mr-2" />
-//               <span className="text-red-800">{error}</span>
-//             </div>
-//           </div>
-//         )}
-//         {success && (
-//           <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
-//             <div className="flex items-center">
-//               <CheckCircle2 className="w-5 h-5 text-[var(--secondary-color)] mr-2" />
-//               <span className="text-green-800">{success}</span>
-//             </div>
-//           </div>
-//         )}
-
-//         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-//           <div className="bg-white rounded-lg shadow p-6">
-//             <div className="flex items-center">
-//               <div className="p-3 bg-blue-100 rounded-lg">
-//                 <DollarSign className="w-6 h-6 text-blue-600" />
-//               </div>
-//               <div className="ml-4">
-//                 <p className="text-sm font-medium text-gray-600">
-//                   Total Income
-//                 </p>
-//                 <p className="text-2xl font-bold text-gray-900">
-//                   {formatCurrency(calculateTotal())}
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className="bg-white rounded-lg shadow p-6">
-//             <div className="flex items-center">
-//               <div className="p-3 bg-green-100 rounded-lg">
-//                 <FileText className="w-6 h-6 text-[var(--secondary-color)]" />
-//               </div>
-//               <div className="ml-4">
-//                 <p className="text-sm font-medium text-gray-600">
-//                   Total Records
-//                 </p>
-//                 <p className="text-2xl font-bold text-gray-900">
-//                   {incomes.length}
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Average Monthly */}
-//           <div className="bg-white rounded-lg shadow p-6">
-//             <div className="flex items-center">
-//               <div className="p-3 bg-purple-100 rounded-lg">
-//                 <FileText className="w-6 h-6 text-purple-600" />
-//               </div>
-//               <div className="ml-4">
-//                 <p className="text-sm font-medium text-gray-600">
-//                   Average Monthly
-//                 </p>
-//                 <p className="text-2xl font-bold text-gray-900">
-//                   {formatCurrency(calculateTotal() / 12)}
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-
-//         <div className="bg-white rounded-lg shadow mb-8 p-6">
-//           <h3 className="text-lg font-medium text-gray-900 mb-4">Filters</h3>
-//           <div className="flex flex-col sm:flex-row gap-4">
-//             <div className="flex-1">
-//               <label className="block text-sm font-medium text-[var(--text-color)] mb-2">
-//                 Start Date
-//               </label>
-//               <input
-//                 type="date"
-//                 value={filters.start}
-//                 onChange={(e) => handleFilterChange("start", e.target.value)}
-//                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-//               />
-//             </div>
-//             <div className="flex-1">
-//               <label className="block text-sm font-medium text-[var(--text-color)] mb-2">
-//                 End Date
-//               </label>
-//               <input
-//                 type="date"
-//                 value={filters.end}
-//                 onChange={(e) => handleFilterChange("end", e.target.value)}
-//                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-//               />
-//             </div>
-//             <div className="flex items-end">
-//               <button
-//                 onClick={() => setFilters({ start: "", end: "" })}
-//                 className="px-4 py-2 border border-gray-300 rounded-md text-[var(--secondary-color)] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-//               >
-//                 Clear Filters
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-
-//         <div className="bg-white rounded-lg shadow overflow-hidden">
-//           <div className="overflow-x-auto">
-//             <table className="min-w-full divide-y divide-gray-200">
-//               <thead className="bg-gray-50">
-//                 <tr>
-//                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
-//                     Date
-//                   </th>
-//                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
-//                     Created At
-//                   </th>
-
-//                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
-//                     Amount
-//                   </th>
-//                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
-//                     Source
-//                   </th>
-//                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
-//                     Description
-//                   </th>
-//                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
-//                     Actions
-//                   </th>
-//                 </tr>
-//               </thead>
-//               <tbody className="bg-white divide-y divide-gray-200">
-//                 {incomes.map((income) => (
-//                   <tr key={income.id} className="hover:bg-gray-50">
-//                     <td className="px-6 py-4 whitespace-nowrap">
-//                       {new Date(income.date).toLocaleDateString()}
-//                     </td>
-//                     <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-//                       {new Date(income.createdAt).toLocaleString()}{" "}
-//                     </td>
-
-//                     <td className="px-6 py-4 whitespace-nowrap text-[var(--secondary-color)] font-semibold">
-//                       {formatCurrency(income.amount)}
-//                     </td>
-//                     <td className="px-6 py-4 whitespace-nowrap">
-//                       {income.source || "-"}
-//                     </td>
-//                     <td className="px-6 py-4 max-w-2xs truncate">
-//                       {income.description || "No description"}
-//                     </td>
-//                     <td className="px-6 py-4 whitespace-nowrap">
-//                       <div className="flex space-x-2">
-//                         <Link
-//                           to={`/incomes/${income.id}/edit`}
-//                           className="text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50 transition-colors"
-//                         >
-//                           <Edit className="w-4 h-4" />
-//                         </Link>
-//                         <button
-//                           onClick={() =>
-//                             confirmDelete(income.id, income.source)
-//                           }
-//                           className="text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50 transition-colors"
-//                         >
-//                           <Trash2 className="w-4 h-4" />
-//                         </button>
-//                       </div>
-//                     </td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-
-//           {incomes.length === 0 && (
-//             <div className="text-center py-12">
-//               <FileText className="mx-auto h-12 w-12 text-gray-400" />
-//               <h3 className="mt-2 text-sm font-medium text-gray-900">
-//                 No incomes found
-//               </h3>
-//               <p className="mt-1 text-sm text-[var(--text-color)]">
-//                 Get started by creating a new income record.
-//               </p>
-//               <div className="mt-6">
-//                 <Link
-//                   to="/incomes/new"
-//                   className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-//                 >
-//                   <Plus className="-ml-1 mr-2 h-5 w-5" />
-//                   Add Income
-//                 </Link>
-//               </div>
-//             </div>
-//           )}
-//         </div>
-
-//         {incomes.length > 0 && (
-//           <div className="mt-6 flex items-center justify-between">
-//             <p className="text-sm text-[var(--secondary-color)]">
-//               Showing <span className="font-medium">{incomes.length}</span>{" "}
-//               results
-//             </p>
-//           </div>
-//         )}
-
-//         {deleteConfirm.show && (
-//           <div
-//             className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50"
-//             onClick={closeDeleteConfirm}
-//           >
-//             <div
-//               className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
-//               onClick={(e) => e.stopPropagation()}
-//             >
-//               <h3 className="text-lg font-medium text-gray-900 mb-4">
-//                 Confirm Deletion
-//               </h3>
-//               <p className="text-gray-600 mb-6">
-//                 Are you sure you want to delete the income from "
-//                 {deleteConfirm.incomeSource || "unknown source"}"? This action
-//                 cannot be undone.
-//               </p>
-//               <div className="flex justify-end space-x-3">
-//                 <button
-//                   onClick={closeDeleteConfirm}
-//                   className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-//                 >
-//                   Cancel
-//                 </button>
-//                 <button
-//                   onClick={handleDelete}
-//                   className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-//                 >
-//                   Delete
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Incomes;
-
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { incomesAPI } from "../services";
@@ -366,7 +10,6 @@ import {
   FileText,
   DollarSign,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 const Incomes = () => {
   const [incomes, setIncomes] = useState([]);
@@ -433,67 +76,19 @@ const Incomes = () => {
       currency: "MGA",
     }).format(amount);
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { scale: 0.9, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: {
-        duration: 0.3
-      }
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <motion.div
-          initial={{ rotate: 0 }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="rounded-full h-12 w-12 border-b-2 border-[var(--primary-color)]"
-        />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--primary-color)]" />
       </div>
     );
   }
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-full bg-[var(--bg-color)] py-8 px-4 sm:px-6 lg:px-8"
-    >
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-full bg-[var(--bg-color)] py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto ">
         {/* Header */}
-        <motion.div 
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8"
-        >
+        <div className="animate-fadeIn flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-[var(--text-color)]">
               Income Management
@@ -502,65 +97,40 @@ const Incomes = () => {
               Track and manage your income sources
             </p>
           </div>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <div>
             <Link
               to="/incomes/new"
-              className="mt-4 sm:mt-0 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)] transition-colors"
+              className="transition-all duration-300 mt-4 sm:mt-0 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
             >
               <Plus className="w-5 h-5 mr-2" />
               Add New Income
             </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <AnimatePresence>
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4"
-            >
-              <div className="flex items-center">
-                <XCircle className="w-5 h-5 text-red-600 mr-2" />
-                <span className="text-red-800">{error}</span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {success && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4"
-            >
-              <div className="flex items-center">
-                <CheckCircle2 className="w-5 h-5 text-[var(--secondary-color)] mr-2" />
-                <span className="text-green-800">{success}</span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
-        >
-          <motion.div variants={itemVariants} className="bg-white rounded-lg shadow p-6">
+        {error && (
+          <div className="animate-shake mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center">
-              <motion.div 
-                whileHover={{ rotate: 10, scale: 1.1 }}
-                className="p-3 bg-blue-100 rounded-lg"
-              >
+              <XCircle className="w-5 h-5 text-red-600 mr-2" />
+              <span className="text-red-800">{error}</span>
+            </div>
+          </div>
+        )}
+        {success && (
+          <div className="animate-fadeIn mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-center">
+              <CheckCircle2 className="w-5 h-5 text-[var(--secondary-color)] mr-2" />
+              <span className="text-green-800">{success}</span>
+            </div>
+          </div>
+        )}
+
+        <div className="animate-slideUp grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="transition-all duration-300 bg-white rounded-lg shadow p-6 hover:shadow-lg">
+            <div className="flex items-center">
+              <div className="p-3 bg-blue-100 rounded-lg">
                 <DollarSign className="w-6 h-6 text-blue-600" />
-              </motion.div>
+              </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">
                   Total Income
@@ -570,16 +140,13 @@ const Incomes = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div variants={itemVariants} className="bg-white rounded-lg shadow p-6">
+          <div className="transition-all duration-300 bg-white rounded-lg shadow p-6 hover:shadow-lg">
             <div className="flex items-center">
-              <motion.div 
-                whileHover={{ rotate: 10, scale: 1.1 }}
-                className="p-3 bg-green-100 rounded-lg"
-              >
+              <div className="p-3 bg-green-100 rounded-lg">
                 <FileText className="w-6 h-6 text-[var(--secondary-color)]" />
-              </motion.div>
+              </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">
                   Total Records
@@ -589,17 +156,14 @@ const Incomes = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Average Monthly */}
-          <motion.div variants={itemVariants} className="bg-white rounded-lg shadow p-6">
+          <div className="transition-all duration-300 bg-white rounded-lg shadow p-6 hover:shadow-lg">
             <div className="flex items-center">
-              <motion.div 
-                whileHover={{ rotate: 10, scale: 1.1 }}
-                className="p-3 bg-purple-100 rounded-lg"
-              >
+              <div className="p-3 bg-purple-100 rounded-lg">
                 <FileText className="w-6 h-6 text-purple-600" />
-              </motion.div>
+              </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">
                   Average Monthly
@@ -609,15 +173,10 @@ const Incomes = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-white rounded-lg shadow mb-8 p-6"
-        >
+        <div className="animate-fadeIn bg-white rounded-lg shadow mb-8 p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">Filters</h3>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
@@ -628,7 +187,7 @@ const Incomes = () => {
                 type="date"
                 value={filters.start}
                 onChange={(e) => handleFilterChange("start", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="transition-all duration-200 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div className="flex-1">
@@ -639,28 +198,21 @@ const Incomes = () => {
                 type="date"
                 value={filters.end}
                 onChange={(e) => handleFilterChange("end", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="transition-all duration-200 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div className="flex items-end">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={() => setFilters({ start: "", end: "" })}
-                className="px-4 py-2 border border-gray-300 rounded-md text-[var(--secondary-color)] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="transition-all duration-200 px-4 py-2 border border-gray-300 rounded-md text-[var(--secondary-color)] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 Clear Filters
-              </motion.button>
+              </button>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="bg-white rounded-lg shadow overflow-hidden"
-        >
+        <div className="animate-fadeIn bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -671,6 +223,7 @@ const Incomes = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
                     Created At
                   </th>
+
                   <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
                     Amount
                   </th>
@@ -686,76 +239,55 @@ const Incomes = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                <AnimatePresence>
-                  {incomes.map((income, index) => (
-                    <motion.tr
-                      key={income.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="hover:bg-gray-50"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {new Date(income.date).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                        {new Date(income.createdAt).toLocaleString()}{" "}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-[var(--secondary-color)] font-semibold">
-                        {formatCurrency(income.amount)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {income.source || "-"}
-                      </td>
-                      <td className="px-6 py-4 max-w-2xs truncate">
-                        {income.description || "No description"}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex space-x-2">
-                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                            <Link
-                              to={`/incomes/${income.id}/edit`}
-                              className="text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50 transition-colors"
-                            >
-                              <Edit className="w-4 h-4" />
-                            </Link>
-                          </motion.div>
-                          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                            <button
-                              onClick={() =>
-                                confirmDelete(income.id, income.source)
-                              }
-                              className="text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50 transition-colors"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </motion.div>
-                        </div>
-                      </td>
-                    </motion.tr>
-                  ))}
-                </AnimatePresence>
+                {incomes.map((income, index) => (
+                  <tr 
+                    key={income.id} 
+                    className="transition-all duration-200 hover:bg-gray-50"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {new Date(income.date).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                      {new Date(income.createdAt).toLocaleString()}{" "}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-[var(--secondary-color)] font-semibold">
+                      {formatCurrency(income.amount)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {income.source || "-"}
+                    </td>
+                    <td className="px-6 py-4 max-w-2xs truncate">
+                      {income.description || "No description"}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex space-x-2">
+                        <Link
+                          to={`/incomes/${income.id}/edit`}
+                          className="transition-all duration-200 text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Link>
+                        <button
+                          onClick={() =>
+                            confirmDelete(income.id, income.source)
+                          }
+                          className="transition-all duration-200 text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
 
           {incomes.length === 0 && (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="text-center py-12"
-            >
-              <motion.div
-                animate={{ 
-                  rotate: [0, 5, -5, 0],
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
-              >
-                <FileText className="mx-auto h-12 w-12 text-gray-400" />
-              </motion.div>
+            <div className="animate-fadeIn text-center py-12">
+              <FileText className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-medium text-gray-900">
                 No incomes found
               </h3>
@@ -763,83 +295,63 @@ const Incomes = () => {
                 Get started by creating a new income record.
               </p>
               <div className="mt-6">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to="/incomes/new"
-                    className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                  >
-                    <Plus className="-ml-1 mr-2 h-5 w-5" />
-                    Add Income
-                  </Link>
-                </motion.div>
+                <Link
+                  to="/incomes/new"
+                  className="transition-all duration-300 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                >
+                  <Plus className="-ml-1 mr-2 h-5 w-5" />
+                  Add Income
+                </Link>
               </div>
-            </motion.div>
+            </div>
           )}
-        </motion.div>
+        </div>
 
         {incomes.length > 0 && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-6 flex items-center justify-between"
-          >
+          <div className="animate-fadeIn mt-6 flex items-center justify-between">
             <p className="text-sm text-[var(--secondary-color)]">
               Showing <span className="font-medium">{incomes.length}</span>{" "}
               results
             </p>
-          </motion.div>
+          </div>
         )}
 
-        <AnimatePresence>
-          {deleteConfirm.show && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50"
-              onClick={closeDeleteConfirm}
+        {deleteConfirm.show && (
+          <div
+            className="animate-fadeIn fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50"
+            onClick={closeDeleteConfirm}
+          >
+            <div
+              className="animate-scaleIn bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
+              onClick={(e) => e.stopPropagation()}
             >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ type: "spring", damping: 20, stiffness: 300 }}
-                className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  Confirm Deletion
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Are you sure you want to delete the income from "
-                  {deleteConfirm.incomeSource || "unknown source"}"? This action
-                  cannot be undone.
-                </p>
-                <div className="flex justify-end space-x-3">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={closeDeleteConfirm}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    Cancel
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleDelete}
-                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    Delete
-                  </motion.button>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Confirm Deletion
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to delete the income from "
+                {deleteConfirm.incomeSource || "unknown source"}"? This action
+                cannot be undone.
+              </p>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={closeDeleteConfirm}
+                  className="transition-all duration-200 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="transition-all duration-200 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
