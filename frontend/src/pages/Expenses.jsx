@@ -154,7 +154,7 @@ const Expenses = () => {
                 transform transition duration-300 ease-in-out
                 hover:scale-100 hover:shadow-xl 
                 active:scale-100 cursor-pointer">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <div className="flex items-center justify-center w-14 h-14 
                     bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
                     rounded-full text-white text-3xl shadow-md">📊</div>
@@ -165,14 +165,20 @@ const Expenses = () => {
             </div>
           </div>
 
-          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className="flex items-center gap-1">
-              <div className="p-2 ml-3 w-10 bg-purple-100 rounded-lg text-purple-600">
+          <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+                rounded-2xl p-6 w-65 
+                transform transition duration-300 ease-in-out
+                hover:scale-100 hover:shadow-xl 
+                active:scale-100 cursor-pointer">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center w-14 h-14 
+                    bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
+                    rounded-full text-white text-3xl shadow-md">
                 🏷️
               </div>
               <div className="ml-3">
-                <p className="text-2xl text-[var(--secondary-color)] font-semibold">{categories.length}</p>
-                <p className="text-sm text-gray-600">Categories</p>
+                <p className="text-xl text-[var(--secondary-color)] font-bold">{categories.length}</p>
+                <p className="text-sm text-gray-500">Categories</p>
               </div>
             </div>
           </div>
