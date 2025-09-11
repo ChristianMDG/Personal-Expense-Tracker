@@ -1,5 +1,56 @@
 import { useState, useEffect } from "react";
-import { categoriesAPI } from "../services";
+import {
+  Utensils,
+  Car,
+  Gamepad2,
+  Zap,
+  Home,
+  HeartPulse,
+  FolderOpen,
+  Pencil,
+  Trash2,
+  Plus,
+  CircleCheck,
+  XCircle,
+  Loader2,
+  Tags,
+} from "lucide-react";
+
+// Mock API for categories
+const categoriesAPI = {
+  getAll: async () => {
+    // Simulates an API call with a delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return {
+      data: [
+        { id: 1, name: "Food" },
+        { id: 2, name: "Transportation" },
+        { id: 3, name: "Entertainment" },
+        { id: 4, name: "Shopping" },
+        { id: 5, name: "Utilities" },
+        { id: 6, name: "Rent" },
+        { id: 7, name: "Healthcare" },
+        { id: 8, name: "Other" },
+      ],
+    };
+  },
+  create: async (newCategory) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return {
+      data: { ...newCategory, id: Math.floor(Math.random() * 1000) },
+    };
+  },
+  update: async (id, updatedCategory) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return {
+      data: { ...updatedCategory, id },
+    };
+  },
+  delete: async () => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return { data: {} };
+  },
+};
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -10,9 +61,38 @@ const Categories = () => {
   const [success, setSuccess] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
-
   const [showModal, setShowModal] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
+
+  const colorPalette = [
+    "red-500",
+    "green-500",
+    "blue-500",
+    "purple-500",
+    "pink-500",
+    "yellow-500",
+    "indigo-500",
+  ];
+
+  const getCategoryColorClass = (categoryName) => {
+    const index = categories.findIndex(cat => cat.name === categoryName);
+    return colorPalette[index % colorPalette.length];
+  };
+  
+  const getCategoryColor = (categoryName) => {
+    const index = categories.findIndex(cat => cat.name === categoryName);
+    const color = colorPalette[index % colorPalette.length];
+    switch (color) {
+      case "red-500": return "#ef4444";
+      case "green-500": return "#22c55e";
+      case "blue-500": return "#3b82f6";
+      case "purple-500": return "#a855f7";
+      case "pink-500": return "#ec4899";
+      case "yellow-500": return "#eab308";
+      case "indigo-500": return "#6366f1";
+      default: return "#000000";
+    }
+  };
 
   useEffect(() => {
     fetchCategories();
@@ -120,9 +200,16 @@ const Categories = () => {
     setEditName("");
   };
 
+  const handleCardClick = (categoryName) => {
+    // Only update the input if we are not currently editing
+    if (editingId === null) {
+      setNewCategoryName(categoryName);
+    }
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
@@ -141,12 +228,35 @@ const Categories = () => {
     return defaultCategories.includes(categoryName);
   };
 
+  const getCategoryIcon = (categoryName, colorClass) => {
+    const color = colorClass.replace("-500", "-600");
+    const className = `w-8 h-8 text-${color}`;
+    switch (categoryName) {
+      case "Food":
+        return <Utensils className={className} />;
+      case "Transportation":
+        return <Car className={className} />;
+      case "Entertainment":
+        return <Gamepad2 className={className} />;
+      case "Utilities":
+        return <Zap className={className} />;
+      case "Rent":
+        return <Home className={className} />;
+      case "Healthcare":
+        return <HeartPulse className={className} />;
+      case "Other":
+        return <FolderOpen className={className} />;
+      default:
+        return <Tags className={className} />;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8 text-center">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            Categories Management
+            Expense Categories
           </h1>
           <p className="text-gray-600 mt-2">
             Organize your expenses with custom categories
@@ -156,17 +266,7 @@ const Categories = () => {
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center">
-              <svg
-                className="w-5 h-5 text-red-600 mr-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <XCircle className="w-5 h-5 text-red-600 mr-2" />
               <span className="text-red-800">{error}</span>
             </div>
           </div>
@@ -175,78 +275,43 @@ const Categories = () => {
         {success && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
             <div className="flex items-center">
-              <svg
-                className="w-5 h-5 text-green-600 mr-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <CircleCheck className="w-5 h-5 text-green-600 mr-2" />
               <span className="text-green-800">{success}</span>
             </div>
           </div>
         )}
 
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-8 flex flex-col sm:flex-row items-center justify-between">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4 sm:mb-0">
             Add New Category
           </h2>
           <form
             onSubmit={handleCreateCategory}
-            className="flex flex-col sm:flex-row gap-4 items-end"
+            className="flex flex-col sm:flex-row gap-2 items-center w-full sm:w-auto"
           >
-            <div className="flex-1">
-              <label
-                htmlFor="categoryName"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Category Name
-              </label>
-              <input
-                id="categoryName"
-                type="text"
-                value={newCategoryName}
-                onChange={(e) => setNewCategoryName(e.target.value)}
-                placeholder="Enter category name"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                disabled={creating}
-              />
-            </div>
+            <input
+              id="categoryName"
+              type="text"
+              value={newCategoryName}
+              onChange={(e) => setNewCategoryName(e.target.value)}
+              placeholder="Category name"
+              className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              disabled={creating}
+            />
             <button
               type="submit"
               disabled={creating || !newCategoryName.trim()}
-              className="w-full sm:w-auto px-6 py-3 bg-[var(--primary-color)] text-white font-medium rounded-lg hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full sm:w-auto px-4 py-2 bg-[var(--primary-color)] text-white font-medium rounded-lg hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {creating ? (
                 <div className="flex items-center justify-center">
-                  <svg
-                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Adding...
+                  <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" />
+                  Creating...
                 </div>
               ) : (
-                "Add Category"
+                <>
+                  <Plus className="inline-block h-4 w-4 mr-2" /> Add
+                </>
               )}
             </button>
           </form>
@@ -262,136 +327,112 @@ const Categories = () => {
               {categories.length === 1 ? "category" : "categories"}
             </span>
           </div>
+          <hr className="my-4" />
 
           {categories.length === 0 ? (
             <div className="text-center py-12">
-              <svg
-                className="mx-auto h-16 w-16 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                />
-              </svg>
+              <Tags className="mx-auto h-16 w-16 text-gray-400" />
               <h3 className="mt-4 text-lg font-medium text-gray-900">
                 No categories yet
               </h3>
               <p className="mt-2 text-gray-500">
-                Get started by adding your first category above.
+                Start by adding your first category above.
               </p>
             </div>
           ) : (
-            <div className="grid gap-3">
-              {categories.map((category) => (
-                <div
-                  key={category.id}
-                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  {editingId === category.id ? (
-                    <div className="flex items-center space-x-3 flex-1">
-                      <input
-                        type="text"
-                        value={editName}
-                        onChange={(e) => setEditName(e.target.value)}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
-                        autoFocus
-                      />
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() =>
-                            handleUpdateCategory(category.id, editName)
-                          }
-                          className="px-3 py-1 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 transition-colors"
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={cancelEditing}
-                          className="px-3 py-1 bg-gray-500 text-white text-sm rounded-md hover:bg-gray-600 transition-colors"
-                        >
-                          Cancel
-                        </button>
-                      </div>
+            <div className="flex flex-wrap justify-center gap-4">
+              {categories.map((category) => {
+                const colorClass = getCategoryColorClass(category.name);
+                const colorHex = getCategoryColor(category.name);
+                return (
+                  <div
+                    key={category.id}
+                    onClick={() => handleCardClick(category.name)}
+                    className={`w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.67rem)] relative flex flex-col items-center justify-center p-6 border-l-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow cursor-pointer`}
+                    style={{ borderLeftColor: colorHex }}
+                  >
+                    <div className={`p-3 rounded-full mb-4 bg-white border`} style={{ borderColor: colorHex }}>
+                      {getCategoryIcon(category.name, colorClass)}
                     </div>
-                  ) : (
-                    <>
-                      <div className="flex items-center space-x-3 flex-1">
-                        <div className="w-3 h-3 rounded-full bg-[var(--secondary-color)]"></div>
-                        <span className="text-gray-900 font-medium">
-                          {category.name}
-                        </span>
-                        {isDefaultCategory(category.name) && (
-                          <span className="px-2 py-1 bg-blue-100 text-[var(--primary-color)] text-xs font-medium rounded-full">
-                            Default
+                    <div className="text-center">
+                      {editingId === category.id ? (
+                        <div className="flex flex-col items-center gap-2">
+                          <input
+                            type="text"
+                            value={editName}
+                            onChange={(e) => setEditName(e.target.value)}
+                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-[var(--secondary-color)] focus:border-transparent"
+                            autoFocus
+                          />
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() =>
+                                handleUpdateCategory(category.id, editName)
+                              }
+                              className="p-2 text-green-600 hover:text-green-800 rounded-md transition-colors"
+                              title="Save"
+                            >
+                              <CircleCheck className="w-5 h-5" />
+                            </button>
+                            <button
+                              onClick={cancelEditing}
+                              className="p-2 text-gray-500 hover:text-gray-700 rounded-md transition-colors"
+                              title="Cancel"
+                            >
+                              <XCircle className="w-5 h-5" />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <span className="text-lg font-semibold text-gray-900">
+                            {category.name}
                           </span>
-                        )}
-                      </div>
-                      <div className="flex space-x-2">
-                        {!isDefaultCategory(category.name) && (
-                          <>
-                            <button
-                              onClick={() => startEditing(category)}
-                              className="p-2 text-[var(--primary-color)] hover:text-[var(--secondary-color)] hover:bg-blue-50 rounded-md transition-colors"
-                              title="Edit category"
-                            >
-                              <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                          {isDefaultCategory(category.name) && (
+                            <span className="ml-2 px-2 py-1 bg-blue-100 text-[var(--primary-color)] text-xs font-medium rounded-full">
+                              Default
+                            </span>
+                          )}
+                          {!isDefaultCategory(category.name) && (
+                            <div className="absolute top-2 right-2 flex space-x-1">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  startEditing(category);
+                                }}
+                                className="p-1 text-[var(--primary-color)] hover:text-[var(--secondary-color)] hover:bg-blue-50 rounded-md transition-colors"
+                                title="Edit category"
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                              </svg>
-                            </button>
-                            <button
-                              onClick={() => confirmDelete(category)}
-                              className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors"
-                              title="Delete category"
-                            >
-                              <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  confirmDelete(category);
+                                }}
+                                className="p-1 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors"
+                                title="Delete category"
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M6 18L18 6M6 6l12 12"
-                                />
-                              </svg>
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </>
-                  )}
-                </div>
-              ))}
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
 
         {showModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center">
-            {/* Backdrop flouté */}
             <div className="absolute inset-0 backdrop-blur-sm bg-black/30"></div>
-
-            {/* Modal */}
             <div className="relative bg-white rounded-lg shadow-lg max-w-sm w-full p-6 z-10">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Confirm Delete
+                Confirm Deletion
               </h3>
               <p className="mb-6">
                 Are you sure you want to delete the category{" "}
