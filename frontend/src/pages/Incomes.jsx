@@ -276,10 +276,10 @@ const Incomes = () => {
                       {income.description || "No description"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-4 items-center">
                         <Link
                           to={`/incomes/${income.id}/edit`}
-                          className="transition-all duration-200 text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50"
+                          className="text-[var(--primary-color)] hover:text-blue-400"
                         >
                           <Edit className="w-4 h-4" />
                         </Link>
@@ -287,7 +287,7 @@ const Incomes = () => {
                           onClick={() =>
                             confirmDelete(income.id, income.source)
                           }
-                          className="transition-all duration-200 text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50"
+                          className="text-[var(--primary-color)] hover:text-blue-400"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>

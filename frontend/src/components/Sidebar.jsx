@@ -79,7 +79,7 @@ const Sidebar = () => {
       opacity: 1,
       transition: {
         delay: 1,
-        duration:2,
+        duration: 2,
       },
     },
   };
@@ -184,7 +184,6 @@ const Sidebar = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-50">
-      {/* Mobile Header (visible seulement sur mobile) */}
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -213,14 +212,12 @@ const Sidebar = () => {
         </div>
       </motion.header>
 
-      {/* Sidebar */}
       <motion.aside
         variants={sidebarVariants}
         initial="hidden"
         animate="visible"
         className="bg-[var(--primary-color)] text-black md:w-64 md:min-h-screen w-full md:sticky md:top-0 md:h-screen"
       >
-        {/* Logo Section */}
         <motion.div
           variants={logoVariants}
           className="p-6 border-b border-[var(--secondary-color)]"
@@ -254,7 +251,6 @@ const Sidebar = () => {
           </div>
         </motion.div>
 
-        {/* Navigation Menu */}
         <nav className="p-4 space-y-1">
           <AnimatePresence>
             {menuItems.map((item, i) => (
@@ -265,23 +261,21 @@ const Sidebar = () => {
                 animate="visible"
                 custom={i}
                 whileHover={{ x: 5 }}
-               
+
               >
                 <Link
                   to={item.path}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
-                    isActive(item.path)
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group ${isActive(item.path)
                       ? "bg-white bg-opacity-20 text-black shadow-lg transform scale-105"
                       : "text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-black"
-                  }`}
+                    }`}
                 >
                   <motion.span
                     whileHover={{ rotate: 5 }}
-                    className={`transition-colors duration-200 ${
-                      isActive(item.path)
+                    className={`transition-colors duration-200 ${isActive(item.path)
                         ? "text-black"
                         : "text-blue-200 group-hover:text-black"
-                    }`}
+                      }`}
                   >
                     {item.icon}
                   </motion.span>
@@ -299,7 +293,6 @@ const Sidebar = () => {
           </AnimatePresence>
         </nav>
 
-        {/* User Section & Logout */}
         <motion.div
           variants={userSectionVariants}
           initial="hidden"
@@ -354,7 +347,6 @@ const Sidebar = () => {
         </motion.div>
       </motion.aside>
 
-      {/* Main Content */}
       <motion.main
         variants={contentVariants}
         initial="hidden"
