@@ -127,50 +127,50 @@ const Expenses = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center">
-              <div className="p-2 bg-red-100 rounded-lg text-red-600">💰</div>
+          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
+            <div className="items-center">
+              <div className="p-2 ml-4 mb-3 w-10 bg-red-100 rounded-lg text-red-600">💰</div>
               <div className="ml-3">
-                <p className="text-sm text-gray-600">Total Expenses</p>
-                <p className="text-xl font-bold">
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">
                   {formatCurrency(calculateTotal())}
                 </p>
+                <p className="text-sm text-gray-600">Total Expenses</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg text-blue-600">📊</div>
+          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
+            <div className="items-center">
+              <div className="p-2 ml-4 mb-3 w-10 bg-blue-100 rounded-lg text-blue-600">📊</div>
               <div className="ml-3">
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">{expenses.length}</p>
                 <p className="text-sm text-gray-600">Total Records</p>
-                <p className="text-xl font-bold">{expenses.length}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center">
-              <div className="p-2 bg-purple-100 rounded-lg text-purple-600">
+          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
+            <div className="items-center">
+              <div className="p-2 ml-3 mb-3 w-10 bg-purple-100 rounded-lg text-purple-600">
                 🏷️
               </div>
               <div className="ml-3">
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">{categories.length}</p>
                 <p className="text-sm text-gray-600">Categories</p>
-                <p className="text-xl font-bold">{categories.length}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg text-green-600">
+          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
+            <div className="items-center">
+              <div className="p-2 ml-3 mb-3 w-10 bg-green-100 rounded-lg text-green-600">
                 🔄
               </div>
               <div className="ml-3">
-                <p className="text-sm text-gray-600">Recurring</p>
-                <p className="text-xl font-bold">
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">
                   {expenses.filter((e) => e.type === "recurring").length}
                 </p>
+                <p className="text-sm text-gray-600">Recurring</p>
               </div>
             </div>
           </div>
@@ -295,18 +295,17 @@ const Expenses = () => {
                     </td>
                     <td className="p-3">
                       <span
-                        className={`px-2 py-1 rounded text-sm ${
-                          expense.type === "recurring"
+                        className={`px-2 py-1 rounded text-sm ${expense.type === "recurring"
                             ? "bg-purple-100 text-purple-800"
                             : "bg-gray-100 text-gray-800"
-                        }`}
+                          }`}
                       >
                         {expense.type}
                       </span>
                     </td>
                     <td className="p-3 text-gray-500">
                       {new Date(expense.createdAt).toLocaleString()}{" "}
-                      
+
                     </td>
                     <td className="p-3">
                       <div className="flex space-x-3">
