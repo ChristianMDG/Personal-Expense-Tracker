@@ -224,3 +224,25 @@
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s infinite;
+}
+
+.group:hover .group-hover\:animate-bounce {
+  animation: bounce 0.5s;
+}
+
+.group:hover .group-hover\:animate-pulse {
+  animation: pulse 0.5s;
+}

@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { userAPI } from "../services/userAPI";
 import { useAuth } from "../contexts/AuthContext";
-import {
-  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
+
+import { CreditCard, DollarSign, PieChart as PieChartIcon, Calendar } from 'lucide-react';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -75,7 +73,7 @@ const Profile = () => {
     if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
       return;
     }
-    if (!window.confirm('⚠️ This will permanently delete all your data. Please type "DELETE" to confirm.')) {
+    if (!window.confirm('This will permanently delete all your data. Please type "DELETE" to confirm.')) {
       return;
     }
     setError("Account deletion is not implemented yet.");
@@ -161,28 +159,28 @@ const Profile = () => {
             <StatCard 
               title="Total Expenses" 
               value={profile?._count?.expenses || 0} 
-              icon="💸" 
+              icon={<CreditCard className="w-5 h-5" />} 
               color="#ff4757" 
               delay="0s"
             />
             <StatCard 
               title="Total Income" 
               value={profile?._count?.incomes || 0} 
-              icon="💰" 
+              icon={<DollarSign className="w-5 h-5" />} 
               color="#2ed573" 
               delay="0.1s"
             />
             <StatCard 
               title="Categories" 
               value={profile?._count?.categories || 0} 
-              icon="📊" 
+              icon={<PieChartIcon className="w-5 h-5" />} 
               color="#3742fa" 
               delay="0.2s"
             />
             <StatCard 
               title="Member Since" 
               value={new Date(profile?.createdAt).toLocaleDateString()} 
-              icon="📅" 
+              icon={<Calendar className="w-5 h-5" />} 
               color="#ffa502" 
               delay="0.3s"
             />
@@ -292,7 +290,9 @@ const StatCard = ({ title, value, icon, color, delay }) => (
     }}
   >
     <div className="flex items-center mb-3">
-      <div className="text-2xl mr-3">{icon}</div>
+      <div className="text-2xl mr-3" style={{ color: color }}>
+        {icon}
+      </div>
       <h3 className="text-sm font-semibold text-gray-600">{title}</h3>
     </div>
     <div className="text-2xl font-bold text-gray-800">{value}</div>
