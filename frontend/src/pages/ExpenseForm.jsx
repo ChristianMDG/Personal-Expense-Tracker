@@ -145,12 +145,6 @@ const ExpenseForm = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center mb-4">
-            <button
-              onClick={() => navigate('/expenses')}
-              className="mr-4 p-2 text-gray-600 hover:bg-gray-100 rounded"
-            >
-              ← Back
-            </button>
             <h1 className="text-3xl font-bold text-gray-900">
               {isEdit ? 'Edit Expense' : '💰 New Expense'}
             </h1>
