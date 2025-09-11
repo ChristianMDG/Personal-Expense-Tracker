@@ -1,19 +1,26 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
+  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
+  Tooltip,
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  Tooltip,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
+import {
+  Wallet,
+  DollarSign,
+  CreditCard,
+  PiggyBank,
+  ArrowUpRight,
+  ArrowDownRight,
+} from "lucide-react"; // ✅ Import des icônes
 import { summaryAPI } from "../services";
-import { use } from "react";
 
 const Dashboard = () => {
   const [summary, setSummary] = useState(null);
@@ -22,29 +29,29 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Couleurs pastel
   const COLORS = [
     "var(--primary-color)",
-    "#00C49F",
-    "#FFBB28",
-    "#FF8042",
-    "#8884D8",
-    "#82CA9D",
+    "#FFB5E8",
+    "#FFD8A8",
+    "#A7F3D0",
+    "#C7D2FE",
+    "#F3C6FF",
   ];
 
   useEffect(() => {
     fetchDashboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-
       const [summaryRes, alertRes, trendRes] = await Promise.all([
         summaryAPI.getMonthly(),
         summaryAPI.getAlerts(),
         summaryAPI.getMonthlyTrend(),
       ]);
-
       setSummary(summaryRes.data);
       setBudgetAlert(alertRes.data);
       setMonthlyData(trendRes.data);
@@ -56,14 +63,13 @@ const Dashboard = () => {
     }
   };
 
+  // ✅ Fonction pour format MGA
   const formatCurrency = (amount) =>
     new Intl.NumberFormat("fr-MG", {
       style: "currency",
       currency: "MGA",
-    }).format(amount);
-
-  const getBalanceColor = (balance) =>
-    balance >= 0 ? "text-green-600" : "text-red-600";
+      maximumFractionDigits: 2,
+    }).format(Number(amount) || 0);
 
   if (loading) {
     return (
@@ -87,19 +93,67 @@ const Dashboard = () => {
   if (!summary)
     return <div className="text-center py-12">No data available</div>;
 
-  const { totalIncome, totalExpenses, balance, expensesByCategory } = summary;
+  const {
+    totalIncome = 0,
+    totalExpenses = 0,
+    balance = 0,
+    totalSavings = 0,
+    expensesByCategory = {},
+  } = summary;
 
+  // ✅ Cards dynamiques
+  const cards = [
+    {
+      title: "Total Balance",
+      value: formatCurrency(balance),
+      change: "+22%", // ⚠️ ici tu pourras brancher une valeur réelle plus tard
+      trend: "up",
+      color: "from-teal-400 to-cyan-500",
+      icon: <Wallet className="w-6 h-6 text-white" />,
+    },
+    {
+      title: "Total Income",
+      value: formatCurrency(totalIncome),
+      change: "+36%",
+      trend: "up",
+      color: "from-blue-400 to-indigo-500",
+      icon: <DollarSign className="w-6 h-6 text-white" />,
+    },
+    {
+      title: "Total Expenses",
+      value: formatCurrency(totalExpenses),
+      change: "-11%",
+      trend: "down",
+      color: "from-pink-400 to-rose-500",
+      icon: <CreditCard className="w-6 h-6 text-white" />,
+    },
+    {
+      title: "Total Savings",
+      value: formatCurrency(totalSavings),
+      change: "+15%",
+      trend: "up",
+      color: "from-purple-400 to-violet-500",
+      icon: <PiggyBank className="w-6 h-6 text-white" />,
+    },
+  ];
+
+  // ✅ Transformer les catégories pour recharts
   const categoryData = Object.entries(expensesByCategory || {}).map(
     ([name, value], index) => ({
       name,
-      value,
+      value: Number(value) || 0,
       color: COLORS[index % COLORS.length],
     })
   );
 
+  const totalCategoryValue = categoryData.reduce(
+    (acc, cur) => acc + cur.value,
+    0
+  );
+
   return (
     <div className="min-h-screen bg-gray-50 py-6 px-4">
-      <div className="max-w-7xl mx-auto pa">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -155,87 +209,108 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-sm p-6 flex items-center">
-            <div className="p-3 bg-green-100 rounded-lg">💰</div>
-            <div className="ml-4">
-              <p className="text-sm text-gray-600">Total Income</p>
-              <p className="text-2xl font-bold text-[var(--primary-color)]">
-                {formatCurrency(totalIncome)}
-              </p>
-            </div>
-          </div>
+        {/* ✅ Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {cards.map((card, i) => (
+            <div
+              key={i}
+              className={`bg-gradient-to-r ${card.color} rounded-2xl shadow-lg p-6 text-white relative overflow-hidden`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="bg-white/20 p-3 rounded-xl">{card.icon}</div>
+                <div
+                  className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
+                    card.trend === "up"
+                      ? "bg-green-100 text-green-600"
+                      : "bg-red-100 text-red-600"
+                  }`}
+                >
+                  {card.trend === "up" ? (
+                    <ArrowUpRight className="w-4 h-4" />
+                  ) : (
+                    <ArrowDownRight className="w-4 h-4" />
+                  )}
+                  {card.change}
+                </div>
+              </div>
 
-          <div className="bg-white rounded-xl shadow-sm p-6 flex items-center">
-            <div className="p-3 bg-red-100 rounded-lg">💸</div>
-            <div className="ml-4">
-              <p className="text-sm text-gray-600">Total Expenses</p>
-              <p className="text-2xl font-bold text-red-600">
-                {formatCurrency(totalExpenses)}
-              </p>
+              <div className="mt-6">
+                <p className="text-lg font-medium opacity-90">{card.title}</p>
+                <h3 className="text-3xl font-bold mt-2">{card.value}</h3>
+              </div>
             </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm p-6 flex items-center">
-            <div className="p-3 bg-blue-100 rounded-lg">
-              {balance >= 0 ? "📈" : "📉"}
-            </div>
-            <div className="ml-4">
-              <p className="text-sm text-gray-600">Balance</p>
-              <p className={`text-2xl font-bold text-[var(--primary-color)]`}>
-                {formatCurrency(balance)}
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm p-6 flex items-center">
-            <div className="p-3 bg-purple-100 rounded-lg">🎯</div>
-            <div className="ml-4">
-              <p className="text-sm text-gray-600">Savings Rate</p>
-              <p className="text-2xl font-bold text-[var(--secondary-color)]">
-                {totalIncome > 0
-                  ? `${((balance / totalIncome) * 100).toFixed(1)}%`
-                  : "0%"}
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* ✅ Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
           {/* Expenses by Category */}
           <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               Expenses by Category
             </h3>
             {categoryData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={categoryData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    dataKey="value"
-                    label={({ name, percent }) =>
-                      `${name} (${(percent * 100).toFixed(0)}%)`
-                    }
-                  >
-                    {categoryData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Legend />
-                  <Tooltip formatter={(value) => formatCurrency(value)} />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="w-full flex flex-col lg:flex-row items-center lg:items-stretch gap-6">
+                <div className="flex-1 relative min-w-[260px]">
+                  <ResponsiveContainer width="100%" height={260}>
+                    <PieChart>
+                      <Pie
+                        data={categoryData}
+                        dataKey="value"
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={70}
+                        outerRadius={110}
+                        paddingAngle={6}
+                        startAngle={90}
+                        endAngle={-270}
+                      >
+                        {categoryData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => formatCurrency(value)} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <div className="text-xl font-bold text-gray-800">
+                      {formatCurrency(
+                        Number(totalExpenses) || totalCategoryValue
+                      )}
+                    </div>
+                    <div className="text-sm text-gray-500">Spent</div>
+                  </div>
+                </div>
+
+                <div className="w-56">
+                  {categoryData.map((cat, idx) => {
+                    const percent =
+                      totalCategoryValue > 0
+                        ? ((cat.value / totalCategoryValue) * 100).toFixed(0)
+                        : 0;
+                    return (
+                      <div
+                        key={cat.name + idx}
+                        className="flex items-center justify-between py-2"
+                      >
+                        <div className="flex items-center">
+                          <span
+                            className="inline-block w-3 h-3 rounded-full mr-3"
+                            style={{ background: cat.color }}
+                          />
+                          <span className="text-sm text-gray-700">
+                            {cat.name}
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-500">{percent}%</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             ) : (
-              <p className="text-gray-500 text-center py-12">
-                No category data
-              </p>
+              <p className="text-gray-500 text-center py-12">No category data</p>
             )}
-            {/* Footer space */}
             <div className="mt-auto py-4 text-center text-gray-400 text-sm">
               Summary updated monthly
             </div>
@@ -249,78 +324,6 @@ const Dashboard = () => {
             {monthlyData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={monthlyData}>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Expenses by Category */}
-                    <div className="bg-white rounded-xl shadow-sm p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        Expenses by Category
-                      </h3>
-                      {categoryData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={300}>
-                          <PieChart>
-                            <Pie
-                              data={categoryData}
-                              cx="50%"
-                              cy="50%"
-                              outerRadius={100}
-                              dataKey="value"
-                              label={({ name, percent }) =>
-                                `${name} (${(percent * 100).toFixed(0)}%)`
-                              }
-                            >
-                              {categoryData.map((entry, index) => (
-                                <Cell
-                                  key={`cell-${index}`}
-                                  fill={entry.color}
-                                />
-                              ))}
-                            </Pie>
-                            <Legend />
-                            <Tooltip
-                              formatter={(value) => formatCurrency(value)}
-                            />
-                          </PieChart>
-                        </ResponsiveContainer>
-                      ) : (
-                        <p className="text-gray-500 text-center">
-                          No category data
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Monthly Income vs Expenses */}
-                    <div className="bg-white rounded-xl shadow-sm p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        Monthly Income vs Expenses
-                      </h3>
-                      {monthlyData.length > 0 ? (
-                        <ResponsiveContainer width="100%" height={300}>
-                          <BarChart data={monthlyData}>
-                            <XAxis dataKey="month" />
-                            <YAxis />
-                            <Tooltip
-                              formatter={(value) => formatCurrency(value)}
-                            />
-                            <Legend />
-                            <Bar
-                              dataKey="income"
-                              fill="#0088FE"
-                              name="Income"
-                            />
-                            <Bar
-                              dataKey="expenses"
-                              fill="#FF8042"
-                              name="Expenses"
-                            />
-                          </BarChart>
-                        </ResponsiveContainer>
-                      ) : (
-                        <p className="text-gray-500 text-center">
-                          No monthly trend data
-                        </p>
-                      )}
-                    </div>
-                  </div>{" "}
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip formatter={(value) => formatCurrency(value)} />
@@ -334,7 +337,6 @@ const Dashboard = () => {
                 No monthly trend data
               </p>
             )}
-            {/* Footer space */}
             <div className="mt-auto py-4 text-center text-gray-400 text-sm">
               Data reflects your latest transactions
             </div>
