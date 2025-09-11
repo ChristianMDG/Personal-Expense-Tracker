@@ -119,7 +119,7 @@ const Dashboard = () => {
             </Link>
             <Link
               to="/expenses/new"
-              className="bg-[var(--secondary-color)] text-white px-4 py-2 rounded-md hover:bg-[var(--secondary-color)]"
+              className="bg-[var(--text-color)] text-white px-4 py-2 rounded-md hover:bg-gray-700"
             >
               + Add Expense
             </Link>
