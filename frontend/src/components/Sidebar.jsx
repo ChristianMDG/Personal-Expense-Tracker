@@ -78,7 +78,7 @@ const Sidebar = () => {
       opacity: 1,
       transition: {
         delay: 1,
-        duration:2,
+        duration: 2,
       },
     },
   };
@@ -260,23 +260,21 @@ const Sidebar = () => {
                 animate="visible"
                 custom={i}
                 whileHover={{ x: 5 }}
-               
+
               >
                 <Link
                   to={item.path}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
-                    isActive(item.path)
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group ${isActive(item.path)
                       ? "bg-white bg-opacity-20 text-black shadow-lg transform scale-105"
                       : "text-blue-100 hover:bg-white hover:bg-opacity-10 hover:text-black"
-                  }`}
+                    }`}
                 >
                   <motion.span
                     whileHover={{ rotate: 5 }}
-                    className={`transition-colors duration-200 ${
-                      isActive(item.path)
+                    className={`transition-colors duration-200 ${isActive(item.path)
                         ? "text-black"
                         : "text-blue-200 group-hover:text-black"
-                    }`}
+                      }`}
                   >
                     {item.icon}
                   </motion.span>
