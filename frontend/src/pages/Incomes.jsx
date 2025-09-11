@@ -51,7 +51,9 @@ const Incomes = () => {
   const handleDelete = async () => {
     try {
       await incomesAPI.delete(deleteConfirm.incomeId);
-      setIncomes(incomes.filter((income) => income.id !== deleteConfirm.incomeId));
+      setIncomes(
+        incomes.filter((income) => income.id !== deleteConfirm.incomeId)
+      );
       setSuccess("Income deleted successfully");
       setTimeout(() => setSuccess(""), 3000);
       closeDeleteConfirm();
@@ -65,10 +67,14 @@ const Incomes = () => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  const calculateTotal = () => incomes.reduce((total, income) => total + income.amount, 0);
+  const calculateTotal = () =>
+    incomes.reduce((total, income) => total + income.amount, 0);
 
   const formatCurrency = (amount) =>
-    new Intl.NumberFormat("fr-MG", { style: "currency", currency: "MGA" }).format(amount);
+    new Intl.NumberFormat("fr-MG", {
+      style: "currency",
+      currency: "MGA",
+    }).format(amount);
 
   if (loading) {
     return (
@@ -80,12 +86,16 @@ const Incomes = () => {
 
   return (
     <div className="min-h-full bg-[var(--bg-color)] py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto ">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-[var(--text-color)]">Income Management</h1>
-            <p className="text-[var(--text-color)] mt-2">Track and manage your income sources</p>
+            <h1 className="text-3xl font-bold text-[var(--text-color)]">
+              Income Management
+            </h1>
+            <p className="text-[var(--text-color)] mt-2">
+              Track and manage your income sources
+            </p>
           </div>
           <div>
             <Link
@@ -98,7 +108,6 @@ const Incomes = () => {
           </div>
         </div>
 
-        
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center">
@@ -116,30 +125,35 @@ const Incomes = () => {
           </div>
         )}
 
-        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className="p-3 bg-blue-100 rounded-lg">
                 <DollarSign className="w-6 h-6 text-blue-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Income</p>
-                <p className="text-2xl font-bold text-gray-900">{formatCurrency(calculateTotal())}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Total Income
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {formatCurrency(calculateTotal())}
+                </p>
               </div>
             </div>
           </div>
 
-         
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center">
               <div className="p-3 bg-green-100 rounded-lg">
                 <FileText className="w-6 h-6 text-[var(--secondary-color)]" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Records</p>
-                <p className="text-2xl font-bold text-gray-900">{incomes.length}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Total Records
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {incomes.length}
+                </p>
               </div>
             </div>
           </div>
@@ -151,19 +165,24 @@ const Incomes = () => {
                 <FileText className="w-6 h-6 text-purple-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Average Monthly</p>
-                <p className="text-2xl font-bold text-gray-900">{formatCurrency(calculateTotal() / 12)}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Average Monthly
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {formatCurrency(calculateTotal() / 12)}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-      
         <div className="bg-white rounded-lg shadow mb-8 p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">Filters</h3>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
-              <label className="block text-sm font-medium text-[var(--text-color)] mb-2">Start Date</label>
+              <label className="block text-sm font-medium text-[var(--text-color)] mb-2">
+                Start Date
+              </label>
               <input
                 type="date"
                 value={filters.start}
@@ -172,7 +191,9 @@ const Incomes = () => {
               />
             </div>
             <div className="flex-1">
-              <label className="block text-sm font-medium text-[var(--text-color)] mb-2">End Date</label>
+              <label className="block text-sm font-medium text-[var(--text-color)] mb-2">
+                End Date
+              </label>
               <input
                 type="date"
                 value={filters.end}
@@ -191,32 +212,65 @@ const Incomes = () => {
           </div>
         </div>
 
-       
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">Amount</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">Source</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">Description</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
+                    Created At
+                  </th>
+
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
+                    Amount
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
+                    Source
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
+                    Description
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-[var(--text-color)] uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {incomes.map((income) => (
                   <tr key={income.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">{new Date(income.date).toLocaleDateString()}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-[var(--secondary-color)] font-semibold">{formatCurrency(income.amount)}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{income.source || "-"}</td>
-                    <td className="px-6 py-4 max-w-2xs truncate">{income.description || "No description"}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {new Date(income.date).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                      {new Date(income.createdAt).toLocaleDateString()}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-[var(--secondary-color)] font-semibold">
+                      {formatCurrency(income.amount)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {income.source || "-"}
+                    </td>
+                    <td className="px-6 py-4 max-w-2xs truncate">
+                      {income.description || "No description"}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex space-x-2">
-                        <Link to={`/incomes/${income.id}/edit`} className="text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50 transition-colors">
+                        <Link
+                          to={`/incomes/${income.id}/edit`}
+                          className="text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50 transition-colors"
+                        >
                           <Edit className="w-4 h-4" />
                         </Link>
-                        <button onClick={() => confirmDelete(income.id, income.source)} className="text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50 transition-colors">
+                        <button
+                          onClick={() =>
+                            confirmDelete(income.id, income.source)
+                          }
+                          className="text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50 transition-colors"
+                        >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -230,10 +284,17 @@ const Incomes = () => {
           {incomes.length === 0 && (
             <div className="text-center py-12">
               <FileText className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">No incomes found</h3>
-              <p className="mt-1 text-sm text-[var(--text-color)]">Get started by creating a new income record.</p>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">
+                No incomes found
+              </h3>
+              <p className="mt-1 text-sm text-[var(--text-color)]">
+                Get started by creating a new income record.
+              </p>
               <div className="mt-6">
-                <Link to="/incomes/new" className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                <Link
+                  to="/incomes/new"
+                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                >
                   <Plus className="-ml-1 mr-2 h-5 w-5" />
                   Add Income
                 </Link>
@@ -242,28 +303,43 @@ const Incomes = () => {
           )}
         </div>
 
-       
         {incomes.length > 0 && (
           <div className="mt-6 flex items-center justify-between">
             <p className="text-sm text-[var(--secondary-color)]">
-              Showing <span className="font-medium">{incomes.length}</span> results
+              Showing <span className="font-medium">{incomes.length}</span>{" "}
+              results
             </p>
           </div>
         )}
 
-      
         {deleteConfirm.show && (
-          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50" onClick={closeDeleteConfirm}>
-            <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h3>
+          <div
+            className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50"
+            onClick={closeDeleteConfirm}
+          >
+            <div
+              className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Confirm Deletion
+              </h3>
               <p className="text-gray-600 mb-6">
-                Are you sure you want to delete the income from "{deleteConfirm.incomeSource || "unknown source"}"? This action cannot be undone.
+                Are you sure you want to delete the income from "
+                {deleteConfirm.incomeSource || "unknown source"}"? This action
+                cannot be undone.
               </p>
               <div className="flex justify-end space-x-3">
-                <button onClick={closeDeleteConfirm} className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button
+                  onClick={closeDeleteConfirm}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
                   Cancel
                 </button>
-                <button onClick={handleDelete} className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                >
                   Delete
                 </button>
               </div>
