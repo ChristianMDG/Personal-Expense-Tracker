@@ -161,7 +161,7 @@ const Dashboard = () => {
             <div className="p-3 bg-green-100 rounded-lg">💰</div>
             <div className="ml-4">
               <p className="text-sm text-gray-600">Total Income</p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-2xl font-bold text-[var(--primary-color)]">
                 {formatCurrency(totalIncome)}
               </p>
             </div>
@@ -183,7 +183,7 @@ const Dashboard = () => {
             </div>
             <div className="ml-4">
               <p className="text-sm text-gray-600">Balance</p>
-              <p className={`text-2xl font-bold ${getBalanceColor(balance)}`}>
+              <p className={`text-2xl font-bold text-[var(--primary-color)]`}>
                 {formatCurrency(balance)}
               </p>
             </div>
@@ -193,7 +193,7 @@ const Dashboard = () => {
             <div className="p-3 bg-purple-100 rounded-lg">🎯</div>
             <div className="ml-4">
               <p className="text-sm text-gray-600">Savings Rate</p>
-              <p className="text-2xl font-bold text-purple-600">
+              <p className="text-2xl font-bold text-[var(--secondary-color)]">
                 {totalIncome > 0
                   ? `${((balance / totalIncome) * 100).toFixed(1)}%`
                   : "0%"}
