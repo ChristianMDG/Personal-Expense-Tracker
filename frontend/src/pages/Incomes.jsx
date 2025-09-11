@@ -127,7 +127,7 @@ const Incomes = () => {
 
         <div className="animate-slideUp grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
-                rounded-2xl p-6 w-75 
+                rounded-2xl p-6 w-80 
                 transform transition duration-300 ease-in-out
                 hover:scale-100 hover:shadow-xl 
                 active:scale-100 cursor-pointer">
@@ -149,7 +149,7 @@ const Incomes = () => {
           </div>
 
           <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
-                rounded-2xl p-6 w-75 
+                rounded-2xl p-6 w-80 
                 transform transition duration-300 ease-in-out
                 hover:scale-100 hover:shadow-xl 
                 active:scale-100 cursor-pointer">
@@ -170,7 +170,7 @@ const Incomes = () => {
 
           {/* Average Monthly */}
           <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
-                rounded-2xl p-6 w-75 
+                rounded-2xl p-6 w-80 
                 transform transition duration-300 ease-in-out
                 hover:scale-100 hover:shadow-xl 
                 active:scale-100 cursor-pointer">
