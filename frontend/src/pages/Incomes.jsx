@@ -79,7 +79,7 @@ const Incomes = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="rounded-full h-12 w-12 border-b-2 border-[var(--primary-color)] animate-spin" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--primary-color)]" />
       </div>
     );
   }
@@ -88,7 +88,7 @@ const Incomes = () => {
     <div className="min-h-full bg-[var(--bg-color)] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto ">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+        <div className="animate-fadeIn flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-[var(--text-color)]">
               Income Management
@@ -100,7 +100,7 @@ const Incomes = () => {
           <div>
             <Link
               to="/incomes/new"
-              className="mt-4 sm:mt-0 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)] transition-colors"
+              className="transition-all duration-300 mt-4 sm:mt-0 inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)]"
             >
               <Plus className="w-5 h-5 mr-2" />
               Add New Income
@@ -109,7 +109,7 @@ const Incomes = () => {
         </div>
 
         {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="animate-shake mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center">
               <XCircle className="w-5 h-5 text-red-600 mr-2" />
               <span className="text-red-800">{error}</span>
@@ -117,7 +117,7 @@ const Incomes = () => {
           </div>
         )}
         {success && (
-          <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="animate-fadeIn mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
             <div className="flex items-center">
               <CheckCircle2 className="w-5 h-5 text-[var(--secondary-color)] mr-2" />
               <span className="text-green-800">{success}</span>
@@ -125,8 +125,8 @@ const Incomes = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
+        <div className="animate-slideUp grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="transition-all duration-300 bg-white rounded-lg shadow p-6 hover:shadow-lg">
             <div className="flex items-center">
               <div className="p-3 bg-blue-100 rounded-lg">
                 <DollarSign className="w-6 h-6 text-blue-600" />
@@ -142,7 +142,7 @@ const Incomes = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="transition-all duration-300 bg-white rounded-lg shadow p-6 hover:shadow-lg">
             <div className="flex items-center">
               <div className="p-3 bg-green-100 rounded-lg">
                 <FileText className="w-6 h-6 text-[var(--secondary-color)]" />
@@ -159,7 +159,7 @@ const Incomes = () => {
           </div>
 
           {/* Average Monthly */}
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="transition-all duration-300 bg-white rounded-lg shadow p-6 hover:shadow-lg">
             <div className="flex items-center">
               <div className="p-3 bg-purple-100 rounded-lg">
                 <FileText className="w-6 h-6 text-purple-600" />
@@ -176,7 +176,7 @@ const Incomes = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow mb-8 p-6">
+        <div className="animate-fadeIn bg-white rounded-lg shadow mb-8 p-6">
           <h3 className="text-lg font-medium text-gray-900 mb-4">Filters</h3>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
@@ -187,7 +187,7 @@ const Incomes = () => {
                 type="date"
                 value={filters.start}
                 onChange={(e) => handleFilterChange("start", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="transition-all duration-200 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div className="flex-1">
@@ -198,13 +198,13 @@ const Incomes = () => {
                 type="date"
                 value={filters.end}
                 onChange={(e) => handleFilterChange("end", e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="transition-all duration-200 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div className="flex items-end">
               <button
                 onClick={() => setFilters({ start: "", end: "" })}
-                className="px-4 py-2 border border-gray-300 rounded-md text-[var(--secondary-color)] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="transition-all duration-200 px-4 py-2 border border-gray-300 rounded-md text-[var(--secondary-color)] hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 Clear Filters
               </button>
@@ -212,7 +212,7 @@ const Incomes = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="animate-fadeIn bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -239,8 +239,12 @@ const Incomes = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {incomes.map((income) => (
-                  <tr key={income.id} className="hover:bg-gray-50">
+                {incomes.map((income, index) => (
+                  <tr 
+                    key={income.id} 
+                    className="transition-all duration-200 hover:bg-gray-50"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       {new Date(income.date).toLocaleDateString()}
                     </td>
@@ -261,7 +265,7 @@ const Incomes = () => {
                       <div className="flex space-x-2">
                         <Link
                           to={`/incomes/${income.id}/edit`}
-                          className="text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50 transition-colors"
+                          className="transition-all duration-200 text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50"
                         >
                           <Edit className="w-4 h-4" />
                         </Link>
@@ -269,7 +273,7 @@ const Incomes = () => {
                           onClick={() =>
                             confirmDelete(income.id, income.source)
                           }
-                          className="text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50 transition-colors"
+                          className="transition-all duration-200 text-red-600 hover:text-red-900 px-2 py-1 rounded hover:bg-red-50"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -282,7 +286,7 @@ const Incomes = () => {
           </div>
 
           {incomes.length === 0 && (
-            <div className="text-center py-12">
+            <div className="animate-fadeIn text-center py-12">
               <FileText className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-medium text-gray-900">
                 No incomes found
@@ -293,7 +297,7 @@ const Incomes = () => {
               <div className="mt-6">
                 <Link
                   to="/incomes/new"
-                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  className="transition-all duration-300 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 >
                   <Plus className="-ml-1 mr-2 h-5 w-5" />
                   Add Income
@@ -304,7 +308,7 @@ const Incomes = () => {
         </div>
 
         {incomes.length > 0 && (
-          <div className="mt-6 flex items-center justify-between">
+          <div className="animate-fadeIn mt-6 flex items-center justify-between">
             <p className="text-sm text-[var(--secondary-color)]">
               Showing <span className="font-medium">{incomes.length}</span>{" "}
               results
@@ -314,11 +318,11 @@ const Incomes = () => {
 
         {deleteConfirm.show && (
           <div
-            className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50"
+            className="animate-fadeIn fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50"
             onClick={closeDeleteConfirm}
           >
             <div
-              className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
+              className="animate-scaleIn bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-lg font-medium text-gray-900 mb-4">
@@ -332,13 +336,13 @@ const Incomes = () => {
               <div className="flex justify-end space-x-3">
                 <button
                   onClick={closeDeleteConfirm}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="transition-all duration-200 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="transition-all duration-200 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                   Delete
                 </button>

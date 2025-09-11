@@ -76,11 +76,11 @@ const IncomeForm = () => {
     <div className="min-h-full bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl">
         {/* Header */}
-        <div className="mb-8">
+        <div className="animate-fadeIn mb-8">
           <div className="mb-4 flex items-center">
             <button
               onClick={() => navigate("/incomes")}
-              className="mr-4 rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+              className="transition-all duration-200 mr-4 rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
@@ -97,20 +97,23 @@ const IncomeForm = () => {
 
         {/* Alerts */}
         {error && (
-          <div className="mb-6 flex items-center rounded-lg p-4 bg-red-50 border border-red-200 text-red-800">
+          <div className="animate-shake mb-6 flex items-center rounded-lg p-4 bg-red-50 border border-red-200 text-red-800">
             <XCircle className="w-5 h-5 mr-2 text-red-600" />
             <span>{error}</span>
           </div>
         )}
         {success && (
-          <div className="mb-6 flex items-center rounded-lg p-4 bg-green-50 border border-green-200 text-green-800">
+          <div className="animate-fadeIn mb-6 flex items-center rounded-lg p-4 bg-green-50 border border-green-200 text-green-800">
             <CheckCircle2 className="w-5 h-5 mr-2 text-green-600" />
             <span>{success}</span>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6 rounded-lg bg-white p-6 shadow-lg">
+        <form 
+          onSubmit={handleSubmit} 
+          className="animate-slideUp space-y-6 rounded-lg bg-white p-6 shadow-lg"
+        >
           {/* Amount */}
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">Amount *</label>
@@ -124,10 +127,10 @@ const IncomeForm = () => {
               min="0"
               disabled={loading}
               placeholder="0.00"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 pl-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--accent-color)]"
+              className="transition-all duration-200 w-full rounded-lg border border-gray-300 px-4 py-3 pl-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--accent-color)]"
             />
             {formData.amount && (
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="animate-fadeIn mt-1 text-sm text-gray-500">
                 {formatCurrency(parseFloat(formData.amount) || 0)}
               </p>
             )}
@@ -144,7 +147,7 @@ const IncomeForm = () => {
               onChange={handleChange}
               required
               disabled={loading}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--accent-color)]"
+              className="transition-all duration-200 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--accent-color)]"
             />
           </div>
 
@@ -157,7 +160,7 @@ const IncomeForm = () => {
               value={formData.source}
               onChange={handleChange}
               disabled={loading}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--accent-color)]"
+              className="transition-all duration-200 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--accent-color)]"
             >
               <option value="">Select a source</option>
               {["Salary", "Freelance", "Investment", "Business", "Rental", "Bonus", "Other"].map(
@@ -181,7 +184,7 @@ const IncomeForm = () => {
               rows={4}
               disabled={loading}
               placeholder="Additional details about this income (optional)"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--accent-color)]"
+              className="transition-all duration-200 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--accent-color)]"
             />
           </div>
 
@@ -190,7 +193,7 @@ const IncomeForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="flex flex-1 items-center justify-center rounded-lg bg-[var(--primary-color)] px-6 py-3 font-medium text-white hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 disabled:opacity-50"
+              className="transition-all duration-300 flex flex-1 items-center justify-center rounded-lg bg-[var(--primary-color)] px-6 py-3 font-medium text-white hover:bg-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 disabled:opacity-50"
             >
               {loading ? <Loader2 className="animate-spin h-5 w-5 text-white mr-2" /> : isEdit ? "Update Income" : "Create Income"}
             </button>
@@ -198,7 +201,7 @@ const IncomeForm = () => {
               type="button"
               onClick={() => navigate("/incomes")}
               disabled={loading}
-              className="flex-1 rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50"
+              className="transition-all duration-300 flex-1 rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50"
             >
               Cancel
             </button>

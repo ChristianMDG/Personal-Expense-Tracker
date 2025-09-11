@@ -19,7 +19,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from "lucide-react"; 
-import { summaryAPI } from "../services";
+import { summaryAPI, categoriesAPI } from "../services";
 
 const Dashboard = () => {
   const [summary, setSummary] = useState(null);
@@ -30,9 +30,10 @@ const Dashboard = () => {
   const [filters, setFilters] = useState({
     start: "",
     end: "",
-    category: "",
+    categoryId: "",
     type: "",
   });
+  const [categories, setCategories] = useState([]);
 
   const COLORS = [
     "var(--primary-color)",
@@ -44,8 +45,18 @@ const Dashboard = () => {
   ];
 
   useEffect(() => {
+    fetchCategories();
     fetchDashboardData();
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await categoriesAPI.getAll();
+      setCategories(res.data);
+    } catch (err) {
+      console.error("Failed to load categories", err);
+    }
+  };
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -54,11 +65,14 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
+
+      // API avec filtres appliqués
       const [summaryRes, alertRes, trendRes] = await Promise.all([
-        summaryAPI.getMonthly(filters),
-        summaryAPI.getAlerts(filters),
-        summaryAPI.getMonthlyTrend(filters),
+        summaryAPI.getMonthly(filters),       // Pie chart & summary
+        summaryAPI.getAlerts(filters),        // Budget alert
+        summaryAPI.getMonthlyTrend(filters),  // Bar chart
       ]);
+
       setSummary(summaryRes.data);
       setBudgetAlert(alertRes.data);
       setMonthlyData(trendRes.data);
@@ -141,10 +155,7 @@ const Dashboard = () => {
     })
   );
 
-  const totalCategoryValue = categoryData.reduce(
-    (acc, cur) => acc + cur.value,
-    0
-  );
+  const totalCategoryValue = categoryData.reduce((acc, cur) => acc + cur.value, 0);
 
   return (
     <div className="min-h-screen bg-gray-50 py-6 px-4">
@@ -157,16 +168,10 @@ const Dashboard = () => {
             <p className="text-gray-600 mt-1">Overview of your financial health</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Link
-              to="/incomes/new"
-              className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-md shadow hover:bg-[var(--secondary-color)] transition"
-            >
+            <Link to="/incomes/new" className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-md shadow hover:bg-[var(--secondary-color)] transition">
               + Add Income
             </Link>
-            <Link
-              to="/expenses/new"
-              className="bg-gray-500 text-white px-4 py-2 rounded-md shadow hover:bg-gray-700 transition"
-            >
+            <Link to="/expenses/new" className="bg-gray-500 text-white px-4 py-2 rounded-md shadow hover:bg-gray-700 transition">
               + Add Expense
             </Link>
           </div>
@@ -174,67 +179,14 @@ const Dashboard = () => {
 
         {/* Filters */}
         <div className="bg-white rounded-lg shadow p-6 flex flex-col md:flex-row gap-4 items-end">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-            <input
-              type="date"
-              value={filters.start}
-              onChange={(e) => handleFilterChange("start", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
-            <input
-              type="date"
-              value={filters.end}
-              onChange={(e) => handleFilterChange("end", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-            <input
-              type="text"
-              placeholder="Category name"
-              value={filters.category}
-              onChange={(e) => handleFilterChange("category", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
-            <select
-              value={filters.type}
-              onChange={(e) => handleFilterChange("type", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            >
-              <option value="">All</option>
-              <option value="one-time">One-time</option>
-              <option value="recurring">Recurring</option>
-            </select>
-          </div>
-          <button
-            onClick={fetchDashboardData}
-            className="px-4 py-2 bg-[var(--primary-color)] text-white rounded-md shadow hover:bg-[var(--secondary-color)] transition"
-          >
-            Apply
-          </button>
+         
         </div>
 
         {/* Budget Alert */}
         {budgetAlert && budgetAlert.alert && (
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 flex items-center gap-3 shadow-md">
-            <svg
-              className="h-6 w-6 text-orange-400 flex-shrink-0"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                clipRule="evenodd"
-              />
+            <svg className="h-6 w-6 text-orange-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
             <div>
               <h3 className="text-sm font-semibold text-orange-800">Budget Alert</h3>
@@ -246,17 +198,10 @@ const Dashboard = () => {
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {cards.map((card, i) => (
-            <div
-              key={i}
-              className={`bg-gradient-to-r ${card.color} rounded-2xl shadow-lg p-6 text-white flex flex-col justify-between transition hover:scale-105`}
-            >
+            <div key={i} className={`bg-gradient-to-r ${card.color} rounded-2xl shadow-lg p-6 text-white flex flex-col justify-between transition hover:scale-105`}>
               <div className="flex justify-between items-center">
                 <div className="bg-white/20 p-3 rounded-xl">{card.icon}</div>
-                <div
-                  className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
-                    card.trend === "up" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
-                  }`}
-                >
+                <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${card.trend === "up" ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"}`}>
                   {card.trend === "up" ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
                   {card.change}
                 </div>
@@ -271,6 +216,7 @@ const Dashboard = () => {
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
           {/* Expenses by Category */}
           <div className="bg-white rounded-xl shadow p-6 flex flex-col">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Expenses by Category</h3>
@@ -298,9 +244,7 @@ const Dashboard = () => {
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                    <div className="text-xl font-bold text-gray-800">
-                      {formatCurrency(Number(totalExpenses) || totalCategoryValue)}
-                    </div>
+                    <div className="text-xl font-bold text-gray-800">{formatCurrency(Number(totalExpenses) || totalCategoryValue)}</div>
                     <div className="text-sm text-gray-500">Spent</div>
                   </div>
                 </div>
@@ -329,10 +273,7 @@ const Dashboard = () => {
           <div className="bg-white rounded-xl shadow p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Income vs Expenses</h3>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart
-                data={monthlyData}
-                margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-              >
+              <BarChart data={monthlyData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                 <XAxis dataKey="month" tick={{ fill: "#4B5563", fontSize: 14 }} tickLine={false} />
                 <YAxis tickFormatter={(value) => formatCurrency(value)} tick={{ fill: "#4B5563", fontSize: 14 }} axisLine={false} tickLine={false} />
                 <Tooltip formatter={(value) => formatCurrency(value)} />
@@ -352,6 +293,7 @@ const Dashboard = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
+
         </div>
 
       </div>
