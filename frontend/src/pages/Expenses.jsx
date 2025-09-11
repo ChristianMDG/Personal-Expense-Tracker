@@ -149,12 +149,18 @@ const Expenses = () => {
           </div>
 
 
-          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className="flex items-center gap-1">
-              <div className="p-2 ml-3 w-10 bg-blue-100 rounded-lg text-blue-600">📊</div>
+          <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+                rounded-2xl p-6 w-65 
+                transform transition duration-300 ease-in-out
+                hover:scale-100 hover:shadow-xl 
+                active:scale-100 cursor-pointer">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center w-14 h-14 
+                    bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
+                    rounded-full text-white text-3xl shadow-md">📊</div>
               <div className="ml-3">
-                <p className="text-2xl text-[var(--secondary-color)] font-semibold">{expenses.length}</p>
-                <p className="text-sm text-gray-600">Total Records</p>
+                <p className="text-xl text-[var(--primary-color)] font-bold">{expenses.length}</p>
+                <p className="text-sm text-gray-500">Total Records</p>
               </div>
             </div>
           </div>
