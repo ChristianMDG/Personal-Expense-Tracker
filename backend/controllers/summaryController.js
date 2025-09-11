@@ -219,7 +219,37 @@ const summaryController = {
       console.error('Get alerts error:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
+  },
+  // summaryController.js
+getMonthlyTrend: async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const monthsToShow = 6; // derniers 6 mois
+    const today = new Date();
+    const monthlyData = [];
+
+    for (let i = monthsToShow - 1; i >= 0; i--) {
+      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+      const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+      const summary = await calculateMonthlySummary(userId, date);
+
+      monthlyData.push({
+        month: date.toLocaleString("default", { month: "short" }),
+        income: summary.totalIncome,
+        expenses: summary.totalExpenses
+      });
+    }
+
+    res.status(200).json(monthlyData);
+
+  } catch (error) {
+    console.error('Get monthly trend error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
+}
+
 
 };
 

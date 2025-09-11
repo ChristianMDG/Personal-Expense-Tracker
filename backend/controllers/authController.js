@@ -35,8 +35,7 @@ const authController = {
                             { name: 'Entertainment' },
                             { name: 'Utilities' },
                             { name: 'Rent' },
-                            { name: 'Healthcare' },
-                            { name: 'Other' }
+                            { name: 'Healthcare' }
                         ]
                     }
                 }
