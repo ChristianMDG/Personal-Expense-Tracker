@@ -127,17 +127,27 @@ const Expenses = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className=" flex items-center gap-1">
-              <div className="p-2 ml-4 w-10 bg-red-100 rounded-lg text-red-600">💰</div>
-              <div className="ml-3">
-                <p className="text-2xl text-[var(--secondary-color)] font-semibold">
+          <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+                rounded-2xl p-6 w-65 
+                transform transition duration-300 ease-in-out
+                hover:scale-100 hover:shadow-xl 
+                active:scale-100 cursor-pointer">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center w-14 h-14 
+                    bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
+                    rounded-full text-white text-3xl shadow-md">
+                💰
+              </div>
+
+              <div>
+                <p className="text-xl text-[var(--primary-color)] font-bold">
                   {formatCurrency(calculateTotal())}
                 </p>
-                <p className="text-sm text-gray-600">Total Expenses</p>
+                <p className="text-sm text-gray-500">Total Expenses</p>
               </div>
             </div>
           </div>
+
 
           <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
             <div className="flex items-center gap-1">
@@ -296,8 +306,8 @@ const Expenses = () => {
                     <td className="p-3">
                       <span
                         className={`px-2 py-1 rounded text-sm ${expense.type === "recurring"
-                            ? "bg-purple-100 text-purple-800"
-                            : "bg-gray-100 text-gray-800"
+                          ? "bg-purple-100 text-purple-800"
+                          : "bg-gray-100 text-gray-800"
                           }`}
                       >
                         {expense.type}
