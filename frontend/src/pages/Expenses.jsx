@@ -128,7 +128,7 @@ const Expenses = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className="items-center m-2">
+            <div className="items-center">
               <div className="p-2 ml-4 mb-3 w-10 bg-red-100 rounded-lg text-red-600">💰</div>
               <div className="ml-3">
                 <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">
@@ -140,11 +140,11 @@ const Expenses = () => {
           </div>
 
           <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg text-blue-600">📊</div>
+            <div className="items-center">
+              <div className="p-2 ml-4 mb-3 w-10 bg-blue-100 rounded-lg text-blue-600">📊</div>
               <div className="ml-3">
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">{expenses.length}</p>
                 <p className="text-sm text-gray-600">Total Records</p>
-                <p className="text-xl font-bold">{expenses.length}</p>
               </div>
             </div>
           </div>
