@@ -58,6 +58,28 @@ const Dashboard = () => {
     }
   };
 // Appliquer les filtres et récupérer les données
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+
+      // API avec filtres appliqués
+      const [summaryRes, alertRes, trendRes] = await Promise.all([
+        summaryAPI.getMonthly(filters),       // Pie chart & summary
+        summaryAPI.getAlerts(filters),        // Budget alert
+        summaryAPI.getMonthlyTrend(filters),  // Bar chart
+      ]);
+
+      setSummary(summaryRes.data);
+      setBudgetAlert(alertRes.data);
+      setMonthlyData(trendRes.data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load dashboard data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const formatCurrency = (amount) =>
     new Intl.NumberFormat("fr-MG", {
       style: "currency",
