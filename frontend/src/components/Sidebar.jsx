@@ -1,24 +1,25 @@
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-
+//composant Sidebar avec animations et navigation
 const Sidebar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
+// Fonction de déconnexion
+// Lors de la déconnexion, rediriger vers la page de connexion
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
-
+// Vérifier si le chemin est actif pour le style
   const isActive = (path) => {
     return (
       location.pathname === path || location.pathname.startsWith(path + "/")
     );
   };
 
-
+// Variantes d'animation pour les différentes parties de la barre latérale
   const sidebarVariants = {
     hidden: { x: -300, opacity: 0 },
     visible: {
@@ -32,7 +33,7 @@ const Sidebar = () => {
       },
     },
   };
-
+// Variantes pour les éléments du menu
   const menuItemVariants = {
     hidden: { x: -20, opacity: 0 },
     visible: (i) => ({
@@ -44,7 +45,7 @@ const Sidebar = () => {
       },
     }),
   };
-
+// Variantes pour le contenu principal
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -56,7 +57,7 @@ const Sidebar = () => {
       },
     },
   };
-
+// Variantes pour le logo
   const logoVariants = {
     hidden: { scale: 0.8, opacity: 0 },
     visible: {
@@ -70,7 +71,7 @@ const Sidebar = () => {
       },
     },
   };
-
+// Variantes pour la section utilisateur
   const userSectionVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -82,7 +83,7 @@ const Sidebar = () => {
       },
     },
   };
-
+// Éléments du menu avec icônes SVG
   const menuItems = [
     {
       path: "/dashboard",
