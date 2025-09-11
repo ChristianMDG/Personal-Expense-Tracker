@@ -113,7 +113,7 @@
 }
 
 .animate-svg {
-  animation: svgPulse 1.5s ease-in-out infinite;
+  animation: svgPulse 3s ease-in-out infinite;
   transform-origin: center;
 }
 

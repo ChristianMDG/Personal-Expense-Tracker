@@ -193,13 +193,16 @@ const Sidebar = () => {
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-8 h-8 bg-[var(--primary-color)] rounded-lg flex items-center justify-center"
-            >
-              <span className="text-white font-bold text-sm">ET</span>
-            </motion.div>
+           
+               <motion.div
+                className="w-15 h-15 rounded-full flex items-center justify-center bg-white shadow-md border-4 border-[var(--accent-color)]"
+                whileHover={{ scale: 1.1, rotate: 10 }}
+                transition={{ type: "spring", stiffness: 300 
+                }}
+              >
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full "/>
+              </motion.div>
+            
             <h1 className="text-lg font-semibold text-gray-900">Planifieo</h1>
           </div>
           <motion.div
@@ -226,22 +229,22 @@ const Sidebar = () => {
           className="p-6 border-b border-[var(--secondary-color)]"
         >
           <div className="flex items-center space-x-3">
-            <motion.div
-              whileHover={{ rotate: 5, scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center"
-            >
-              <span className="text-white font-bold text-lg">💰</span>
-            </motion.div>
             <div>
-              <motion.h1
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-xl font-bold text-white"
+              {/* Logo SVG animé */}
+              <motion.div
+                className="w-15 h-15 rounded-full items-center justify-center bg-white shadow-md border-4 border-[var(--accent-color)] hidden md:flex"
+                whileHover={{ scale: 1.1, rotate: 10 }}
+                transition={{ type: "spring", stiffness: 300 
+                }}
               >
-                Planifieo
-              </motion.h1>
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full "/>
+              </motion.div>
+            </div>
+            <div className="flex flex-col"> 
+            </div>
+          
+            <div>
+              
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
