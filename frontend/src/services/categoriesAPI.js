@@ -1,5 +1,5 @@
 import api from './api';
-
+// Services pour les catégories
 export const categoriesAPI = {
   getAll: () => api.get('/categories'),
   create: (data) => api.post('/categories', data),

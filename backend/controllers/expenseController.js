@@ -1,6 +1,8 @@
 const prisma = require('../config/database');
 
 const expenseController = {
+
+  // Récupère toutes les dépenses de l'utilisateur connecté avec des filtres optionnels
   getAllExpenses: async (req, res) => {
     try {
       const { start, end, category, type } = req.query;
@@ -55,7 +57,7 @@ const expenseController = {
         orderBy: { date: 'desc' }
       });
 
-      // Ajouter createdAt si nécessaire (déjà inclus par défaut si présent dans le modèle)
+     
       res.status(200).json(expenses);
     } catch (error) {
       console.error('Get expenses error:', error);
@@ -63,6 +65,7 @@ const expenseController = {
     }
   },
 
+  // Récupère une dépense spécifique par son ID pour l'utilisateur connecté
   getExpenseById: async (req, res) => {
     try {
       const { id } = req.params;
@@ -88,6 +91,7 @@ const expenseController = {
     }
   },
 
+  //creer une nouvelle dépense pour l'utilisateur connecté
   createExpense: async (req, res) => {
     try {
       const userId = req.user.id;
@@ -148,6 +152,7 @@ const expenseController = {
     }
   },
 
+//update une dépense existante pour l'utilisateur connecté
   updateExpense: async (req, res) => {
     try {
       const { id } = req.params;
@@ -205,6 +210,8 @@ const expenseController = {
     }
   },
 
+
+  //supprimer une dépense existante pour l'utilisateur connecté
   deleteExpense: async (req, res) => {
     try {
       const { id } = req.params;

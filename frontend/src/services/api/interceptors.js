@@ -1,5 +1,5 @@
 export const setupInterceptors = (apiInstance) => {
-  // Request interceptor to add auth token
+  // ajout d'un intercepteur de requête pour ajouter le token d'authentification
   apiInstance.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem('token');
@@ -14,7 +14,7 @@ export const setupInterceptors = (apiInstance) => {
     (error) => Promise.reject(error)
   );
 
-  // Response interceptor to handle errors
+  // intercepteur de réponse pour gérer les erreurs globales
   apiInstance.interceptors.response.use(
     (response) => response,
     (error) => {

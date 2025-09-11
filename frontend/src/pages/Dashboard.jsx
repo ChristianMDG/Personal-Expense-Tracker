@@ -20,7 +20,7 @@ import {
   ArrowDownRight,
 } from "lucide-react"; 
 import { summaryAPI, categoriesAPI } from "../services";
-
+// Page du tableau de bord
 const Dashboard = () => {
   const [summary, setSummary] = useState(null);
   const [monthlyData, setMonthlyData] = useState([]);
@@ -48,7 +48,7 @@ const Dashboard = () => {
     fetchCategories();
     fetchDashboardData();
   }, []);
-
+// Récupérer les catégories pour les filtres
   const fetchCategories = async () => {
     try {
       const res = await categoriesAPI.getAll();
@@ -57,33 +57,7 @@ const Dashboard = () => {
       console.error("Failed to load categories", err);
     }
   };
-
-  const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
-
-  const fetchDashboardData = async () => {
-    try {
-      setLoading(true);
-
-      // API avec filtres appliqués
-      const [summaryRes, alertRes, trendRes] = await Promise.all([
-        summaryAPI.getMonthly(filters),       // Pie chart & summary
-        summaryAPI.getAlerts(filters),        // Budget alert
-        summaryAPI.getMonthlyTrend(filters),  // Bar chart
-      ]);
-
-      setSummary(summaryRes.data);
-      setBudgetAlert(alertRes.data);
-      setMonthlyData(trendRes.data);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to load dashboard data");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+// Appliquer les filtres et récupérer les données
   const formatCurrency = (amount) =>
     new Intl.NumberFormat("fr-MG", {
       style: "currency",
