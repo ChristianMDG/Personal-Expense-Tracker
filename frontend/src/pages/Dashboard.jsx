@@ -179,55 +179,7 @@ const Dashboard = () => {
 
         {/* Filters */}
         <div className="bg-white rounded-lg shadow p-6 flex flex-col md:flex-row gap-4 items-end">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-            <input
-              type="date"
-              value={filters.start}
-              onChange={(e) => handleFilterChange("start", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
-            <input
-              type="date"
-              value={filters.end}
-              onChange={(e) => handleFilterChange("end", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-            <select
-              value={filters.categoryId}
-              onChange={(e) => handleFilterChange("categoryId", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            >
-              <option value="">All</option>
-              {categories.map(category => (
-                <option key={category.id} value={category.id}>{category.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
-            <select
-              value={filters.type}
-              onChange={(e) => handleFilterChange("type", e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            >
-              <option value="">All</option>
-              <option value="one-time">One-time</option>
-              <option value="recurring">Recurring</option>
-            </select>
-          </div>
-          <button
-            onClick={fetchDashboardData}
-            className="px-4 py-2 bg-[var(--primary-color)] text-white rounded-md shadow hover:bg-[var(--secondary-color)] transition"
-          >
-            Apply
-          </button>
+         
         </div>
 
         {/* Budget Alert */}
