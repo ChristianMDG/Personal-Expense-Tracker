@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { expensesAPI, categoriesAPI } from '../services';
+import { Plus, Edit2, Trash2, FileText } from "lucide-react";
 
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
@@ -14,6 +15,9 @@ const Expenses = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // 🔹 Nouveau state pour confirmation suppression
+  const [deleteConfirm, setDeleteConfirm] = useState({ show: false, expense: null });
 
   useEffect(() => {
     fetchData();
@@ -35,16 +39,29 @@ const Expenses = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this expense?')) return;
+  // 🔹 Ouvre la popup
+  const openDeleteConfirm = (expense) => {
+    setDeleteConfirm({ show: true, expense });
+  };
+
+  // 🔹 Ferme la popup
+  const closeDeleteConfirm = () => {
+    setDeleteConfirm({ show: false, expense: null });
+  };
+
+  // 🔹 Supprimer la dépense après confirmation
+  const handleDelete = async () => {
+    if (!deleteConfirm.expense) return;
 
     try {
-      await expensesAPI.delete(id);
-      setExpenses(expenses.filter(expense => expense.id !== id));
+      await expensesAPI.delete(deleteConfirm.expense.id);
+      setExpenses(expenses.filter(exp => exp.id !== deleteConfirm.expense.id));
       setSuccess('Expense deleted successfully');
       setTimeout(() => setSuccess(''), 3000);
     } catch (error) {
       setError('Failed to delete expense');
+    } finally {
+      closeDeleteConfirm();
     }
   };
 
@@ -82,11 +99,9 @@ const Expenses = () => {
           </div>
           <Link
             to="/expenses/new"
-            className="mt-4 sm:mt-0 inline-flex items-center px-6 py-3 text-white rounded-md bg-[var(--primary-color)] hover:bg-[var(--secondary-color)]"
+            className=" gap-3 mt-4 sm:mt-0 inline-flex items-center px-6 py-3 text-white rounded-md bg-[var(--primary-color)] hover:bg-[var(--secondary-color)]"
           >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
+            <Plus className="w-4 h-4" />
             Add New Expense
           </Link>
         </div>
@@ -97,7 +112,6 @@ const Expenses = () => {
             {error}
           </div>
         )}
-
         {success && (
           <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 text-green-800">
             {success}
@@ -214,8 +228,6 @@ const Expenses = () => {
           </div>
         </div>
 
-
-
         {/* Expenses Table */}
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
@@ -236,10 +248,9 @@ const Expenses = () => {
                     <td className="p-3">
                       {expense.type === 'one-time'
                         ? new Date(expense.date).toLocaleDateString()
-                        : 'Recurring'
-                      }
+                        : 'Recurring'}
                     </td>
-                    <td className="p-3 font-semibold text-black">
+                    <td className="p-3 font-semibold text-[var(--secondary-color)]">
                       {formatCurrency(expense.amount)}
                     </td>
                     <td className="p-3">
@@ -259,22 +270,18 @@ const Expenses = () => {
                       </span>
                     </td>
                     <td className="p-3">
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-3">
                         <Link
                           to={`/expenses/${expense.id}/edit`}
                           className="text-[var(--primary-color)] hover:text-blue-400"
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                          </svg>
+                          <Edit2 className="w-4 h-4" />
                         </Link>
                         <button
-                          onClick={() => handleDelete(expense.id)}
+                          onClick={() => openDeleteConfirm(expense)}
                           className="text-[var(--secondary-color)] hover:text-blue-400"
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </td>
@@ -286,7 +293,7 @@ const Expenses = () => {
 
           {expenses.length === 0 && (
             <div className="text-center py-8">
-              <div className="text-gray-400 text-4xl mb-2">📝</div>
+              <FileText className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="text-lg font-medium text-gray-900">No expenses found</h3>
               <p className="text-gray-500 mb-4">Get started by creating your first expense</p>
             </div>
@@ -302,6 +309,39 @@ const Expenses = () => {
           </div>
         )}
       </div>
+
+      {/* 🔹 Modale de confirmation suppression */}
+      {deleteConfirm.show && (
+        <div
+          className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center p-4 z-50"
+          onClick={closeDeleteConfirm}
+        >
+          <div
+            className="bg-white rounded-lg max-w-md w-full p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Confirm Deletion</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete the expense "
+              {deleteConfirm.expense?.description || "Unnamed"}"? This action cannot be undone.
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={closeDeleteConfirm}
+                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)]"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-[var(--secondary-color)] text-white rounded-md hover:bg-[var(--primary-color)] focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
