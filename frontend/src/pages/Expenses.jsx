@@ -128,10 +128,10 @@ const Expenses = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className="items-center">
-              <div className="p-2 ml-4 mb-3 w-10 bg-red-100 rounded-lg text-red-600">💰</div>
+            <div className=" flex items-center gap-1">
+              <div className="p-2 ml-4 w-10 bg-red-100 rounded-lg text-red-600">💰</div>
               <div className="ml-3">
-                <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold">
                   {formatCurrency(calculateTotal())}
                 </p>
                 <p className="text-sm text-gray-600">Total Expenses</p>
@@ -140,34 +140,34 @@ const Expenses = () => {
           </div>
 
           <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className="items-center">
-              <div className="p-2 ml-4 mb-3 w-10 bg-blue-100 rounded-lg text-blue-600">📊</div>
+            <div className="flex items-center gap-1">
+              <div className="p-2 ml-3 w-10 bg-blue-100 rounded-lg text-blue-600">📊</div>
               <div className="ml-3">
-                <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">{expenses.length}</p>
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold">{expenses.length}</p>
                 <p className="text-sm text-gray-600">Total Records</p>
               </div>
             </div>
           </div>
 
           <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className="items-center">
-              <div className="p-2 ml-3 mb-3 w-10 bg-purple-100 rounded-lg text-purple-600">
+            <div className="flex items-center gap-1">
+              <div className="p-2 ml-3 w-10 bg-purple-100 rounded-lg text-purple-600">
                 🏷️
               </div>
               <div className="ml-3">
-                <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">{categories.length}</p>
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold">{categories.length}</p>
                 <p className="text-sm text-gray-600">Categories</p>
               </div>
             </div>
           </div>
 
           <div className="bg-white border-l-3 border-[var(--secondary-color)] rounded-lg shadow p-4">
-            <div className="items-center">
-              <div className="p-2 ml-3 mb-3 w-10 bg-green-100 rounded-lg text-green-600">
+            <div className="flex items-center gap-1">
+              <div className="p-2 ml-3 w-10 bg-green-100 rounded-lg text-green-600">
                 🔄
               </div>
               <div className="ml-3">
-                <p className="text-2xl text-[var(--secondary-color)] font-semibold mb-2">
+                <p className="text-2xl text-[var(--secondary-color)] font-semibold">
                   {expenses.filter((e) => e.type === "recurring").length}
                 </p>
                 <p className="text-sm text-gray-600">Recurring</p>
