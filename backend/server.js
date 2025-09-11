@@ -23,7 +23,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware to log multipart/form-data requests
+// Middleware pour logger les requêtes multipart/form-data
 app.use((req, res, next) => {
   if (req.headers['content-type'] && req.headers['content-type'].startsWith('multipart/form-data')) {
     console.log('Multipart form data received');
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static files (for receipts)
+// statique pour les fichiers uploadés
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
@@ -43,7 +43,7 @@ app.use('/api/summary', summaryRoutes);
 app.use('/api/receipts', receiptRoutes);
 app.use('/api/user', userRoutes);
 
-// Global error handler
+// globale erreur handler
 app.use((error, req, res, next) => {
   console.error('Error:', error);
   

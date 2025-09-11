@@ -20,7 +20,7 @@ import {
   ArrowDownRight,
 } from "lucide-react"; 
 import { summaryAPI, categoriesAPI } from "../services";
-
+// Page du tableau de bord
 const Dashboard = () => {
   const [summary, setSummary] = useState(null);
   const [monthlyData, setMonthlyData] = useState([]);
@@ -48,7 +48,7 @@ const Dashboard = () => {
     fetchCategories();
     fetchDashboardData();
   }, []);
-
+// Récupérer les catégories pour les filtres
   const fetchCategories = async () => {
     try {
       const res = await categoriesAPI.getAll();
@@ -57,11 +57,7 @@ const Dashboard = () => {
       console.error("Failed to load categories", err);
     }
   };
-
-  const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
-
+// Appliquer les filtres et récupérer les données
   const fetchDashboardData = async () => {
     try {
       setLoading(true);

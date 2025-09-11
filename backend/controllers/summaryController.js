@@ -18,12 +18,12 @@ const calculateMonthlySummary = async (userId, month) => {
 
   const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
 
-  // Get all expenses for the month (one-time and recurring)
+  //recupere toutes les dépenses pour la période (ponctuelles et récurrentes)
   const expenses = await prisma.expense.findMany({
     where: {
       userId,
       OR: [
-        // One-time expenses in the month
+        // Dépenses ponctuelles dans la période
         {
           type: 'one-time',
           date: {
@@ -31,7 +31,7 @@ const calculateMonthlySummary = async (userId, month) => {
             lte: endOfMonth
           }
         },
-        // Recurring expenses active during the month
+        // Dépenses récurrentes actives pendant la période
         {
           type: 'recurring',
           OR: [
@@ -57,11 +57,11 @@ const calculateMonthlySummary = async (userId, month) => {
       }
     }
   });
-
+// Calcule le total des dépenses
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
   const balance = totalIncome - totalExpenses;
 
-  // Group expenses by category
+// Regroupe les dépenses par catégorie
   const expensesByCategory = expenses.reduce((acc, expense) => {
     const categoryName = expense.category.name;
     if (!acc[categoryName]) {
@@ -85,6 +85,7 @@ const calculateMonthlySummary = async (userId, month) => {
   };
 };
 
+// Contrôleur pour les résumés financiers
 const summaryController = {
   getMonthlySummary: async (req, res) => {
     try {
@@ -100,6 +101,7 @@ const summaryController = {
     }
   },
 
+  // Récupère un résumé personnalisé pour une période donnée
   getCustomSummary: async (req, res) => {
     try {
       const userId = req.user.id;
@@ -112,7 +114,7 @@ const summaryController = {
       const startDate = new Date(start);
       const endDate = new Date(end);
 
-      // Get all incomes for the period
+      // Récupère tous les revenus pour la période
       const incomes = await prisma.income.findMany({
         where: {
           userId,
@@ -122,15 +124,15 @@ const summaryController = {
           }
         }
       });
-
+// Calcule le total des revenus
       const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
 
-      // Get all expenses for the period (one-time and recurring)
+      // Récupère toutes les dépenses (ponctuelles et récurrentes) pour la période
       const expenses = await prisma.expense.findMany({
         where: {
           userId,
           OR: [
-            // One-time expenses in the period
+           // One-time depenses dans la période
             {
               type: 'one-time',
               date: {
@@ -138,7 +140,7 @@ const summaryController = {
                 lte: endDate
               }
             },
-            // Recurring expenses active during the period
+            // Dépenses récurrentes actives pendant la période
             {
               type: 'recurring',
               OR: [
@@ -164,11 +166,11 @@ const summaryController = {
           }
         }
       });
-
+// Calcule le total des dépenses
       const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
       const balance = totalIncome - totalExpenses;
 
-      // Group expenses by category
+      // Regroupe les dépenses par catégorie
       const expensesByCategory = expenses.reduce((acc, expense) => {
         const categoryName = expense.category.name;
         if (!acc[categoryName]) {
@@ -198,6 +200,7 @@ const summaryController = {
     }
   },
 
+  // Vérifie si l'utilisateur a dépassé son budget mensuel et renvoie une alerte si c'est le cas
   getBudgetAlerts: async (req, res) => {
     try {
       const userId = req.user.id;
@@ -220,11 +223,11 @@ const summaryController = {
       res.status(500).json({ error: 'Internal server error' });
     }
   },
-  // summaryController.js
+  // Récupère la tendance des revenus et dépenses sur les 6 derniers mois
 getMonthlyTrend: async (req, res) => {
   try {
     const userId = req.user.id;
-    const monthsToShow = 6; // derniers 6 mois
+    const monthsToShow = 6; 
     const today = new Date();
     const monthlyData = [];
 
