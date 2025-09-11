@@ -13,7 +13,7 @@ const receiptRoutes = require('./routes/receipts');
 const userRoutes = require('./routes/user');
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
 // Middleware
 app.use(cors({

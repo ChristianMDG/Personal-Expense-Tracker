@@ -1,16 +1,13 @@
 # React + Vite
 
-npm install axios react-router-dom recharts
-
-
-
 
 ## Instructions d'installation et d'exécution
 
 ### Backend
+1. **Creer un fichier .env et copier** :
 
 # Configuration de la base de données PostgreSQL
-DATABASE_URL="postgresql://postgres:092MLBOA*@localhost:5432/expense_tracker"
+DATABASE_URL="postgresql://postgres:mdp*@localhost:5432/db_name"
 
 # Clé secrète pour JWT (à changer en production)
 JWT_SECRET="votre_clé_secrète_super_sécurisée_ici_changez_en_production"
@@ -19,22 +16,22 @@ JWT_SECRET="votre_clé_secrète_super_sécurisée_ici_changez_en_production"
 PORT=8080
 
 
-1. **Installer les dépendances** :
+2. **Installer les dépendances** :
    ```bash
    cd backend
    npm install
    ```
 
-2. **Configurer la base de données** :
+3. **Configurer la base de données** :
    - Créer une base de données PostgreSQL
    - Mettre à jour le fichier `.env` avec les informations de connexion
 
-3. **Exécuter les migrations Prisma** :
+4. **Exécuter les migrations Prisma** :
    ```bash
    npx prisma migrate dev --name init
    ```
 
-4. **Démarrer le serveur** :
+5. **Démarrer le serveur** :
    ```bash
    npm run dev
    ```
@@ -45,9 +42,4 @@ PORT=8080
    ```bash
    cd frontend
    npm install
-   ```
-
-2. **Démarrer l'application** :
-   ```bash
-   npm run dev
    ```
