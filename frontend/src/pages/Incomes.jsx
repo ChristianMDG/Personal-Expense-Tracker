@@ -126,16 +126,22 @@ const Incomes = () => {
         )}
 
         <div className="animate-slideUp grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="transition-all duration-300 bg-white rounded-lg shadow p-6 hover:shadow-lg">
-            <div className="flex items-center">
+          <div className="bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+                rounded-2xl p-6 w-75 
+                transform transition duration-300 ease-in-out
+                hover:scale-100 hover:shadow-xl 
+                active:scale-100 cursor-pointer">
+            <div className="flex items-center gap-4">
               <div className="p-3 bg-blue-100 rounded-lg">
-                <DollarSign className="w-6 h-6 text-blue-600" />
+                <DollarSign className="flex items-center justify-center w-5 h-5 
+                    bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
+                    rounded-full text-white text-3xl shadow-md" />
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">
                   Total Income
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-xl font-bold text-[var(--primary-color)]">
                   {formatCurrency(calculateTotal())}
                 </p>
               </div>
