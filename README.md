@@ -150,21 +150,21 @@ Avec Planifeo, la gestion financière devient **simple, visuelle et proactive**.
 
 ---
 
-### 💸 Dépenses (Expenses) – **Nomena**
-
-* [ ] Liste des dépenses (`/expenses`, `GET /api/expenses`)
-* [ ] Nouvelle dépense (`/expenses/new`, `POST /api/expenses`)
-* [ ] Éditer dépense (`PUT /api/expenses/:id`)
-* [ ] Supprimer dépense (`DELETE /api/expenses/:id`)
-
----
-
 ### 📊 Dashboard – **Christian**
 
 * [ ] Vue globale (`/dashboard`, `/api/summary/*`)
 * [ ] Cartes : Total Incomes / Total Expenses / Balance
 * [ ] Graphiques (Pie & Bar charts)
 * [ ] Dernières transactions + alertes
+
+---
+
+### 💸 Dépenses (Expenses) – **Nomena**
+
+* [ ] Liste des dépenses (`/expenses`, `GET /api/expenses`)
+* [ ] Nouvelle dépense (`/expenses/new`, `POST /api/expenses`)
+* [ ] Éditer dépense (`PUT /api/expenses/:id`)
+* [ ] Supprimer dépense (`DELETE /api/expenses/:id`)
 
 ---
 
