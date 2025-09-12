@@ -148,7 +148,7 @@ const formatCurrency = (amount) =>
         <div className="mb-8">
           <div className="flex items-center mb-4">
             <h1 className="text-3xl font-bold text-gray-900">
-              {isEdit ? 'Edit Expense' : '💰 New Expense'}
+              {isEdit ? 'Edit Expense' : 'New Expense'}
             </h1>
           </div>
         </div>
