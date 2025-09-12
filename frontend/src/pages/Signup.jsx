@@ -104,18 +104,10 @@ const Signup = () => {
         <div className="w-full max-w-md anime">
           <div className="rounded-2xl shadow-xl p-8 bg-[var(--bg-color)]">
             <div className="text-center mb-8">
-              <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                style={{ backgroundColor: "var(--primary-color)" }}
-              >
-                <span className="text-2xl text-white">💰</span>
+              <div className="w-30 h-30 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md border-4 border-[var(--accent-color)]">
+                <img src="/log.png" alt="Logo" className="w-full h-full object-cover rounded-2xl "/>
               </div>
-              <h1
-                className="text-3xl font-bold mb-2"
-                style={{ color: "var(--text-color)" }}
-              >
-                Planifieo
-              </h1>
+             
               <p style={{ color: "var(--secondary-color)" }}>
                 Join thousands managing their expenses smarter
               </p>

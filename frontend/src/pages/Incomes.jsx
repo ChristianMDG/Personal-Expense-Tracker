@@ -161,7 +161,7 @@ const Incomes = () => {
                 <p className="text-sm font-medium text-gray-600">
                   Total Records
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-[var(--accent-color)]">
                   {incomes.length}
                 </p>
               </div>
@@ -182,7 +182,7 @@ const Incomes = () => {
                 <p className="text-sm font-medium text-gray-600">
                   Average Monthly
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-purple-600">
                   {formatCurrency(calculateTotal() / 12)}
                 </p>
               </div>

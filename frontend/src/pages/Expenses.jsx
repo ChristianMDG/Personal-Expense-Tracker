@@ -127,7 +127,7 @@ const Expenses = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 animate-fadeIn">
           <div 
-            className=" bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+            className=" bg-white shadow-sm border-l-3 border-red-500 
                 rounded-2xl p-6 w-65 
                 transform transition-all duration-300 ease-in-out
                 hover:scale-105 hover:shadow-xl 
@@ -135,23 +135,25 @@ const Expenses = () => {
             style={{ animationDelay: "0s" }}
           >
             <div className="flex items-center gap-4">
-              <div className="transition-all duration-300 flex items-center justify-center w-14 h-14 
-                    bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
-                    rounded-full text-white text-3xl shadow-md hover:scale-110">
+              <div className="transition-all duration-300 flex items-center justify-center w-10 h-10
+                    bg-gradient-to-tr from-p-3 bg-red-300 to-red-500
+                  rounded-lg  text-white text-3xl shadow-md hover:scale-110">
                 <DollarSign className="w-6 h-6" />
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Total Expenses</p>
-                <p className="text-xl text-[var(--primary-color)] font-bold">
+
+                 <p className="text-sm text-gray-500">Total Expenses</p>
+                <p className="text-xl text-red-500 font-bold">
                   {formatCurrency(calculateTotal())}
                 </p>
+ +
               </div>
             </div>
           </div>
 
           <div 
-            className=" bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+            className=" bg-white shadow-sm border-l-3 border-blue-400 
                 rounded-2xl p-6 w-65 
                 transform transition-all duration-300 ease-in-out
                 hover:scale-105 hover:shadow-xl 
@@ -159,20 +161,23 @@ const Expenses = () => {
             style={{ animationDelay: "0.1s" }}
           >
             <div className="flex items-center gap-2">
-              <div className="transition-all duration-300 flex items-center justify-center w-14 h-14 
-                    bg-gradient-to-tr from-[var(--primary-color)] to-[var(--accent-color)] 
-                    rounded-full text-white text-3xl shadow-md hover:scale-110">
+              <div className="transition-all duration-300 flex items-center justify-center w-10 h-10
+                    bg-gradient-to-tr from-p-3 bg-blue-200 to-blue-400
+                  rounded-lg  text-white text-3xl shadow-md hover:scale-110">
                 <BarChart3 className="w-6 h-6" />
               </div>
               <div className="ml-3">
-                <p className="text-sm text-gray-600">Total Records</p>
-                <p className="text-xl text-[var(--secondary-color)] font-bold">{expenses.length}</p>
+
+                 <p className="text-sm text-gray-600">Total Records</p>
+                <p className="text-xl text-blue-400 font-bold">{expenses.length}</p>
+               
+
               </div>
             </div>
           </div>
 
           <div 
-            className=" bg-white shadow-sm border-l-3 border-[var(--secondary-color)] 
+            className=" bg-white shadow-sm border-l-3 border-purple-400 
                 rounded-2xl p-6 w-65 
                 transform transition-all duration-300 ease-in-out
                 hover:scale-105 hover:shadow-xl 
@@ -180,14 +185,17 @@ const Expenses = () => {
             style={{ animationDelay: "0.2s" }}
           >
             <div className="flex items-center gap-2">
-              <div className="transition-all duration-300 flex items-center justify-center w-14 h-14 
-                    bg-gradient-to-tr from-[var(--secondary-color)] to-[var(--accent-color)] 
-                    rounded-full text-white text-3xl shadow-md hover:scale-110">
+              <div className="transition-all duration-300 flex items-center justify-center w-10 h-10
+                    bg-gradient-to-tr from-p-3 bg-purple-200 to-purple-400
+                  rounded-lg  text-white text-3xl shadow-md hover:scale-110">
                 <Tag className="w-6 h-6" />
               </div>
               <div className="ml-3">
-                <p className="text-sm text-gray-600">Categories</p>
-                <p className="text-xl text-[var(--secondary-color)] font-bold">{categories.length}</p>
+
+                 <p className="text-sm text-gray-600">Categories</p>
+                <p className="text-xl text-purple-400font-bold">{categories.length}</p>
+               
+
               </div>
             </div>
           </div>
@@ -201,16 +209,18 @@ const Expenses = () => {
             style={{ animationDelay: "0.3s" }}
           >
             <div className="flex items-center gap-2">
-              <div className="transition-all duration-300 flex items-center justify-center w-14 h-14 
+              <div className="transition-all duration-300 flex items-center justify-center w-10 h-10
                     bg-gradient-to-tr from-[var(--secondary-color)] to-[var(--accent-color)] 
-                    rounded-full text-white text-3xl shadow-md hover:scale-110">
+                    rounded-lg text-white text-3xl shadow-md hover:scale-110">
                 <Repeat className="w-6 h-6" />
               </div>
               <div className="ml-3">
-                <p className="text-sm text-gray-600">Recurring</p>
+
+                 <p className="text-sm text-gray-600">Recurring</p>
                 <p className="text-xl text-[var(--secondary-color)] font-bold">
                   {expenses.filter((e) => e.type === "recurring").length}
                 </p>
+
               </div>
             </div>
           </div>

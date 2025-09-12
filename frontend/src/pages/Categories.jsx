@@ -314,7 +314,7 @@ const Categories = () => {
               {categories.length === 1 ? "category" : "categories"}
             </span>
           </div>
-          <hr className="my-4" />
+         
 
           {categories.length === 0 ? (
             <div 
