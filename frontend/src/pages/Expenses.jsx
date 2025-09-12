@@ -142,11 +142,12 @@ const Expenses = () => {
               </div>
 
               <div>
+
                  <p className="text-sm text-gray-500">Total Expenses</p>
                 <p className="text-xl text-red-500 font-bold">
                   {formatCurrency(calculateTotal())}
                 </p>
-               
+ +
               </div>
             </div>
           </div>
@@ -166,9 +167,11 @@ const Expenses = () => {
                 <BarChart3 className="w-6 h-6" />
               </div>
               <div className="ml-3">
+
                  <p className="text-sm text-gray-600">Total Records</p>
                 <p className="text-xl text-blue-400 font-bold">{expenses.length}</p>
                
+
               </div>
             </div>
           </div>
@@ -188,9 +191,11 @@ const Expenses = () => {
                 <Tag className="w-6 h-6" />
               </div>
               <div className="ml-3">
+
                  <p className="text-sm text-gray-600">Categories</p>
                 <p className="text-xl text-purple-400font-bold">{categories.length}</p>
                
+
               </div>
             </div>
           </div>
@@ -210,11 +215,12 @@ const Expenses = () => {
                 <Repeat className="w-6 h-6" />
               </div>
               <div className="ml-3">
+
                  <p className="text-sm text-gray-600">Recurring</p>
                 <p className="text-xl text-[var(--secondary-color)] font-bold">
                   {expenses.filter((e) => e.type === "recurring").length}
                 </p>
-               
+
               </div>
             </div>
           </div>
