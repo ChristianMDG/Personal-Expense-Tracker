@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   // Vérifier l'authentification au chargement
+
   useEffect(() => {
     const checkAuth = async () => {
       if (token) {
