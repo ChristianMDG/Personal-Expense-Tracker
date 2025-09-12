@@ -182,7 +182,7 @@ const formatCurrency = (amount) =>
                 step="0.01"
                 min="0"
                 required
-                className="w-full p-3 border border-[var(--secondary-color)] rounded"
+                className="w-full p-3 border border-[var(--secondary-color)] rounded outline-[var(--secondary-color)]"
                 placeholder="0.00"
                 disabled={loading}
               />
@@ -203,7 +203,7 @@ const formatCurrency = (amount) =>
                 value={formData.categoryId}
                 onChange={handleChange}
                 required
-                className="w-full p-3 border border-[var(--secondary-color)] rounded"
+                className="w-full p-3 border border-[var(--secondary-color)] rounded outline-[var(--secondary-color)]"
                 disabled={loading}
               >
                 <option value="">Select a category</option>
@@ -273,7 +273,7 @@ const formatCurrency = (amount) =>
                   value={formData.date}
                   onChange={handleChange}
                   required
-                  className="w-full p-3 border border-[var(--secondary-color)] rounded"
+                  className="w-full p-3 border border-[var(--secondary-color)] rounded outline-[var(--secondary-color)]"
                   disabled={loading}
                 />
               </div>
@@ -291,7 +291,7 @@ const formatCurrency = (amount) =>
                     value={formData.startDate}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 border border-[var(--secondary-color)] rounded"
+                    className="w-full p-3 border border-[var(--secondary-color)] rounded outline-[var(--secondary-color)]"
                     disabled={loading}
                   />
                 </div>
@@ -304,7 +304,7 @@ const formatCurrency = (amount) =>
                     name="endDate"
                     value={formData.endDate}
                     onChange={handleChange}
-                    className="w-full p-3 border border-[var(--secondary-color)] rounded"
+                    className="w-full p-3 border border-[var(--secondary-color)] rounded outline-[var(--secondary-color)]"
                     disabled={loading}
                   />
                 </div>
@@ -321,7 +321,7 @@ const formatCurrency = (amount) =>
                 value={formData.description}
                 onChange={handleChange}
                 rows={3}
-                className="w-full p-3 border border-[var(--secondary-color)] rounded"
+                className="w-full p-3 border border-[var(--secondary-color)] rounded outline-[var(--secondary-color)]"
                 placeholder="Optional description"
                 disabled={loading}
               />
@@ -336,9 +336,10 @@ const formatCurrency = (amount) =>
                 type="file"
                 name="receipt"
                 onChange={handleChange}
-                className="w-full p-3 border border-[var(--secondary-color)] rounded bg-[var(--primary-color)]"
+                className="w-full p-3 border border-[var(--secondary-color)] rounded outline-[var(--secondary-color)]"
                 disabled={loading}
               />
+              
             </div>
 
             {/* Buttons */}
