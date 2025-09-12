@@ -138,6 +138,8 @@ const ExpenseForm = () => {
       </div>
     );
   }
+const formatCurrency = (amount) =>
+    new Intl.NumberFormat("fr-MG", { style: "currency", currency: "MGA" }).format(amount);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -185,6 +187,11 @@ const ExpenseForm = () => {
                 disabled={loading}
               />
             </div>
+            {formData.amount && (
+              <p className="animate-fadeIn mt-1 text-sm text-gray-500">
+                {formatCurrency(parseFloat(formData.amount) || 0)}
+              </p>
+            )}
 
             {/* Category */}
             <div>
