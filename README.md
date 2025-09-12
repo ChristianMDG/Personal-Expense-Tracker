@@ -193,7 +193,7 @@ Avec Planifeo, la gestion financière devient **simple, visuelle et proactive**.
 
 ---
 
-### 📁 Reçus – **Nomena**
+### 📁 Reçus – **A venir...**
 
 * [ ] Upload reçu (`POST /api/expenses`)
 * [ ] Voir / Télécharger (`/receipts/:idExpense`, `GET /api/receipts/:idExpense`)
