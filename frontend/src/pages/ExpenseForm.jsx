@@ -182,7 +182,7 @@ const formatCurrency = (amount) =>
                 step="0.01"
                 min="0"
                 required
-                className="w-full p-3 border border-gray-300 rounded"
+                className="w-full p-3 border border-[var(--secondary-color)] rounded"
                 placeholder="0.00"
                 disabled={loading}
               />
@@ -203,7 +203,7 @@ const formatCurrency = (amount) =>
                 value={formData.categoryId}
                 onChange={handleChange}
                 required
-                className="w-full p-3 border border-gray-300 rounded"
+                className="w-full p-3 border border-[var(--secondary-color)] rounded"
                 disabled={loading}
               >
                 <option value="">Select a category</option>
@@ -273,7 +273,7 @@ const formatCurrency = (amount) =>
                   value={formData.date}
                   onChange={handleChange}
                   required
-                  className="w-full p-3 border border-gray-300 rounded"
+                  className="w-full p-3 border border-[var(--secondary-color)] rounded"
                   disabled={loading}
                 />
               </div>
@@ -291,7 +291,7 @@ const formatCurrency = (amount) =>
                     value={formData.startDate}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 border border-gray-300 rounded"
+                    className="w-full p-3 border border-[var(--secondary-color)] rounded"
                     disabled={loading}
                   />
                 </div>
@@ -304,7 +304,7 @@ const formatCurrency = (amount) =>
                     name="endDate"
                     value={formData.endDate}
                     onChange={handleChange}
-                    className="w-full p-3 border border-gray-300 rounded"
+                    className="w-full p-3 border border-[var(--secondary-color)] rounded"
                     disabled={loading}
                   />
                 </div>
@@ -321,7 +321,7 @@ const formatCurrency = (amount) =>
                 value={formData.description}
                 onChange={handleChange}
                 rows={3}
-                className="w-full p-3 border border-gray-300 rounded"
+                className="w-full p-3 border border-[var(--secondary-color)] rounded"
                 placeholder="Optional description"
                 disabled={loading}
               />
@@ -329,14 +329,14 @@ const formatCurrency = (amount) =>
 
             {/* Receipt */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium  text-gray-700 mb-2">
                 Receipt (optional)
               </label>
               <input
                 type="file"
                 name="receipt"
                 onChange={handleChange}
-                className="w-full p-3 border border-gray-300 rounded"
+                className="w-full p-3 border border-[var(--secondary-color)] rounded bg-[var(--primary-color)]"
                 disabled={loading}
               />
             </div>
