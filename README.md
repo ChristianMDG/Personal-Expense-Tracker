@@ -159,6 +159,15 @@ Avec Planifeo, la gestion financière devient **simple, visuelle et proactive**.
 
 ---
 
+### 📊 Dashboard – **Christian**
+
+* [ ] Vue globale (`/dashboard`, `/api/summary/*`)
+* [ ] Cartes : Total Incomes / Total Expenses / Balance
+* [ ] Graphiques (Pie & Bar charts)
+* [ ] Dernières transactions + alertes
+
+---
+
 ### 💰 Revenus (Incomes) – **Christian**
 
 * [ ] Liste des revenus (`/incomes`, `GET /api/incomes`)
@@ -174,15 +183,6 @@ Avec Planifeo, la gestion financière devient **simple, visuelle et proactive**.
 * [ ] Nouvelle catégorie (`POST /api/categories`)
 * [ ] Modifier (`PUT /api/categories/:id`)
 * [ ] Supprimer (`DELETE /api/categories/:id`)
-
----
-
-### 📊 Dashboard – **Christian**
-
-* [ ] Vue globale (`/dashboard`, `/api/summary/*`)
-* [ ] Cartes : Total Incomes / Total Expenses / Balance
-* [ ] Graphiques (Pie & Bar charts)
-* [ ] Dernières transactions + alertes
 
 ---
 
