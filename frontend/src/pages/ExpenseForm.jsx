@@ -65,7 +65,7 @@ const ExpenseForm = () => {
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-
+ 
     if (type === 'file' && files[0]) {
       setFormData(prev => ({ ...prev, [name]: files[0] }));
     } else {
@@ -74,7 +74,15 @@ const ExpenseForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();const handleChange = (e) => {
+    const { name, value, type, files } = e.target;
+
+    if (type === 'file' && files[0]) {
+      setFormData(prev => ({ ...prev, [name]: files[0] }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
     setLoading(true);
     setError('');
     setSuccess('');
